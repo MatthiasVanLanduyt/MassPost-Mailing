@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassPostValidatorDesktop", "MassPostValidatorDesktop\MassPostValidatorDesktop.csproj", "{1E49268C-8964-4D69-AB2B-1E196C1B9A4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{45DDF0E9-BB27-425B-83F4-34B2C5F8344E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{BDFB9276-4732-45F3-A354-DB77B07D52C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E49268C-8964-4D69-AB2B-1E196C1B9A4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E49268C-8964-4D69-AB2B-1E196C1B9A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E49268C-8964-4D69-AB2B-1E196C1B9A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E49268C-8964-4D69-AB2B-1E196C1B9A4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45DDF0E9-BB27-425B-83F4-34B2C5F8344E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45DDF0E9-BB27-425B-83F4-34B2C5F8344E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45DDF0E9-BB27-425B-83F4-34B2C5F8344E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45DDF0E9-BB27-425B-83F4-34B2C5F8344E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDFB9276-4732-45F3-A354-DB77B07D52C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDFB9276-4732-45F3-A354-DB77B07D52C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDFB9276-4732-45F3-A354-DB77B07D52C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDFB9276-4732-45F3-A354-DB77B07D52C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
