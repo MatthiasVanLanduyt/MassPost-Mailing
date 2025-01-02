@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassPostValidatorDesktop", "MassPostValidatorDesktop\MassPostValidatorDesktop.csproj", "{1E49268C-8964-4D69-AB2B-1E196C1B9A4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validator.Desktop", "MassPostValidatorDesktop\Validator.Desktop.csproj", "{1E49268C-8964-4D69-AB2B-1E196C1B9A4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{45DDF0E9-BB27-425B-83F4-34B2C5F8344E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validator.Domain", "Domain\Validator.Domain.csproj", "{45DDF0E9-BB27-425B-83F4-34B2C5F8344E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{BDFB9276-4732-45F3-A354-DB77B07D52C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validator.Application", "Application\Validator.Application.csproj", "{BDFB9276-4732-45F3-A354-DB77B07D52C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
