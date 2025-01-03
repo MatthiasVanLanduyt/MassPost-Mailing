@@ -2,15 +2,19 @@
 {
     public class AddressLine
     {
-        public required string Contact { get; set; }
-        public required string Street { get; set; }
-        public required string City { get; set; }
-        public required string PostalCode { get; set; }
+        public int Index { get; init; }
+        public AddressDetails AddressDetails { get; set; }
+        public AddressValidationResult Validation { get; set; }
 
-        public override string ToString()
+        public AddressLine(AddressDetails addressDetails, int index)
         {
-            return $"Address: {Street},{PostalCode} {City} ";
+            Index = index;
+            AddressDetails = addressDetails;
+            Validation = AddressValidationResult.Pending;
         }
 
+        public override string ToString() =>
+            $"Line {Index}: {AddressDetails}, Status: {Validation.Status}";
     }
 }
+

@@ -11,6 +11,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.VisualBasic;
 using Validator.Application.Addresses;
+using Validator.Domain.Addresses;
 
 namespace MassPostValidatorDesktop
 {
@@ -19,9 +20,12 @@ namespace MassPostValidatorDesktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly AddressValidator _addressValidator;
+        private List<AddressLine> _addressLines = [];
+        public MainWindow(IPostalCodeService postalCodeService)
         {
             InitializeComponent();
+            _addressValidator = new AddressValidator(postalCodeService);
         }
 
         private void UploadFileBtn_Click(object sender, RoutedEventArgs e)
@@ -39,7 +43,7 @@ namespace MassPostValidatorDesktop
 
                 Console.WriteLine($"Selected file: {csvFile}");
 
-                if (csvFile is null || csvFile.Length == 0)
+                if (string.IsNullOrEmpty(csvFile))
                 {
                     MessageBox.Show("Please select a file to upload", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -47,18 +51,16 @@ namespace MassPostValidatorDesktop
                 //TODO: Verify that the file is a CSV file
 
                 try
-                {                 
+                {
 
-                    using (var stream = new FileStream(csvFile, FileMode.Open, FileAccess.Read))
-                    {
-                        
+                    using var stream = new FileStream(csvFile, FileMode.Open, FileAccess.Read);
 
-                        var addressLines = CsvAddressParser.ReadCsvFile(stream);
-                        //Show messagebox with number of address lines read
-                        MessageBox.Show($"Successfully read {addressLines.Count()} address lines from file {openFileDialog.FileName}");
 
-                        FileContentGrid.ItemsSource = addressLines;
-                    }
+                    _addressLines = CsvAddressParser.ReadCsvFile(stream).ToList();
+                    //Show messagebox with number of address lines read
+                    MessageBox.Show($"Successfully read {_addressLines.Count} address lines from file {openFileDialog.FileName}");
+
+                    FileContentGrid.ItemsSource = _addressLines;
                 }
                 catch (Exception ex)
                 {
@@ -80,9 +82,14 @@ namespace MassPostValidatorDesktop
             }
         }
 
-        private void ValidateDataBtn_Click(object sender, RoutedEventArgs e)
+        private async void ValidateDataBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (_addressLines.Count > 0)
+            {
+                await _addressValidator.ValidateAddressLinesAsync(_addressLines);
+                ErrorGrid.ItemsSource = _addressLines.Where(x => x.Validation.Errors.Count > 0);
+                FileContentGrid.Items.Refresh(); // Refresh the grid to show validation results
+            }
         }
     }
 }

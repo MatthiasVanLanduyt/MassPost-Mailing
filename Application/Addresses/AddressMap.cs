@@ -8,7 +8,7 @@ using Validator.Domain.Addresses;
 
 namespace Validator.Application.Addresses
 {
-    internal class AddressMap: ClassMap<AddressLine>
+    internal class AddressMap: ClassMap<AddressDetails>
     {
         public AddressMap()
         {

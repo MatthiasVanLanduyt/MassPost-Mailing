@@ -10,29 +10,30 @@ namespace Validator.Application.Addresses
     {
         public static IEnumerable<AddressLine> ReadCsvFile(Stream fileStream)
         {
-            List<AddressLine> addresses = new List<AddressLine>();
+            List<AddressLine> addresses = [];
             try
             {
                 var culture = new CultureInfo("nl-BE");
                 Console.WriteLine("Reading CSV file");
-                using (var reader = new StreamReader(fileStream))
-                using (var csv = new CsvReader(reader, culture))
+                using var reader = new StreamReader(fileStream);
+                using var csv = new CsvReader(reader, culture);
+                csv.Context.RegisterClassMap<AddressMap>();
+
+                csv.Read();
+                csv.ReadHeader();
+
+                Debug.WriteLine($"Header length: {csv.HeaderRecord.Length}");
+                Debug.WriteLine($"Current index: {csv.CurrentIndex}");
+                
+                int index = 1;
+
+                while (csv.Read())
                 {
-                    csv.Context.RegisterClassMap<AddressMap>();
-
-                    csv.Read();
-                    csv.ReadHeader();
-
-                    Debug.WriteLine($"Header length: {csv.HeaderRecord.Length}");
-                    Debug.WriteLine($"Current index: {csv.CurrentIndex}");
-
-                    while (csv.Read())
-                    {
-                        var record = csv.GetRecord<AddressLine>();
-                        Debug.WriteLine($"Record: {record}");
-                        addresses.Add(record);
-                        // Do something with the record.
-                    }
+                    var record = csv.GetRecord<AddressDetails>();
+                    Debug.WriteLine($"Record: {record}");
+                    addresses.Add(new AddressLine(record, index));
+                    index++;
+                    // Do something with the record.
                 }
             }
             catch (HeaderValidationException ex)

@@ -35,18 +35,30 @@
                 <DataGrid Name="FileContentGrid" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Contact" Binding="{Binding Contact}" Width="*" />
-                        <DataGridTextColumn Header="Street" Binding="{Binding Street}" Width="*" />
-                        <DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode}" Width="*" />
-                        <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*" />
+                        <DataGridTextColumn Header="Row" Binding="{Binding Index}" Width="*" />
+                        <DataGridTextColumn Header="Contact" Binding="{Binding AddressDetails.Contact}" Width="*" />
+                        <DataGridTextColumn Header="Street" Binding="{Binding AddressDetails.Street}" Width="*" />
+                        <DataGridTextColumn Header="PostalCode" Binding="{Binding AddressDetails.PostalCode}" Width="*" />
+                        <DataGridTextColumn Header="City" Binding="{Binding AddressDetails.City}" Width="*" />
+                        <DataGridTextColumn Header="ValidationStatus" Binding="{Binding Validation.Status}" Width="*" />
+
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
 
             <!-- Tab for Errors -->
             <TabItem Header="Errors">
-                <DataGrid Name="ErrorGrid" AutoGenerateColumns="True"
-                          CanUserAddRows="False" IsReadOnly="True" />
+                <DataGrid Name="ErrorGrid" AutoGenerateColumns="False"
+                          CanUserAddRows="False" IsReadOnly="True">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Row" Binding="{Binding Index}" Width="*" />
+                        <DataGridTextColumn Header="AddressDetails" Binding="{Binding AddressDetails}" Width="*" />
+                        <DataGridTextColumn Header="Errors" Binding="{Binding Validation}" Width="*" />
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
+                
             </TabItem>
         </TabControl>
     </Grid>
