@@ -1,6 +1,9 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using Validator.Application.DependencyInjection;
 
 namespace MassPostValidatorDesktop
 {
@@ -9,6 +12,23 @@ namespace MassPostValidatorDesktop
     /// </summary>
     public partial class App : Application
     {
+        private ServiceProvider? _serviceProvider;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            var services = new ServiceCollection();
+
+            // Add services from application layer
+            services.AddApplicationServices();
+
+            // Add WPF-specific services
+            services.AddSingleton<MainWindow>();
+
+            _serviceProvider = services.BuildServiceProvider();
+
+            var mainWindow = _serviceProvider.GetService<MainWindow>();
+            mainWindow?.Show();
+        }
     }
 
 }
