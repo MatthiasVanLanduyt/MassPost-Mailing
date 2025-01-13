@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Validator.Domain.csproj" />
+    <ProjectReference Include="..\Sharedkernel\Sharedkernel.csproj" />
   </ItemGroup>
 
 </Project>
