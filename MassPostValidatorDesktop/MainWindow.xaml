@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MassPostValidatorDesktop"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -31,10 +32,10 @@
 
                     <!-- First Row -->
                     <Label Content="Customer ID:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
-                    <TextBox x:Name="CustomerIdTextBox" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
+                    <ui:TextBox x:Name="CustomerIdTextBox" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
 
                     <Label Content="Account ID:" Grid.Row="0" Grid.Column="2" Margin="0,0,10,0"/>
-                    <TextBox x:Name="AccountIdTextBox" Grid.Row="0" Grid.Column="3"/>
+                    <ui:TextBox x:Name="AccountIdTextBox" Grid.Row="0" Grid.Column="3"/>
 
                     <!-- Second Row -->
                     <Label Content="File Reference:" Grid.Row="1" Grid.Column="0" Margin="0,10,10,0"/>
@@ -51,11 +52,11 @@
 
         <!-- Action panel -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
-            <Button x:Name="UploadFileBtn" Content="Upload File" Click="UploadFileBtn_Click" 
+            <ui:Button x:Name="UploadFileBtn" Content="Upload File" Click="UploadFileBtn_Click" 
                 Width="100" Height="30" Margin="0,0,10,0"/>
-            <Button x:Name="ValidateDataBtn" Content="Validate Data" Click="ValidateDataBtn_Click" 
+            <ui:Button x:Name="ValidateDataBtn" Content="Validate Data" Click="ValidateDataBtn_Click" 
                 Width="100" Height="30" Margin="0,0,10,0" IsEnabled="False"/>
-            <Button x:Name="GenerateMailingListBtn" Content="Generate Mailing List" 
+            <ui:Button x:Name="GenerateMailingListBtn" Content="Generate Mailing List" 
                 Click="GenerateMailingListBtn_Click" Width="120" Height="30" IsEnabled="False"/>
         </StackPanel>
 
@@ -64,7 +65,7 @@
         <TabControl x:Name="DatagridsTabs"  Grid.Row="2" Visibility="Collapsed">
             <!-- Tab for DataGrid -->
             <TabItem Header="Data">
-                <DataGrid Name="FileContentGrid" AutoGenerateColumns="False"
+                <ui:DataGrid Name="FileContentGrid" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Row" Binding="{Binding Index}" Width="*" />
@@ -75,12 +76,12 @@
                         <DataGridTextColumn Header="ValidationStatus" Binding="{Binding Validation.Status}" Width="*" />
 
                     </DataGrid.Columns>
-                </DataGrid>
+                </ui:DataGrid>
             </TabItem>
 
             <!-- Tab for Errors -->
             <TabItem Header="Errors">
-                <DataGrid Name="ErrorGrid" AutoGenerateColumns="False"
+                <ui:DataGrid Name="ErrorGrid" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True">
 
                     <DataGrid.Columns>
@@ -89,7 +90,7 @@
                         <DataGridTextColumn Header="Errors" Binding="{Binding Validation}" Width="*" />
                         
                     </DataGrid.Columns>
-                </DataGrid>
+                </ui:DataGrid>
                 
             </TabItem>
         </TabControl>
