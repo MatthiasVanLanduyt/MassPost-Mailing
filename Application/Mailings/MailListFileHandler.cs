@@ -16,10 +16,7 @@ namespace Validator.Application.Mailings
             _dateTimeProvider = dateTimeProvider;
         }
 
-        private string GenerateFileName(MailIdSettings settings)
-        {
-            return $"{settings.FileCode}_{settings.RequestVersion}_{settings.SerialNumber}_{_dateTimeProvider.TimeStamp}_{settings.CommunicationStep}_{settings.FileFormat}";
-        }
+        
 
 
     }

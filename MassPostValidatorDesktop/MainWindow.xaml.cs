@@ -1,6 +1,7 @@
 ﻿using System.Formats.Tar;
 using System.IO;
 using System.Windows;
+using Sharedkernel;
 using Validator.Application.Addresses;
 using Validator.Application.Files;
 using Validator.Application.Mailings;
@@ -18,11 +19,13 @@ namespace MassPostValidatorDesktop
         private readonly AddressValidator _addressValidator;
         private List<AddressLine> _addressLines = [];
         private MailIdSettings _settings;
-        public MainWindow(IPostalCodeService postalCodeService)
+        private IDateTimeProvider _dateTimeProvider;
+        public MainWindow(IPostalCodeService postalCodeService, IDateTimeProvider dateTimeProvider)
         {
             InitializeComponent();
             _addressValidator = new AddressValidator(postalCodeService);
             _settings = MailIdSettings.LoadDefaults();
+            _dateTimeProvider = dateTimeProvider;
         }
 
         private void UploadFileBtn_Click(object sender, RoutedEventArgs e)
@@ -95,13 +98,18 @@ namespace MassPostValidatorDesktop
             var factory = new MailIdFactory("12345"); // Your 5-digit code from bpost
 
             // Create a request
+            var requestHeader = new MailIdRequestHeader
+            {
+                CustomerId = 56,
+                AccountId = 3,
+                MailingRef = "test",
+                ExpectedDeliveryDate = _dateTimeProvider.TimeStamp,
+                SerialNumber = "12345",
+            };
+
             var request = new MailIdRequest
             {
-                CustomerId = "your_id",
-                AccountId = "your_account",
-                Mode = "P", // Production
-                MailingRef = "MAILING_001",
-                ExpectedDeliveryDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
+                Header = requestHeader
             };
 
             // Convert your addresses
@@ -112,7 +120,7 @@ namespace MassPostValidatorDesktop
             }
 
             // Generate the file
-            var generator = new MailIdFileGenerator();
+            var generator = new MailIdFileGenerator(_dateTimeProvider);
             var fileOps = new FileOperations();
 
             var textFile = generator.GenerateTxtFile(request);

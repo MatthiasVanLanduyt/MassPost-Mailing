@@ -39,7 +39,7 @@
 
                     <!-- Second Row -->
                     <Label Content="File Reference:" Grid.Row="1" Grid.Column="0" Margin="0,10,10,0"/>
-                    <TextBox x:Name="FileReferenceTextBox" Grid.Row="1" Grid.Column="1" Margin="0,10,20,0"/>
+                    <ui:TextBox x:Name="FileReferenceTextBox" Grid.Row="1" Grid.Column="1" Margin="0,10,20,0"/>
 
                     <Label Content="Sorting Mode:" Grid.Row="1" Grid.Column="2" Margin="0,10,10,0"/>
                     <ComboBox x:Name="SortingModeComboBox" Grid.Row="1" Grid.Column="3" Margin="0,10,0,0">
