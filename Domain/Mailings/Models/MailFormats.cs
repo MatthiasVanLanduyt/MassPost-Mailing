@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Validator.Domain.Mailings.Models
 {
-    public record AddressComponent
+    public static class MailFormats
     {
-        public int Code { get; init; }
-        public required string Value { get; init; }
+        public const string SmallFormat = "Small";
+        public const string LargeFormat = "Large";
     }
 }

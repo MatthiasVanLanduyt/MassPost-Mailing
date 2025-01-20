@@ -3,8 +3,10 @@ using System.IO;
 using System.Windows;
 using Sharedkernel;
 using Validator.Application.Addresses;
+using Validator.Application.Defaults;
 using Validator.Application.Files;
 using Validator.Application.Mailings;
+using Validator.Application.Mailings.Services;
 using Validator.Domain.Addresses;
 using Validator.Domain.Mailings.Models;
 using Validator.Domain.Mailings.Services;
@@ -94,22 +96,36 @@ namespace MassPostValidatorDesktop
 
         private void GenerateMailingListBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Create a factory with your bpost customer barcode ID
-            var factory = new MailIdFactory("12345"); // Your 5-digit code from bpost
+            
 
             // Create a request
             var requestHeader = new MailIdRequestHeader
             {
-                CustomerId = 56,
-                AccountId = 3,
-                MailingRef = "test",
-                ExpectedDeliveryDate = _dateTimeProvider.TimeStamp,
-                SerialNumber = "12345",
+                SenderId = 4493,
+                AccountId = 73771,
+                MailingRef = "Mailingman",
+                ExpectedDeliveryDate = _dateTimeProvider.DateNow,
+                CustomerBarcodeId = "12345",
+                CustomerFileRef = $"{_dateTimeProvider.DateStamp}MM",
+                Mode = "T"
             };
+
+            // Create a factory with your bpost customer barcode ID
+            var factory = new MailIdFactory(requestHeader.CustomerBarcodeId); // Your 5-digit code from bpost
 
             var request = new MailIdRequest
             {
-                Header = requestHeader
+                Header = requestHeader,
+                Options = new MailIdOptions
+                {
+                    DepositId = "",
+                    DepositIdentifierType = "",
+                    GenMid = "N",
+                    GenPSC = "Y"
+                },
+                MailFormat = MailFormats.SmallFormat,
+                MailFileInfo = MailingTypes.MailId,
+                Contacts = DefaultContacts.GetDefaults().ToList(),
             };
 
             // Convert your addresses
@@ -120,10 +136,10 @@ namespace MassPostValidatorDesktop
             }
 
             // Generate the file
-            var generator = new MailIdFileGenerator(_dateTimeProvider);
+            var generator = new TxtMailIdFileGenerator(_dateTimeProvider);
             var fileOps = new FileOperations();
 
-            var textFile = generator.GenerateTxtFile(request);
+            var textFile = generator.GenerateFile(request);
             var savedFile = fileOps.SaveFile(textFile, @"C:\Users\vanlanm\Downloads");
             fileOps.OpenFile(savedFile.FullName);
         }

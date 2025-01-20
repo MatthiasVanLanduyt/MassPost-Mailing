@@ -31,8 +31,8 @@
                     </Grid.RowDefinitions>
 
                     <!-- First Row -->
-                    <Label Content="Customer ID:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
-                    <ui:TextBox x:Name="CustomerIdTextBox" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
+                    <Label Content="Sender ID:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
+                    <ui:TextBox x:Name="SenderIdTextBox" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
 
                     <Label Content="Account ID:" Grid.Row="0" Grid.Column="2" Margin="0,0,10,0"/>
                     <ui:TextBox x:Name="AccountIdTextBox" Grid.Row="0" Grid.Column="3"/>

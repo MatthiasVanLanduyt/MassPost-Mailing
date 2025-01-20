@@ -6,6 +6,10 @@ namespace Infrastructure
     {
         public DateTime UtcNow => DateTime.UtcNow;
 
+        public DateOnly DateNow => DateOnly.FromDateTime(UtcNow);
+
         public string TimeStamp => UtcNow.ToString("yyMMddHHmmss");
+
+        public string DateStamp => UtcNow.ToString("yyyyMMdd");
     }
 }

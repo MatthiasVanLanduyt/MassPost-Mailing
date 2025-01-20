@@ -1,58 +1,31 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using Sharedkernel;
+using Validator.Application.Mailings.Contracts;
 using Validator.Domain.Mailings.Models;
 
-namespace Validator.Application.Mailings
+namespace Validator.Application.Mailings.Services
 {
-    // Generator for creating the MAIL ID file
-    public class MailIdFileGenerator
+    public class XMLMailIdGenerator : IMailIdFileGenerator
     {
         private readonly IDateTimeProvider _dateTimeProvider;
 
-        public MailIdFileGenerator(IDateTimeProvider dateTimeProvider)
+        public XMLMailIdGenerator(IDateTimeProvider dateTimeProvider)
         {
             _dateTimeProvider = dateTimeProvider;
         }
 
-        public MailIdFile GenerateTxtFile(MailIdRequest request)
+        public MailIdFile GenerateFile(MailIdRequest request)
         {
-            string content = GenerateTxtContent(request);
-            string filename = GenerateFileName(request.Header, MailListFileOutputs.TXT);
-
-            return new MailIdFile(content, filename, "text/plain", Encoding.UTF8);
-
-        }
-       private string GenerateTxtContent(MailIdRequest request)
-        {
-            var lines = new List<string>
-            {
-                // Header section
-                $"Context|MailingRequest|{MailIdProtocolMetadata.Dataset}|{request.Header.CustomerId}|{MailIdProtocolMetadata.Receiver}|{MailIdProtocolMetadata.RequestVersion}",
-                $"Header|{request.Header.CustomerId}|{request.Header.AccountId}|{request.Header.Mode}",
-                $"MailingCreate|1|{request.Header.MailingRef}|||N|N|{request.Header.ExpectedDeliveryDate}",
-                "FileInfo|MID",
-                "Format|Small"
-            };
-
-            // Add items
-            foreach (var item in request.Items)
-            {
-                lines.Add($"Item|{item.Sequence}|{item.Language}|{item.MailIdNum}||{item.Priority}");
-
-                foreach (var comp in item.Components)
-                {
-                    lines.Add($"Comp|{comp.Code}|{comp.Value}");
-                }
-            }
-
-            lines.Add($"ItemCount|{request.ItemCount}");
-
-            return string.Join(Environment.NewLine, lines);
+            throw new NotImplementedException();
         }
 
-       public MailIdFile GenerateXmlFile(MailIdRequest request)
+        public MailIdFile GenerateXmlFile(MailIdRequest request)
         {
             var xml = GenerateXmlContent(request);
             var filename = GenerateFileName(request.Header, MailListFileOutputs.XML);
@@ -65,7 +38,7 @@ namespace Validator.Application.Mailings
             );
         }
 
-       private string GenerateXmlContent(MailIdRequest request)
+        private string GenerateXmlContent(MailIdRequest request)
         {
             using var stringWriter = new StringWriter();
             var xmlSettings = new XmlWriterSettings
@@ -85,14 +58,14 @@ namespace Validator.Application.Mailings
                 writer.WriteStartElement("Context");
                 writer.WriteAttributeString("requestName", "MailingRequest");
                 writer.WriteAttributeString("dataset", MailIdProtocolMetadata.Dataset);
-                writer.WriteAttributeString("sender", request.Header.CustomerId.ToString());
+                writer.WriteAttributeString("sender", request.Header.SenderId.ToString());
                 writer.WriteAttributeString("receiver", MailIdProtocolMetadata.Receiver);
                 writer.WriteAttributeString("version", MailIdProtocolMetadata.RequestVersion);
                 writer.WriteEndElement(); // Context
 
                 // Header
                 writer.WriteStartElement("Header");
-                writer.WriteAttributeString("customerId", request.Header.CustomerId.ToString());
+                writer.WriteAttributeString("customerId", request.Header.SenderId.ToString());
                 writer.WriteAttributeString("accountId", request.Header.AccountId.ToString());
                 writer.WriteAttributeString("mode", request.Header.Mode);
 
@@ -110,10 +83,7 @@ namespace Validator.Application.Mailings
                 writer.WriteAttributeString("mailingRef", request.Header.MailingRef);
                 writer.WriteAttributeString("genMID", "N");
                 writer.WriteAttributeString("genPSC", "N");
-                writer.WriteAttributeString("expectedDeliveryDate", request.Header.ExpectedDeliveryDate);
-
-                // FileInfo
-                writer.WriteStartElement("FileInfo");
+                writer.WriteAttributeString("expectedDeliveryDate", request.Header.ExpectedDeliveryDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
                 writer.WriteAttributeString("type", "MID");
                 writer.WriteEndElement();
 
@@ -158,9 +128,10 @@ namespace Validator.Application.Mailings
             return stringWriter.ToString();
         }
 
+
         private string GenerateFileName(MailIdRequestHeader header, string fileformat)
         {
-            return $"{MailIdProtocolMetadata.FileCode}_{MailIdProtocolMetadata.RequestVersion}_{header.SerialNumber}_{_dateTimeProvider.TimeStamp}_{MailIdProtocolMetadata.CommunicationStep}_{fileformat}";
+            return $"{MailIdProtocolMetadata.FileCode}_{MailIdProtocolMetadata.RequestVersion}_{header.SenderId}_{header.MailingRef}_{_dateTimeProvider.TimeStamp}_{MailIdProtocolMetadata.CommunicationStep}_{fileformat}";
         }
     }
 }
