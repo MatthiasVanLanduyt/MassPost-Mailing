@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,18 +10,34 @@ namespace Validator.Domain.Mailings.Services
     public class BarcodeGenerator
     {
         private readonly string _customerBarcodeId; // 5 digits, provided by bpost
-        private int _currentSequence = 0;
+        private int _index = 0;
+        private const string _formatControlField = "12";
+        private string _depositId;
+        private string _dayOfTheYear;
 
-        public BarcodeGenerator(string customerBarcodeId)
+        public BarcodeGenerator(int customerBarcodeId, int depositId, int dayOfTheYear  )
         {
-            _customerBarcodeId = customerBarcodeId.PadLeft(5, '0');
+            _customerBarcodeId = customerBarcodeId.ToString().PadLeft(5, '0');
+            _depositId = depositId.ToString().PadLeft(2, '0');
+            _dayOfTheYear = dayOfTheYear.ToString().PadLeft(3, '0');
         }
+
+        //This number consists of three(consecutive) fields in the barcode: 
+        // The format control code field(B) (2)
+        // Customer identification(C) (5)
+        // Mail piece number(D) (11)
+        //The MAIL ID number has to be unique over a period of 30 days at least 
+
+        //Mailingman splits up the Mail piece number in three parts:
+        // A variable assigned by user choice (2)
+        // The day of the year (3)
+        // A sequence number (7)
 
         public string GenerateNext()
         {
-            _currentSequence++;
-            // Format: FCC (10) + CustomerBarcodeID (5) + Sequence (7)
-            return $"10{_customerBarcodeId}{_currentSequence.ToString().PadLeft(7, '0')}";
-        }
+            _index++;
+
+            return $"{_formatControlField}{_customerBarcodeId}{_depositId}{_dayOfTheYear}{_index.ToString().PadLeft(6, '0')}";
+        }       
     }
 }

@@ -8,5 +8,7 @@
         public string TimeStamp { get; }
 
         public string DateStamp { get; }
+
+        public int DayOfTheYear { get; }
     }
 }

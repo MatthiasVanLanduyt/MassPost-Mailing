@@ -8,7 +8,7 @@ namespace Validator.Application.Mailings
 {
     public static class MailIdProtocolMetadata
     {
-        public const string FileCode = "MID";
+        public const string FileInfoCode = "MID2";
         public const string RequestVersion = "0200";
         public const string CommunicationStep = "0RQ";
         public const string Dataset = "M037_MID";

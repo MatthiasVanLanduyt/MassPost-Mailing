@@ -12,9 +12,9 @@ namespace Validator.Domain.Mailings.Services
     {
         private readonly BarcodeGenerator _barcodeGenerator;
 
-        public MailIdFactory(string customerBarcodeId)
+        public MailIdFactory(int customerBarcodeId, int depositId, int dayOfTheYear)
         {
-            _barcodeGenerator = new BarcodeGenerator(customerBarcodeId);
+            _barcodeGenerator = new BarcodeGenerator(customerBarcodeId, depositId, dayOfTheYear);
         }
 
         public MailIdItem CreateFromAddress(AddressLine addressLine)

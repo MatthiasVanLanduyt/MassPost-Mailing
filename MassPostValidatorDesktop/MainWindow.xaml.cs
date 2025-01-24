@@ -97,21 +97,22 @@ namespace MassPostValidatorDesktop
         private void GenerateMailingListBtn_Click(object sender, RoutedEventArgs e)
         {
             
+            var depositId = 1; 
 
             // Create a request
             var requestHeader = new MailIdRequestHeader
             {
                 SenderId = 4493,
                 AccountId = 73771,
-                MailingRef = "Mailingman",
+                MailingRef = "Mailingman01",
                 ExpectedDeliveryDate = _dateTimeProvider.DateNow,
-                CustomerBarcodeId = "12345",
+                CustomerBarcodeId = 530,
                 CustomerFileRef = $"{_dateTimeProvider.DateStamp}MM",
                 Mode = "T"
             };
 
             // Create a factory with your bpost customer barcode ID
-            var factory = new MailIdFactory(requestHeader.CustomerBarcodeId); // Your 5-digit code from bpost
+            var factory = new MailIdFactory(requestHeader.CustomerBarcodeId, depositId, _dateTimeProvider.DayOfTheYear); // Your 5-digit code from bpost
 
             var request = new MailIdRequest
             {
@@ -136,11 +137,11 @@ namespace MassPostValidatorDesktop
             }
 
             // Generate the file
-            var generator = new TxtMailIdFileGenerator(_dateTimeProvider);
+            var generator = new XmlMailIdFileGenerator(_dateTimeProvider);
             var fileOps = new FileOperations();
 
-            var textFile = generator.GenerateFile(request);
-            var savedFile = fileOps.SaveFile(textFile, @"C:\Users\vanlanm\Downloads");
+            var file = generator.GenerateFile(request);
+            var savedFile = fileOps.SaveFile(file, @"C:\Users\vanlanm\Downloads");
             fileOps.OpenFile(savedFile.FullName);
         }
     }

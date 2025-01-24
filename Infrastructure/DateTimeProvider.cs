@@ -11,5 +11,7 @@ namespace Infrastructure
         public string TimeStamp => UtcNow.ToString("yyMMddHHmmss");
 
         public string DateStamp => UtcNow.ToString("yyyyMMdd");
+
+        public int DayOfTheYear => DateNow.DayOfYear;
     }
 }

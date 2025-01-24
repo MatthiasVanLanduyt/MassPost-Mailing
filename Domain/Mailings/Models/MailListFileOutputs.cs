@@ -8,8 +8,8 @@ namespace Validator.Domain.Mailings.Models
 {
     public static class MailListFileOutputs
     {
-        public static string CSV = "CSV";
-        public static string XML = "XML";
-        public static string TXT = "TXT";
+        public const string CSV = "CSV";
+        public const string XML = "XML";
+        public const string TXT = "TXT";
     }
 }

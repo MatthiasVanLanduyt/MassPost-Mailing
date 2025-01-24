@@ -8,17 +8,15 @@ namespace Validator.Application.Mailings
 {
     public class MailIdFile
     {
-        public string Content { get; }
+        public byte[] Content { get; }
         public string FileName { get; }
         public string FileType { get; }
-        public Encoding Encoding { get; }
 
-        public MailIdFile(string content, string fileName, string fileType, Encoding encoding)
+        public MailIdFile(byte[] content, string fileName, string fileType)
         {
-            Content = content;
+            Content  = content;
             FileName = fileName;
             FileType = fileType;
-            Encoding = encoding;
         }
     }
 }

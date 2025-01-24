@@ -13,7 +13,7 @@ namespace Validator.Application.Files
         public FileInfo SaveFile(MailIdFile file, string directory)
         {
             string fullPath = Path.Combine(directory, file.FileName);
-            File.WriteAllText(fullPath, file.Content, file.Encoding);
+            File.WriteAllBytes(fullPath, file.Content);
             return new FileInfo(fullPath);
         }
 

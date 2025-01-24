@@ -8,8 +8,8 @@ namespace Validator.Domain.Mailings.Models
 {
     public static class MailingTypes
     {
-        public static string MailId = "MID2";
-        public static string RoundAndSequence = "RS3";
-        public static string Both = "MID2,RS3";
+        public const string MailId = "MID2";
+        public const string RoundAndSequence = "RS3";
+        public const string Both = "MID2,RS3";
     }
 }

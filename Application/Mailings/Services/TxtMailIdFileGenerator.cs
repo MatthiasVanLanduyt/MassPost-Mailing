@@ -19,32 +19,45 @@ namespace Validator.Application.Mailings.Services
             _dateTimeProvider = dateTimeProvider;
         }
         public MailIdFile GenerateFile(MailIdRequest request)
-        {
-            string content = GenerateTxtContent(request);
+        { 
+            using var stream = new MemoryStream();
+            var encoding = Encoding.UTF8;
+            var writer = new StreamWriter(stream, encoding);
+
+            WriteContent(writer, request);
+            writer.Flush();
+
             string filename = GenerateFileName(request.Header, MailListFileOutputs.TXT);
 
-            return new MailIdFile(content, filename, "text/plain", Encoding.UTF8);
+            return new MailIdFile(
+                stream.GetBuffer(),
+                filename,
+                "text/plain"
+            );
 
         }
-        private string GenerateTxtContent(MailIdRequest request)
+        private void WriteContent(StreamWriter writer, MailIdRequest request)
         {
             var lines = new List<string>
             {
                 // Header section
                 $"Context|MailingRequest|{MailIdProtocolMetadata.Dataset}|{request.Header.SenderId}|{MailIdProtocolMetadata.Receiver}|{MailIdProtocolMetadata.RequestVersion}",
                 $"Header|{request.Header.SenderId}|{request.Header.AccountId}|{request.Header.Mode}",
-                $"RequestProps|{request.Header.MailingRef}",
+                $"RequestProps|{request.Header.CustomerFileRef}",
                 $"CustomerRef|User|Wim Dutrie|website|www.mailingman.be", // Allows to add own references for file/mailing. Customer ignores this
                 $"MailingCreate|1|{request.Header.MailingRef}|{request.Options.DepositId}|{request.Options.DepositIdentifierType}|{request.Options.GenMid}|{request.Options.GenPSC}|{request.Header.ExpectedDeliveryDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}",
-                $"FileInfo|{MailIdProtocolMetadata.FileCode}",
-                $"Format|{request.MailFormat}"
+                $"FileInfo|{MailIdProtocolMetadata.FileInfoCode}",
+                $"Format|{request.MailFormat}|"
             };
 
             
             lines.AddRange(GenerateContactsContent(request.Contacts));
             lines.AddRange(GenerateItemsContent(request));
 
-            return string.Join(Environment.NewLine, lines);
+            foreach (var line in lines)
+            {
+                writer.WriteLine(line);
+            }
         }
 
         private List<string> GenerateItemsContent(MailIdRequest request)
@@ -72,7 +85,7 @@ namespace Validator.Application.Mailings.Services
             int index = 1;
             foreach (var contact in contacts)
             {
-                lines.Add($"Contact|{index}|{contact.FirstName}|{contact.LastName}|{contact.Email}|{contact.LanguageCode}|{contact.Phone}||{contact.Mobile}");
+                lines.Add($"Contact|{index}|{contact.FirstName}|{contact.LastName}|{contact.Email}|{contact.LanguageCode}|{contact.Phone}|{contact.Mobile}");
                 index++;
             }
             return lines;
@@ -80,7 +93,7 @@ namespace Validator.Application.Mailings.Services
         
         private string GenerateFileName(MailIdRequestHeader header, string fileformat)
         {
-            return $"{MailIdProtocolMetadata.FileCode}_{MailIdProtocolMetadata.RequestVersion}_{header.SenderId}_{header.MailingRef}_{_dateTimeProvider.TimeStamp}_{MailIdProtocolMetadata.CommunicationStep}_{fileformat}";
+            return $"{MailIdProtocolMetadata.Receiver}_{MailIdProtocolMetadata.RequestVersion}_{header.SenderId}_{header.CustomerFileRef}_{_dateTimeProvider.TimeStamp}_{MailIdProtocolMetadata.CommunicationStep}.{fileformat}";
         }
     }
 }
