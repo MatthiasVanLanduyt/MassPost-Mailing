@@ -12,17 +12,19 @@ namespace Validator.Domain.Mailings.Services
     {
         private readonly BarcodeGenerator _barcodeGenerator;
 
-        public MailIdFactory(int customerBarcodeId, int depositId, int dayOfTheYear)
+        public MailIdFactory(int customerBarcodeId, int sequenceNumber, int dayOfTheYear)
         {
-            _barcodeGenerator = new BarcodeGenerator(customerBarcodeId, depositId, dayOfTheYear);
+            _barcodeGenerator = new BarcodeGenerator(customerBarcodeId, sequenceNumber, dayOfTheYear);
         }
 
-        public MailIdItem CreateFromAddress(AddressLine addressLine)
+        public MailIdItem CreateFromAddress(AddressLine addressLine, string language, string priority)
         {
             var item = new MailIdItem
             {
                 Sequence = addressLine.Index,
-                MailIdNum = _barcodeGenerator.GenerateNext()
+                MailIdNum = _barcodeGenerator.GenerateNext(),
+                Language = language,
+                Priority = priority
             };
 
             // Map address components according to bpost specs

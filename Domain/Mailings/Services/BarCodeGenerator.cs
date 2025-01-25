@@ -12,13 +12,13 @@ namespace Validator.Domain.Mailings.Services
         private readonly string _customerBarcodeId; // 5 digits, provided by bpost
         private int _index = 0;
         private const string _formatControlField = "12";
-        private string _depositId;
+        private string _sequenceNumber;
         private string _dayOfTheYear;
 
-        public BarcodeGenerator(int customerBarcodeId, int depositId, int dayOfTheYear  )
+        public BarcodeGenerator(int customerBarcodeId, int sequenceNumber, int dayOfTheYear  )
         {
             _customerBarcodeId = customerBarcodeId.ToString().PadLeft(5, '0');
-            _depositId = depositId.ToString().PadLeft(2, '0');
+            _sequenceNumber = sequenceNumber.ToString().PadLeft(2, '0');
             _dayOfTheYear = dayOfTheYear.ToString().PadLeft(3, '0');
         }
 
@@ -37,7 +37,7 @@ namespace Validator.Domain.Mailings.Services
         {
             _index++;
 
-            return $"{_formatControlField}{_customerBarcodeId}{_depositId}{_dayOfTheYear}{_index.ToString().PadLeft(6, '0')}";
+            return $"{_formatControlField}{_customerBarcodeId}{_sequenceNumber}{_dayOfTheYear}{_index.ToString().PadLeft(6, '0')}";
         }       
     }
 }

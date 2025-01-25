@@ -1,11 +1,13 @@
 ﻿using System.Formats.Tar;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using Sharedkernel;
 using Validator.Application.Addresses;
 using Validator.Application.Defaults;
 using Validator.Application.Files;
 using Validator.Application.Mailings;
+using Validator.Application.Mailings.Contracts;
 using Validator.Application.Mailings.Services;
 using Validator.Domain.Addresses;
 using Validator.Domain.Mailings.Models;
@@ -73,8 +75,11 @@ namespace MassPostValidatorDesktop
         private void EnablePostUploadUI()
         {
             // Show configuration
-            ConfigExpander.Visibility = Visibility.Visible;
-            ConfigExpander.IsExpanded = false;
+            OptionsExpander.Visibility = Visibility.Visible;
+            OptionsExpander.IsExpanded = false;
+
+            MailRequestExpander.Visibility = Visibility.Visible;
+            MailRequestExpander.IsExpanded = false;
 
             // Enable action buttons
             ValidateDataBtn.IsEnabled = true;
@@ -97,47 +102,55 @@ namespace MassPostValidatorDesktop
         private void GenerateMailingListBtn_Click(object sender, RoutedEventArgs e)
         {
             
-            var depositId = 1; 
+            MailIdOptions mailIdOptions = new()
+            {
+                Mode = ModeComboBox.SelectedItem.ToString(),
+                GenMid = GenerateMailIdsComboBox.SelectedItem.ToString(),
+                GenPSC = GeneratePresortingComboBox.SelectedItem.ToString()
+            };
 
             // Create a request
             var requestHeader = new MailIdRequestHeader
             {
-                SenderId = 4493,
-                AccountId = 73771,
-                MailingRef = "Mailingman01",
-                ExpectedDeliveryDate = _dateTimeProvider.DateNow,
-                CustomerBarcodeId = 530,
-                CustomerFileRef = $"{_dateTimeProvider.DateStamp}MM",
-                Mode = "T"
+                
+                SenderId = int.Parse(SenderIdTextBox.Text),
+                AccountId = int.Parse(AccountIdTextBox.Text),
+                MailingRef = MailingReferenceTextBox.Text,
+                ExpectedDeliveryDate = DateOnly.FromDateTime((DateTime)DeliveryDatePicker.SelectedDate),
+                CustomerBarcodeId = 530, // Consider making this configurable
+                CustomerFileRef = $"{_dateTimeProvider.DateStamp}MM",                
+                DepositType = DepositTypeComboBox.SelectedItem.ToString(),
+                DepositIdentifier = DepositIdentifierTextBox.Text
             };
 
+            var sequenceNumber = int.Parse(SequenceNumberTextBox.ToString());
             // Create a factory with your bpost customer barcode ID
-            var factory = new MailIdFactory(requestHeader.CustomerBarcodeId, depositId, _dateTimeProvider.DayOfTheYear); // Your 5-digit code from bpost
+            var factory = new MailIdFactory(requestHeader.CustomerBarcodeId, sequenceNumber, _dateTimeProvider.DayOfTheYear); // Your 5-digit code from bpost
 
             var request = new MailIdRequest
             {
                 Header = requestHeader,
-                Options = new MailIdOptions
-                {
-                    DepositId = "",
-                    DepositIdentifierType = "",
-                    GenMid = "N",
-                    GenPSC = "Y"
-                },
-                MailFormat = MailFormats.SmallFormat,
+                Options = mailIdOptions,
+                MailFormat = MailFormatComboBox.SelectedItem.ToString() == "Small" ?
+            MailFormats.SmallFormat : MailFormats.LargeFormat,
                 MailFileInfo = MailingTypes.MailId,
                 Contacts = DefaultContacts.GetDefaults().ToList(),
             };
 
+            string priority = PriorityComboBox.SelectedItem.ToString();
+            string language = LanguageComboBox.SelectedItem.ToString();
+
             // Convert your addresses
             foreach (var addressLine in _addressLines)
             {
-                var mailIdItem = factory.CreateFromAddress(addressLine);
+                var mailIdItem = factory.CreateFromAddress(addressLine, language: language, priority: priority);
                 request.Items.Add(mailIdItem);
             }
 
-            // Generate the file
-            var generator = new XmlMailIdFileGenerator(_dateTimeProvider);
+            var generator = OutputFormatComboBox.SelectedItem.ToString() == MailListFileOutputs.XML ?
+                new XmlMailIdFileGenerator(_dateTimeProvider) :
+                new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
+            
             var fileOps = new FileOperations();
 
             var file = generator.GenerateFile(request);

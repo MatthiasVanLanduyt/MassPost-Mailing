@@ -8,9 +8,9 @@ namespace Validator.Domain.Mailings.Models
 {
     public record MailIdOptions
     {
-        public required string DepositId { get; init; } = "";
-        public required string DepositIdentifierType { get; init; } = "N";
         public required string GenMid { get; init; } = "N";
         public required string GenPSC { get; init; } = "Y";
+
+        public string Mode { get; init; } = "T"; // P=Production, T=Test, C=Certification
     }
 }

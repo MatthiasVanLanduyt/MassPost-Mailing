@@ -16,7 +16,9 @@ namespace Validator.Domain.Mailings.Models
         public required int CustomerBarcodeId { get; init; }
         public required string CustomerFileRef { get; init; }
 
+        public string? DepositType { get; init; }
+
+        public required string DepositIdentifier { get; init; } 
         //TODO: discuss with Mailingman if we could have an identifier for the project
-        public string Mode { get; init; } = "T"; // P=Production, T=Test, C=Certification
     }
 }

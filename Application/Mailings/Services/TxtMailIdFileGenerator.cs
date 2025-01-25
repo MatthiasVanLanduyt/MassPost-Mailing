@@ -42,10 +42,10 @@ namespace Validator.Application.Mailings.Services
             {
                 // Header section
                 $"Context|MailingRequest|{MailIdProtocolMetadata.Dataset}|{request.Header.SenderId}|{MailIdProtocolMetadata.Receiver}|{MailIdProtocolMetadata.RequestVersion}",
-                $"Header|{request.Header.SenderId}|{request.Header.AccountId}|{request.Header.Mode}",
+                $"Header|{request.Header.SenderId}|{request.Header.AccountId}|{request.Options.Mode}",
                 $"RequestProps|{request.Header.CustomerFileRef}",
                 $"CustomerRef|User|Wim Dutrie|website|www.mailingman.be", // Allows to add own references for file/mailing. Customer ignores this
-                $"MailingCreate|1|{request.Header.MailingRef}|{request.Options.DepositId}|{request.Options.DepositIdentifierType}|{request.Options.GenMid}|{request.Options.GenPSC}|{request.Header.ExpectedDeliveryDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}",
+                $"MailingCreate|1|{request.Header.MailingRef}|{request.Header.DepositIdentifier}|{request.Header.DepositType}|{request.Options.GenMid}|{request.Options.GenPSC}|{request.Header.ExpectedDeliveryDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}",
                 $"FileInfo|{MailIdProtocolMetadata.FileInfoCode}",
                 $"Format|{request.MailFormat}|"
             };

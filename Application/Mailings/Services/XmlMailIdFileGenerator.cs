@@ -76,7 +76,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteStartElement("Header");
             writer.WriteAttributeString("customerId", request.Header.SenderId.ToString());
             writer.WriteAttributeString("accountId", request.Header.AccountId.ToString());
-            writer.WriteAttributeString("mode", request.Header.Mode);
+            writer.WriteAttributeString("mode", request.Options.Mode);
 
             writer.WriteStartElement("Files");
             writer.WriteStartElement("RequestProps");
