@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Validator.Application.Mailings
+namespace Validator.Application.Mailings.Models
 {
     public class MailIdFile
     {
@@ -14,7 +14,7 @@ namespace Validator.Application.Mailings
 
         public MailIdFile(byte[] content, string fileName, string fileType)
         {
-            Content  = content;
+            Content = content;
             FileName = fileName;
             FileType = fileType;
         }

@@ -1,4 +1,5 @@
-﻿using Validator.Domain.Mailings.Models;
+﻿using Validator.Application.Mailings.Models;
+using Validator.Domain.Mailings.Models;
 
 namespace Validator.Application.Mailings.Contracts
 {

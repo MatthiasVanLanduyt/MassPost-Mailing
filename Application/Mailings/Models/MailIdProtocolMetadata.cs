@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Validator.Application.Mailings
+namespace Validator.Application.Mailings.Models
 {
     public static class MailIdProtocolMetadata
     {

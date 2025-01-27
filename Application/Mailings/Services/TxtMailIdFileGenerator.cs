@@ -5,6 +5,7 @@ using System.Xml;
 using CsvHelper.Configuration.Attributes;
 using Sharedkernel;
 using Validator.Application.Mailings.Contracts;
+using Validator.Application.Mailings.Models;
 using Validator.Domain.Mailings.Models;
 
 namespace Validator.Application.Mailings.Services
@@ -36,7 +37,7 @@ namespace Validator.Application.Mailings.Services
             );
 
         }
-        private void WriteContent(StreamWriter writer, MailIdRequest request)
+        private static void WriteContent(StreamWriter writer, MailIdRequest request)
         {
             var lines = new List<string>
             {
@@ -60,7 +61,7 @@ namespace Validator.Application.Mailings.Services
             }
         }
 
-        private List<string> GenerateItemsContent(MailIdRequest request)
+        private static List<string> GenerateItemsContent(MailIdRequest request)
         {
             var lines = new List<string>();
             
@@ -79,7 +80,7 @@ namespace Validator.Application.Mailings.Services
             return lines;
         }
 
-        private List<string> GenerateContactsContent(List<Contact> contacts)
+        private static List<string> GenerateContactsContent(List<Contact> contacts)
         {
             var lines = new List<string>();
             int index = 1;

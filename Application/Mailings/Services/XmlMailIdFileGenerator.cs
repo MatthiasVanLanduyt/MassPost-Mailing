@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Sharedkernel;
 using Validator.Application.Mailings.Contracts;
+using Validator.Application.Mailings.Models;
 using Validator.Domain.Mailings.Models;
 
 namespace Validator.Application.Mailings.Services
@@ -46,7 +47,7 @@ namespace Validator.Application.Mailings.Services
             );
         }
 
-        private void WriteXmlContent(XmlWriter writer, MailIdRequest request)
+        private static void WriteXmlContent(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartDocument();
             writer.WriteStartElement("MailingRequest");
@@ -60,7 +61,7 @@ namespace Validator.Application.Mailings.Services
 
         }
 
-        private void WriteContext(XmlWriter writer, MailIdRequest request)
+        private static void WriteContext(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartElement("Context");
                 writer.WriteAttributeString("requestName", "MailingRequest");
@@ -71,7 +72,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement();
         }
 
-        private void WriteHeader(XmlWriter writer, MailIdRequest request)
+        private static void WriteHeader(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartElement("Header");
             writer.WriteAttributeString("customerId", request.Header.SenderId.ToString());
@@ -86,7 +87,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement(); // Header
         }
 
-        private void WriteMailingCreate(XmlWriter writer, MailIdRequest request)
+        private static void WriteMailingCreate(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartElement("MailingCreate");
             writer.WriteAttributeString("seq", "1");
@@ -113,7 +114,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement(); // MailingCreate
         }
                     
-        private void WriteItems(XmlWriter writer, MailIdRequest request)
+        private static void WriteItems(XmlWriter writer, MailIdRequest request)
         {
             // Items
             writer.WriteStartElement("Items");
@@ -149,7 +150,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement();
         }
 
-        private void WriteContacts(XmlWriter writer, MailIdRequest request)
+        private static void WriteContacts(XmlWriter writer, MailIdRequest request)
         {
             //Contacts
             int index = 1;

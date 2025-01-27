@@ -4,20 +4,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Validator.Application.Mailings;
+using Validator.Application.Mailings.Models;
 
 namespace Validator.Application.Files
 {
-    public class FileOperations
+    public static class FileOperations
     {
-        public FileInfo SaveFile(MailIdFile file, string directory)
+        public static FileInfo SaveFile(MailIdFile file, string directory)
         {
             string fullPath = Path.Combine(directory, file.FileName);
             File.WriteAllBytes(fullPath, file.Content);
             return new FileInfo(fullPath);
         }
 
-        public void OpenFile(string filePath)
+        public static void OpenFile(string filePath)
         {
             if (!File.Exists(filePath))
             {

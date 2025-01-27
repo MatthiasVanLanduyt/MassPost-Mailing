@@ -1,20 +1,20 @@
 ﻿using System.Text.Json;
 using Validator.Domain.Mailings.Models;
 
-namespace Validator.Application.Mailings
+namespace Validator.Application.Mailings.Models
 {
     public class MailIdSettings
     {
         private static readonly string DefaultConfigPath = "defaultSettings.json";
 
         // Properties with default values
-        public string OutputPath { get; set; } = @"C:\Users\vanlanm\OneDrive - pacar\Projects\Mailingman - MassPost";      
+        public string OutputPath { get; set; } = @"C:\Users\vanlanm\OneDrive - pacar\Projects\Mailingman - MassPost";
 
         // Load defaults from JSON
         public static MailIdSettings LoadDefaults()
         {
-           if (File.Exists(DefaultConfigPath))
-           {
+            if (File.Exists(DefaultConfigPath))
+            {
                 try
                 {
                     string json = File.ReadAllText(DefaultConfigPath);
