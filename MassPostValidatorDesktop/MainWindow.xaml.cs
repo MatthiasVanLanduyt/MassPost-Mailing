@@ -8,12 +8,13 @@ using Validator.Application.Defaults;
 using Validator.Application.Files;
 using Validator.Application.Mailings;
 using Validator.Application.Mailings.Contracts;
+using Validator.Application.Mailings.Models;
 using Validator.Application.Mailings.Services;
 using Validator.Domain.Addresses;
 using Validator.Domain.Mailings.Models;
 using Validator.Domain.Mailings.Services;
 
-namespace MassPostValidatorDesktop
+namespace Validator.Desktop
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -151,11 +152,9 @@ namespace MassPostValidatorDesktop
                 new XmlMailIdFileGenerator(_dateTimeProvider) :
                 new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
             
-            var fileOps = new FileOperations();
-
             var file = generator.GenerateFile(request);
-            var savedFile = fileOps.SaveFile(file, @"C:\Users\vanlanm\Downloads");
-            fileOps.OpenFile(savedFile.FullName);
+            var savedFile = FileOperations.SaveFile(file, @"C:\Users\vanlanm\Downloads");
+            FileOperations.OpenFile(savedFile.FullName);
         }
     }
 }
