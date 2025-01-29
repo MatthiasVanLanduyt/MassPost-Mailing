@@ -52,6 +52,10 @@
                                        Command="{Binding NavigateToValidationCommand}"
                                        />
 
+                <ui:NavigationViewItem Content="Contacts"  
+                       Icon="{ui:SymbolIcon ContactCard24}"
+                       Command="{Binding NavigateToContactsCommand}"
+                       />
 
                 <ui:NavigationViewItem Content="Settings"  
                                        Icon="{ui:SymbolIcon Settings24}"

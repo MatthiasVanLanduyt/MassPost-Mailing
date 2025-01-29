@@ -21,6 +21,7 @@ namespace WpfDesktop.Services
             _serviceProvider = serviceProvider;
             Configure<HomeViewModel, HomePage>();
             Configure<SettingsViewModel, SettingsPage>();
+            Configure<UploadViewModel, UploadPage>();
         }
 
         public Type GetPageType(string key)

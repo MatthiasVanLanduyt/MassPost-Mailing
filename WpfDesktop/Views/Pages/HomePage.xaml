@@ -9,61 +9,135 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePage">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid Margin="20">
+        <StackPanel>
+            <ui:TextBlock Text="MassPost Validation Process"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,20"/>
 
-        <Expander x:Name="OptionsExpander" Grid.Row="0" Header="Options" Margin="10" IsExpanded="True">
-            <GroupBox Header="File Generation Options" Margin="10">
-                <Grid Margin="5">
+            <!-- Step 1 -->
+            <ui:Card Margin="0,0,0,16">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
+                            CornerRadius="20"
+                            Width="40"
+                            Height="40">
+                        <ui:TextBlock Text="1" 
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontWeight="SemiBold"/>
+                    </Border>
+
+                    <StackPanel Grid.Column="1" Margin="16,0">
+                        <ui:TextBlock Text="Upload Address List" 
+                                 FontWeight="SemiBold"
+                                 FontSize="16"/>
+                        <ui:TextBlock Text="Upload a CSV file containing the address list for processing"
+                                 Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                 TextWrapping="Wrap"/>
+                        <ui:Badge Margin="0,8,0,0" 
+                                 Content="Pending" 
+                                 Appearance="Secondary"
+                                 />
+                    </StackPanel>
+
+                    <ui:Button Grid.Column="2" 
+                              Icon="Upload24"
+                              Appearance="Primary"
+                              Command="{Binding NavigateToUploadCommand}">
+                        Upload
+                    </ui:Button>
+                </Grid>
+            </ui:Card>
+
+            <!-- Step 2 -->
+            <ui:Card Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
 
-                    <!-- First Row -->
-                    <Label Content="Output Format:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
-                    <ComboBox x:Name="OutputFormatComboBox" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0">
-                        <ComboBoxItem Content="XML" IsSelected="True"/>
-                        <ComboBoxItem Content="TXT"/>
-                    </ComboBox>
+                    <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
+                            CornerRadius="20"
+                            Width="40"
+                            Height="40">
+                        <ui:TextBlock Text="2" 
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontWeight="SemiBold"/>
+                    </Border>
 
-                    <Label Content="Mode:" Grid.Row="0" Grid.Column="2" Margin="0,0,10,0"/>
-                    <ComboBox x:Name="ModeComboBox" Grid.Row="0" Grid.Column="3">
-                        <ComboBoxItem Content="Test" IsSelected="True"/>
-                        <ComboBoxItem Content="Production"/>
-                    </ComboBox>
+                    <StackPanel Grid.Column="1" Margin="16,0">
+                        <ui:TextBlock Text="Generate Mail IDs" 
+                                 FontWeight="SemiBold"
+                                 FontSize="16"/>
+                        <ui:TextBlock Text="Generate Mail IDs for the addresses and download the updated files"
+                                 Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                 TextWrapping="Wrap"/>
+                        <ui:Badge Margin="0,8,0,0" 
+                                 Content="Not Available" 
+                                 Appearance="Secondary"
+                                 />
+                    </StackPanel>
 
-                    <!-- Second Row -->
-                    <Label Content="Generate MailIds:" Grid.Row="1" Grid.Column="0" Margin="0,10,10,0"/>
-                    <ComboBox x:Name="GenerateMailIdsComboBox" Grid.Row="1" Grid.Column="1" Margin="0,10,20,0">
-                        <ComboBoxItem Content="No" IsSelected="True"/>
-                        <ComboBoxItem Content="Yes"/>
-                    </ComboBox>
-
-                    <Label Content="Generate PreSorting:" Grid.Row="1" Grid.Column="2" Margin="0,10,10,0"/>
-                    <ComboBox x:Name="GeneratePresortingComboBox" Grid.Row="1" Grid.Column="3" Margin="0,10,0,0">
-                        <ComboBoxItem Content="Yes" IsSelected="True"/>
-                        <ComboBoxItem Content="No"/>
-                    </ComboBox>
-
-                    <Label Content="Sorting Mode:" Grid.Row="1" Grid.Column="4" Margin="0,10,10,0"/>
-                    <ComboBox x:Name="SortingModeComboBox" Grid.Row="1" Grid.Column="5" Margin="0,10,0,0">
-                        <ComboBoxItem Content="Customer Order (CU)" IsSelected="True"/>
-                        <ComboBoxItem Content="Print Order (PO)"/>
-                    </ComboBox>
+                    <ui:Button Grid.Column="2" 
+                              Icon="ArrowDownload24"
+                              IsEnabled="False"
+                              Command="{Binding NavigateToGenerateCommand}">
+                        Generate
+                    </ui:Button>
                 </Grid>
-            </GroupBox>
-        </Expander>
+            </ui:Card>
+
+            <!-- Step 3 -->
+            <ui:Card Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
+                            CornerRadius="20"
+                            Width="40"
+                            Height="40">
+                        <ui:TextBlock Text="3" 
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontWeight="SemiBold"/>
+                    </Border>
+
+                    <StackPanel Grid.Column="1" Margin="16,0">
+                        <ui:TextBlock Text="Validate Mail IDs" 
+                                 FontWeight="SemiBold"
+                                 FontSize="16"/>
+                        <ui:TextBlock Text="Upload the response file and view compliance scores"
+                                 Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                 TextWrapping="Wrap"/>
+                        <ui:Badge Margin="0,8,0,0" 
+                                 Content="Not Available" 
+                                 Appearance="Secondary"
+                                 />
+                    </StackPanel>
+
+                    <ui:Button Grid.Column="2" 
+                              Icon="CheckmarkCircle24"
+                              IsEnabled="False"
+                              Command="{Binding NavigateToValidateCommand}">
+                        Validate
+                    </ui:Button>
+                </Grid>
+            </ui:Card>
+        </StackPanel>
     </Grid>
 </Page>

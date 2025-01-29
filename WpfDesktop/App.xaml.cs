@@ -70,6 +70,9 @@ namespace WpfDesktop
             services.AddTransient<HomeViewModel>();
             services.AddTransient<SettingsPage>();
             services.AddTransient<SettingsViewModel>();
+            services.AddTransient<UploadPage>();
+            services.AddTransient<UploadViewModel>();
+
 
             // Configuration
             services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
