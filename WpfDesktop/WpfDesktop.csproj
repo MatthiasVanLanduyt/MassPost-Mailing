@@ -18,4 +18,8 @@
     <Folder Include="Assets\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Validator.Application.csproj" />
+  </ItemGroup>
+
 </Project>
