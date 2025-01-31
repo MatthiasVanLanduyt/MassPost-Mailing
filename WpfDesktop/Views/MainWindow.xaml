@@ -30,7 +30,7 @@
             PaneDisplayMode="LeftFluent" 
             Grid.Row="1" 
             Grid.Column="0"
-            Padding="42,0,42,0"
+            
             >
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem Content="Home" 

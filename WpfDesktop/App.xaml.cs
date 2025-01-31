@@ -22,7 +22,7 @@ namespace WpfDesktop
     {
         private IHost _host;
 
-        public T GetService<T>()
+        public T? GetService<T>()
             where T : class
             => _host.Services.GetService(typeof(T)) as T;
 
@@ -31,7 +31,7 @@ namespace WpfDesktop
         }
         private async void OnStartup(object sender, StartupEventArgs e)
         {
-            var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
 
             // For more information about .NET generic host see  https://docs.microsoft.com/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0
             _host = Host.CreateDefaultBuilder(e.Args)
@@ -72,6 +72,8 @@ namespace WpfDesktop
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<UploadPage>();
             services.AddTransient<UploadViewModel>();
+            services.AddTransient<ValidationPage>();
+            services.AddTransient<ValidationViewModel>();
 
 
             // Configuration
@@ -82,7 +84,6 @@ namespace WpfDesktop
         {
             await _host.StopAsync();
             _host.Dispose();
-            _host = null;
         }
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
