@@ -22,6 +22,7 @@ namespace WpfDesktop.Services
             Configure<HomeViewModel, HomePage>();
             Configure<SettingsViewModel, SettingsPage>();
             Configure<UploadViewModel, UploadPage>();
+            Configure<ValidationViewModel, ValidationPage>();
         }
 
         public Type GetPageType(string key)

@@ -26,6 +26,8 @@ namespace WpfDesktop.ViewModels
 
         public ICommand NavigateToUploadCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
 
+        public ICommand NavigateToValidationCommand => new RelayCommand(() => NavigateTo(typeof(ValidationViewModel)));
+
         public ICommand UnloadedCommand => _unloadedCommand ?? (_unloadedCommand = new RelayCommand(OnUnloaded));
         public MainWindowViewModel(INavigationService navigationService) 
         {

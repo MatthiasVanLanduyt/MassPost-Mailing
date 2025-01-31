@@ -21,7 +21,7 @@ namespace WpfDesktop.ViewModels
 
         public ICommand NavigateToUploadCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
         public ICommand NavigateToGenerateCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
-        public ICommand NavigateToValidateCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
+        public ICommand NavigateToValidateCommand => new RelayCommand(() => NavigateTo(typeof(ValidationViewModel)));
 
         public string Title => "Home Page";
 
