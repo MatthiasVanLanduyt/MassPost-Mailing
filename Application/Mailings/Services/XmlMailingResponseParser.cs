@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Text.Json;
+using System.Xml.Linq;
 using Validator.Application.Mailings.Contracts;
 using Validator.Domain.MailingResponses.Models;
 
@@ -6,11 +7,36 @@ namespace Validator.Domain.MailingResponses.Services
 {
     public class XmlMailingResponseParser : IMailingResponseParser
     {
+        private readonly Dictionary<string, StatusCode> _statusCodes;
+
+        public XmlMailingResponseParser()
+        {
+           
+            // Load status codes at startup
+            //var path = Path.Combine(applicationPath, "Addresses", "BelgianPostalCodes.json");
+            var json = File.ReadAllText("Mailings/statuscodes.json");
+            var codes = JsonSerializer.Deserialize<List<StatusCode>>(json);
+            _statusCodes = codes.ToDictionary(x => x.Code);
+        }
 
         public MailingResponse ParseResponse(Stream stream)
         {
             var response = new MailingResponse();
             var doc = XDocument.Load(stream);
+
+            var header = doc.Descendants("Header").First();
+
+            response.Header = new MailingResponseHeader
+            {
+                CustomerId = header.Attribute("customerId")?.Value ?? "",
+                AccountId = header.Attribute("accountId")?.Value ?? "",
+                Mode = header.Attribute("mode")?.Value ?? "",
+                CustomerFileRef = header
+                                    .Descendants("RequestProps")?
+                                    .First()
+                                    .Attribute("customerFileRef")?
+                                    .Value ?? ""
+            };
 
             var mailingCreate = doc.Descendants("MailingCreate").First();
 
@@ -72,13 +98,22 @@ namespace Validator.Domain.MailingResponses.Services
                 var messages = reply.Element("Messages")?.Elements("Message") ?? Enumerable.Empty<XElement>();
                 foreach (var message in messages)
                 {
+
+                    var statusCode = message.Attribute("code")?.Value;
+
                     var responseMessage = new AddressResponseMessage
                     {
-                        StatusCode = message.Attribute("code")?.Value ?? "",
+                        StatusCode = statusCode ?? "",
                         Severity = message.Attribute("severity")?.Value ?? "",
                         MessageContents = new List<MessageContent>()
                     };
 
+                    // Add status code description if available
+                    if (statusCode != null && _statusCodes.TryGetValue(statusCode, out var status))
+                    {
+                        responseMessage.Description = status.Description;
+                    }
+                    
                     // Parse message contents
                     var contents = message.Element("MessageContents")?.Elements("MessageContent") ??
                                  Enumerable.Empty<XElement>();
@@ -101,7 +136,7 @@ namespace Validator.Domain.MailingResponses.Services
                     addressResponse.Messages.Add(responseMessage);
                 }
 
-                response.Addresses.Add(addressResponse);
+                response.AddressResponses.Add(addressResponse);
             }
 
             return response;

@@ -24,7 +24,8 @@ namespace Validator.Domain.Mailings.Services
                 Sequence = addressLine.Index,
                 MailIdNum = _barcodeGenerator.GenerateNext(),
                 Language = language,
-                Priority = priority
+                Priority = priority,
+                AddressDetails = addressLine.AddressDetails
             };
 
             // Map address components according to bpost specs

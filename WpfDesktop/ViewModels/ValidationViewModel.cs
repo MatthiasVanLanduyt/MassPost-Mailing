@@ -15,6 +15,7 @@ using Validator.Domain.MailingResponses.Services;
 using Validator.Application.Mailings.Contracts;
 using CommunityToolkit.Mvvm.Input;
 using Validator.Domain.MailingResponses.Models;
+using Validator.Application.Mailings.Services;
 
 namespace WpfDesktop.ViewModels
 {
@@ -29,16 +30,22 @@ namespace WpfDesktop.ViewModels
         [ObservableProperty]
         private MailingResponse mailingResponse;
 
+        [ObservableProperty]
+        private List<ValidatedAddress> validatedAddresses;
+
         public ICommand UploadCommand => _uploadCommand;
 
         private readonly ApplicationState _state;
         private readonly IMailingResponseParser _responseParser;
+        private readonly MergeAddressValidationService _mergeService;
 
         private readonly IRelayCommand _uploadCommand;
         public ValidationViewModel(ApplicationState state, IMailingResponseParser responseParser)
         {
             _state = state;
             _responseParser = responseParser;
+            _mergeService = new MergeAddressValidationService();
+
 
             _uploadCommand = new AsyncRelayCommand(UploadFileAsync);
         }
@@ -71,9 +78,13 @@ namespace WpfDesktop.ViewModels
 
                     MailingResponse = _responseParser.ParseResponse(stream);
 
+                    _state.MailingResponse = MailingResponse;
+
                     _state.HasValidatedAddresses = true;
 
+                    _state.ValidatedAddresses = _mergeService.Merge(_state.MailingRequest, _state.MailingResponse);
 
+                    ValidatedAddresses = _state.ValidatedAddresses.Where(a => a.Severity != "INFO").ToList();
 
                     //CommandManager.InvalidateRequerySuggested();
                 }

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Validator.Domain.MailingResponses.Models
 {
-    public record MailingResponseHeader
+    public record StatusCode
     {
-        public string CustomerId;
-        public string AccountId;
-        public string CustomerFileRef;
-        public string Mode;
+            public string Code { get; set; }
+            public string Severity { get; set; }
+            public string Description { get; set; }
     }
 }

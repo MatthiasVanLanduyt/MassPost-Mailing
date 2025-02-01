@@ -25,9 +25,6 @@ namespace WpfDesktop.ViewModels
 {
     public partial class UploadViewModel: ObservableObject
     {
-        //TODO Put state somewhere else
-        private List<AddressLine> _addressLines;
-
         // Required Information Properties
         [ObservableProperty]
         private string senderID = "4493";
@@ -59,22 +56,6 @@ namespace WpfDesktop.ViewModels
         [ObservableProperty]
         private string depositIdentifier;
 
-        // File Generation Options
-        [ObservableProperty]
-        private string outputFormat = "XML";
-
-        [ObservableProperty]
-        private string mode = "Test";
-
-        [ObservableProperty]
-        private bool generateMailIds = false;
-
-        [ObservableProperty]
-        private bool generatePreSorting = true;
-
-        [ObservableProperty]
-        private string sortingMode = "Customer Order (CU)";
-
         // File Upload Properties
         [ObservableProperty]
         private string selectedFilePath;
@@ -83,7 +64,7 @@ namespace WpfDesktop.ViewModels
         private bool isFileSelected;
 
         // Collection Properties for ComboBoxes
-        public List<string> MailFormatOptions { get; } = new() { "Small", "Large" };
+        public List<string> MailFormatOptions { get; } = new() { MailFormats.SmallFormat,MailFormats.LargeFormat };
         public List<string> PriorityOptions { get; } = new() { "NP", "P" };
         public List<string> LanguageOptions { get; } = new() { "nl", "fr", "en" };
         public List<string> DepositTypeOptions { get; } = new() { "depositRef", "tempDepositRef", "N" };
@@ -166,13 +147,7 @@ namespace WpfDesktop.ViewModels
         {
             try
             {
-                MailIdOptions mailIdOptions = new()
-                {
-                    Mode = Mode,
-                    GenMid = GenerateMailIds ? "Y" : "N",
-                    GenPSC = GeneratePreSorting ? "Y" : "N",
-                };
-
+                
                 // Create a request
                 var requestHeader = new MailIdRequestHeader
                 {
@@ -194,7 +169,7 @@ namespace WpfDesktop.ViewModels
                 var request = new MailIdRequest
                 {
                     Header = requestHeader,
-                    Options = mailIdOptions,
+                    Options = _state.MailIdOptions,
                     MailFormat = MailFormat,
                     MailFileInfo = MailingTypes.MailId,
                     Contacts = DefaultContacts.GetDefaults().ToList(),
@@ -210,7 +185,7 @@ namespace WpfDesktop.ViewModels
                     request.Items.Add(mailIdItem);
                 }
 
-                var generator = OutputFormat == "XML" ?
+                var generator = _state.OutputFormat == "XML" ?
                     new XmlMailIdFileGenerator(_dateTimeProvider) :
                     new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
 
@@ -218,6 +193,7 @@ namespace WpfDesktop.ViewModels
                 var savedFile = FileOperations.SaveFile(file, @"C:\Users\vanlanm\Downloads");
                 FileOperations.OpenFile(savedFile.FullName);
 
+                _state.MailingRequest = request;
                 _state.HasGeneratedMailingFile = true;
 
                 _navigationService.NavigateTo(typeof(UploadViewModel).FullName);

@@ -8,8 +8,8 @@ namespace Validator.Domain.Mailings.Models
 {
     public record MailIdOptions
     {
-        public required string GenMid { get; init; } = "N";
-        public required string GenPSC { get; init; } = "Y";
+        public required bool GenMid { get; init; } = false;
+        public required bool GenPSC { get; init; } = true;
 
         public string Mode { get; init; } = "T"; // P=Production, T=Test, C=Certification
     }

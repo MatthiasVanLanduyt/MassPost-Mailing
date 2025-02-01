@@ -234,7 +234,7 @@
                         </Grid>
 
                         <ListView
-                            ItemsSource="{Binding WarningAddresses}"
+                            ItemsSource="{Binding ValidatedAddresses}"
                             MaxHeight="200">
                             <ListView.View>
                                 <GridView>
@@ -248,7 +248,7 @@
                                     <GridViewColumn Header="Warning Type" Width="200">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding WarningType}"/>
+                                                <TextBlock Text="{Binding StatusCode}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -256,6 +256,13 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Severity}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Description" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Message}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>

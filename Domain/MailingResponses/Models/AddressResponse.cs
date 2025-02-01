@@ -16,6 +16,7 @@ namespace Validator.Domain.MailingResponses.Models
         public bool HasErrors => Messages.Any(m => m.Severity == "ERROR");
 
         public List<AddressResponseMessage> Messages { get; set; } = [];
+
     }
 
 }

@@ -6,9 +6,13 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Addresses\BelgianPostalCodes.json" />
+    <None Remove="Mailings\statuscodes.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addresses\BelgianPostalCodes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mailings\statuscodes.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

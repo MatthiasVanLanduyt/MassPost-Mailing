@@ -92,8 +92,8 @@ namespace Validator.Application.Mailings.Services
             writer.WriteStartElement("MailingCreate");
             writer.WriteAttributeString("seq", "1");
             writer.WriteAttributeString("mailingRef", request.Header.MailingRef);
-            writer.WriteAttributeString("genMID", request.Options.GenMid);
-            writer.WriteAttributeString("genPSC", request.Options.GenPSC);
+            writer.WriteAttributeString("genMID", request.Options.GenMid ? "Y" : "N");
+            writer.WriteAttributeString("genPSC", request.Options.GenPSC ? "Y" : "N");
             writer.WriteAttributeString("expectedDeliveryDate", request.Header.ExpectedDeliveryDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
 
             // FileInfo
