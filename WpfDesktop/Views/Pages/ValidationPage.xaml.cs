@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfDesktop.ViewModels;
 
 namespace WpfDesktop.Views.Pages
 {
@@ -20,9 +21,10 @@ namespace WpfDesktop.Views.Pages
     /// </summary>
     public partial class ValidationPage : Page
     {
-        public ValidationPage()
+        public ValidationPage(ValidationViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }

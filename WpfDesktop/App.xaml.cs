@@ -2,9 +2,11 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using Infrastructure.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Validator.Application.DependencyInjection;
 using WpfDesktop.Contracts.Services;
 using WpfDesktop.Contracts.Views;
 using WpfDesktop.Models;
@@ -47,7 +49,9 @@ namespace WpfDesktop
 
         private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
         {
-            // TODO: Register your services, viewmodels and pages here
+            // First register your infrastructure and application services
+            services.AddApplicationServices();    // Add this if you have application services
+            services.AddInfrastructureServices(); // This
 
             // App Host
             services.AddHostedService<ApplicationHostService>();
@@ -61,6 +65,7 @@ namespace WpfDesktop
             //services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<ApplicationState>();
 
             // Views and ViewModels
             services.AddTransient<IShellWindow, MainWindow>();

@@ -10,9 +10,16 @@ namespace Validator.Domain.MailingResponses.Models
     {
         public string MailingRef { get; set; }
         public string Status { get; set; }
-        public string AddressComplianceRate { get; set; }
-        public string BuildingComplianceRate { get; set; }
-        public string PresortingComplianceRate { get; set; }
+        public decimal AddressComplianceRate { get; set; }
+        public decimal BuildingComplianceRate { get; set; }
+        public decimal PresortingComplianceRate { get; set; }
+
+        public int TotalRecords => Addresses.Count;
+
+        public int ValidRecords => Addresses.Count(a => !(a.HasWarnings || a.HasErrors));
+        public int RecordsWithWarnings => Addresses.Count(a => a.HasWarnings);
+        public int RecordsWithErrors => Addresses.Count(a => a.HasErrors);
+
         public List<AddressResponse> Addresses { get; set; } = [];
     }
 }

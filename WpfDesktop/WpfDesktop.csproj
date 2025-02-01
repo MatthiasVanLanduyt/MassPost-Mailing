@@ -23,4 +23,11 @@
     <Folder Include="Assets\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Validator.Application.csproj" />
+    <ProjectReference Include="..\Domain\Validator.Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Sharedkernel\Sharedkernel.csproj" />
+  </ItemGroup>
+
 </Project>

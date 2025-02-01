@@ -15,8 +15,68 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ui:InfoBar Message="Settings Page" Severity="Informational" />
-        <ui:Button Content="Save" Grid.Row="1" Grid.Column="0" Command="{Binding SaveCommand}" Appearance="Primary" HorizontalAlignment="Center"/>
+        <!-- Optional Settings -->
+        <Expander Grid.Row="1" Margin="0,0,0,16">
+            <Expander.Header>
+                <ui:TextBlock
+             Text="File Generation Options"
+             FontSize="16"
+             FontWeight="Medium"/>
+            </Expander.Header>
+            <ui:Card Margin="0,8,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Row 1 -->
+                    <ComboBox
+                 Grid.Column="0"
+                 Margin="0,0,8,12"
+                 
+                 SelectedItem="{Binding OutputFormat}"
+                 ItemsSource="{Binding OutputFormatOptions}"/>
+
+                    <ComboBox
+                 Grid.Column="1"
+                 Margin="8,0,8,12"
+                
+                 SelectedItem="{Binding Mode}"
+                 ItemsSource="{Binding ModeOptions}"/>
+
+                    <ComboBox
+                 Grid.Column="2"
+                 Margin="8,0,0,12"
+                 
+                 SelectedItem="{Binding SortingMode}"
+                 ItemsSource="{Binding SortingModeOptions}"/>
+
+                    <!-- Row 2 -->
+                    <ui:ToggleSwitch
+                 Grid.Row="1" Grid.Column="0"
+                 Margin="0,0,8,0"
+                 Content="Generate MailIds"
+                 IsChecked="{Binding GenerateMailIds}"/>
+
+                    <ui:ToggleSwitch
+                 Grid.Row="1" Grid.Column="1"
+                 Margin="8,0,0,0"
+                 Content="Generate PreSorting"
+                 IsChecked="{Binding GeneratePreSorting}"/>
+                </Grid>
+            </ui:Card>
+        </Expander>
+        <ui:Button Content="Save" Grid.Row="2" Grid.Column="0" Command="{Binding SaveCommand}" Appearance="Primary" HorizontalAlignment="Center"/>
+
+        
     </Grid>
 </Page>

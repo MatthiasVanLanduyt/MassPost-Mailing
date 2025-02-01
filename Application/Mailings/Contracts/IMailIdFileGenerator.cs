@@ -5,6 +5,6 @@ namespace Validator.Application.Mailings.Contracts
 {
     public interface IMailIdFileGenerator
     {
-        MailIdFile GenerateFile(MailIdRequest request);
+        public MailIdFile GenerateFile(MailIdRequest request);
     }
 }
