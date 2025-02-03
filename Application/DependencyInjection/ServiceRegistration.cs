@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Validator.Application.Addresses;
+using Validator.Application.Mailings.Contracts;
 using Validator.Domain.Addresses;
+using Validator.Domain.MailingResponses.Services;
 
 namespace Validator.Application.DependencyInjection
 {
@@ -15,6 +17,8 @@ namespace Validator.Application.DependencyInjection
 
             services.AddSingleton<IPostalCodeService>(_ =>
                 new PostalCodeService(postalCodesPath));
+
+            services.AddTransient<IMailingResponseParser, XmlMailingResponseParser>();
 
             // Register other application services
 

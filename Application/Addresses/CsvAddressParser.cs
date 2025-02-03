@@ -22,7 +22,7 @@ namespace Validator.Application.Addresses
                 csv.Read();
                 csv.ReadHeader();
 
-                Debug.WriteLine($"Header length: {csv.HeaderRecord.Length}");
+                Debug.WriteLine($"Header length: {csv.HeaderRecord?.Length}");
                 Debug.WriteLine($"Current index: {csv.CurrentIndex}");
                 
                 int index = 1;
