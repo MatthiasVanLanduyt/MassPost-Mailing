@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfDesktop.Views.Pages"
-      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePage">
@@ -50,7 +50,7 @@
 
                     <ui:Button Grid.Column="2" 
                               Icon="Upload24"
-                              Appearance="Primary"
+                              Appearance="Secondary"
                               Command="{Binding NavigateToUploadCommand}">
                         Upload
                     </ui:Button>
@@ -89,12 +89,25 @@
                                  />
                     </StackPanel>
 
-                    <ui:Button Grid.Column="2" 
-                              Icon="ArrowDownload24"
-                              IsEnabled="False"
-                              Command="{Binding NavigateToGenerateCommand}">
-                        Generate
-                    </ui:Button>
+
+
+                    <StackPanel Grid.Column="2" Margin="0,8,0,0">
+                        
+                        <ui:Button
+                            Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
+                            IsEnabled="{Binding State.HasGeneratedMailingRequest}"
+                            Command="{Binding DownloadMailRequestCommand}">
+                            Download Mail Request
+                        </ui:Button>
+                        <ui:Button 
+                                   IsEnabled="{Binding State.HasGeneratedMailingRequest}"
+                                   Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
+                                   Command="{Binding DownloadMailAddressListCommand}">
+                            Download Address List
+
+                        </ui:Button>
+                    </StackPanel>
+
                 </Grid>
             </ui:Card>
 
@@ -126,13 +139,13 @@
                                  TextWrapping="Wrap"/>
                         <ui:Badge Margin="0,8,0,0" 
                                  Content="Not Available" 
-                                 Appearance="Secondary"
+                                 Appearance="Secondary" 
                                  />
                     </StackPanel>
 
                     <ui:Button Grid.Column="2" 
-                              Icon="CheckmarkCircle24"
-                              IsEnabled="False"
+                              Icon="{ui:SymbolIcon Symbol=CheckmarkCircle24}"
+                              IsEnabled="True"
                               Command="{Binding NavigateToValidateCommand}">
                         Validate
                     </ui:Button>

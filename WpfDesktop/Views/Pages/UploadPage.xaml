@@ -190,7 +190,7 @@
 
                     <ui:Button
                         Grid.Column="2"
-                        Content="Upload and Process"
+                        Content="Process"
                         Icon="ArrowUpload24"
                         Appearance="Primary"
                         Command="{Binding ProcessCommand}"/>

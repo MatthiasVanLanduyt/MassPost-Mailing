@@ -8,13 +8,14 @@ using CsvHelper;
 using Sharedkernel;
 using Validator.Application.Mailings.Models;
 using Validator.Domain.Mailings;
+using Validator.Domain.Mailings.Models;
 
 namespace Validator.Application.Mailings.Services
 {
     public class CsvMailIdAddressFileGenerator
     {
 
-        public MailIdFile GenerateFile(List<MailIdAddressLine> addresses, string filename)
+        public MailIdFile GenerateFile(List<MailIdItem> items, string filename)
         {
             var culture = new CultureInfo("nl-BE");
             Console.WriteLine("Reading CSV file");
@@ -23,8 +24,8 @@ namespace Validator.Application.Mailings.Services
             using (var writer = new StreamWriter(memoryStream))
             using (var csv = new CsvWriter(writer, culture))
             {
-                csv.Context.RegisterClassMap<MailIdAddressLineMap>();
-                csv.WriteRecords(addresses);
+                csv.Context.RegisterClassMap<MailIdItemMap>();
+                csv.WriteRecords(items);
                 writer.Flush();
             }
             

@@ -185,18 +185,9 @@ namespace WpfDesktop.ViewModels
                     request.Items.Add(mailIdItem);
                 }
 
-                var generator = _state.OutputFormat == "XML" ?
-                    new XmlMailIdFileGenerator(_dateTimeProvider) :
-                    new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
-
-                var file = generator.GenerateFile(request);
-                var savedFile = FileOperations.SaveFile(file, @"C:\Users\vanlanm\Downloads");
-                FileOperations.OpenFile(savedFile.FullName);
-
                 _state.MailingRequest = request;
-                _state.HasGeneratedMailingFile = true;
 
-                _navigationService.NavigateTo(typeof(UploadViewModel).FullName);
+                _navigationService.NavigateTo(typeof(HomeViewModel).FullName);
 
             }
 

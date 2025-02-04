@@ -13,7 +13,9 @@ namespace WpfDesktop.Services
     public class ApplicationState
     {
         public bool HasUploadedAddressList { get; set; }
-        public bool HasGeneratedMailingFile { get; set; }
+        public bool HasGeneratedMailingRequest { get; set; }
+        public bool HasDownloadedMailingRequest { get; set; }
+        public bool HasDownloadedMailingAddressList { get; set; }
         public bool HasValidatedAddresses { get; set; }
         public List<AddressLine> AddressList { get; set; } = [];
 
