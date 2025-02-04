@@ -1,27 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Sharedkernel;
+using Validator.Application.Files;
+using Validator.Application.Mailings.Contracts;
+using Validator.Application.Mailings.Services;
 using WpfDesktop.Contracts.Services;
+using WpfDesktop.Services;
 
 namespace WpfDesktop.ViewModels
 {
-    public class HomeViewModel: ObservableObject
+    public partial class HomeViewModel: ObservableObject
     {
-        private INavigationService _navigationService;
-        
-        public HomeViewModel(INavigationService navigationService) 
-        {
-            _navigationService = navigationService;
-        }
+
+        private readonly INavigationService _navigationService;
+        private readonly IDateTimeProvider _dateTimeProvider;
+
+        [ObservableProperty]
+        private ApplicationState _state;
 
         public ICommand NavigateToUploadCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
         public ICommand NavigateToGenerateCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
         public ICommand NavigateToValidateCommand => new RelayCommand(() => NavigateTo(typeof(ValidationViewModel)));
+
+        public ICommand DownloadMailAddressListCommand => _downloadMailAddressListCommand;
+        public ICommand DownloadMailRequestCommand => _downloadMailRequestCommand;
+
+        private readonly ICommand _downloadMailAddressListCommand;
+        private readonly ICommand _downloadMailRequestCommand;
+
+        public HomeViewModel(INavigationService navigationService, ApplicationState state, IDateTimeProvider dateTimeProvider)
+        {
+            _navigationService = navigationService;
+            _state = state;
+            _dateTimeProvider = dateTimeProvider;
+
+            _downloadMailRequestCommand = new RelayCommand(DownloadMailRequest);
+            _downloadMailAddressListCommand = new RelayCommand(DownloadMailAddressList);
+        }
+
+        private void DownloadMailRequest()
+        {
+            var generator = _state.OutputFormat == "XML" ?
+                   new XmlMailIdFileGenerator(_dateTimeProvider) :
+                   new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
+
+            var file = generator.GenerateFile(_state.MailingRequest);
+            var savedFile = FileOperations.SaveFile(file, @"C:\Users\vanlanm\Downloads");
+            FileOperations.OpenFile(savedFile.FullName);
+
+            _state.HasDownloadedMailingRequest = true;
+        }
+
+        private void DownloadMailAddressList()
+        {
+            var generator = new CsvMailIdAddressFileGenerator();
+
+            var file = generator.GenerateFile(_state.MailingRequest.Items, "AddressList.csv");
+
+            var savedFile = FileOperations.SaveFile(file, @"C:\Users\vanlanm\Downloads");
+            FileOperations.OpenFile(savedFile.FullName);
+
+            _state.HasDownloadedMailingAddressList = true;
+        }
+
+
 
         public string Title => "Home Page";
 
