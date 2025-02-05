@@ -13,6 +13,8 @@ namespace Validator.Domain.Addresses
         public required string City { get; init; }
         public required int PostalCode { get; init; }
 
+        public required string Company { get; init; }
+
         public override string ToString()
         {
             return $"{Street},{PostalCode} {City} ";

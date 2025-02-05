@@ -31,7 +31,7 @@ namespace Validator.Domain.Mailings.Services
             // Map address components according to bpost specs
             item.Components.Add(new AddressComponent
             {
-                Code = 9, // Street
+                Code = 92, // Street
                 Value = addressLine.AddressDetails.Street
             });
 
@@ -47,27 +47,24 @@ namespace Validator.Domain.Mailings.Services
                 Value = addressLine.AddressDetails.City
             });
 
-            // Split contact into first/last name if needed
             if (!string.IsNullOrEmpty(addressLine.AddressDetails.Contact))
             {
-                var names = addressLine.AddressDetails.Contact.Split(' ', 2);
-                if (names.Length > 0)
+                item.Components.Add(new AddressComponent
                 {
-                    item.Components.Add(new AddressComponent
-                    {
-                        Code = 2, // First name
-                        Value = names[0]
-                    });
-                }
-                if (names.Length > 1)
-                {
-                    item.Components.Add(new AddressComponent
-                    {
-                        Code = 4, // Last name  
-                        Value = names[1]
-                    });
-                }
+                    Code = 90,
+                    Value = addressLine.AddressDetails.Contact,
+                });
             }
+
+            if (!string.IsNullOrEmpty(addressLine.AddressDetails.Company))
+            {
+                item.Components.Add(new AddressComponent
+                {
+                    Code = 91,
+                    Value = addressLine.AddressDetails.Contact,
+                });
+            }
+
 
             return item;
         }
