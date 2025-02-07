@@ -40,15 +40,21 @@ namespace WpfDesktop
                     .ConfigureAppConfiguration(c =>
                     {
                         c.SetBasePath(appLocation);
+                        c.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                     })
                     .ConfigureServices(ConfigureServices)
                     .Build();
 
             await _host.StartAsync();
+
         }
 
         private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
         {
+
+            // Configuration
+            services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+
             // First register your infrastructure and application services
             services.AddApplicationServices();    // Add this if you have application services
             services.AddInfrastructureServices(); // This
@@ -62,8 +68,9 @@ namespace WpfDesktop
             //services.AddSingleton<IFileService, FileService>();
 
             // Services
-            //services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
+            services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
             services.AddSingleton<IPageService, PageService>();
+            services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ApplicationState>();
 
@@ -79,10 +86,11 @@ namespace WpfDesktop
             services.AddTransient<UploadViewModel>();
             services.AddTransient<ValidationPage>();
             services.AddTransient<ValidationViewModel>();
+            services.AddTransient<ContactsPage>();
+            services.AddTransient<ContactsViewModel>();
 
 
-            // Configuration
-            services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+           
         }
 
         private async void OnExit(object sender, ExitEventArgs e)

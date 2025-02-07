@@ -241,7 +241,7 @@
                                     <GridViewColumn Header="Address" Width="300">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Address}"/>
+                                                <TextBlock Text="{Binding AddressDetails}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>

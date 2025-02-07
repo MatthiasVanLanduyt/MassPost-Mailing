@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Validator.Application.Mailings.Models;
 using Validator.Domain.Addresses;
 using Validator.Domain.MailingResponses.Models;
 using Validator.Domain.Mailings.Models;
@@ -32,7 +33,7 @@ namespace WpfDesktop.Services
 
         public MailingResponse MailingResponse { get; set; }
 
-        public List<ValidatedAddress> ValidatedAddresses { get; set; }
+        public ValidationResponse ValidationResponse { get; set; }
 
         public ApplicationState()
         {

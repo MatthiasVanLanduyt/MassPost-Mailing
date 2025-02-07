@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Validator.Application.Mailings.Models;
 using Validator.Domain.MailingResponses.Models;
 using Validator.Domain.Mailings.Models;
 
@@ -10,12 +11,17 @@ namespace Validator.Application.Mailings.Services
 {
     public class MergeAddressValidationService
     {
-        public List<ValidatedAddress> Merge(MailIdRequest request, MailingResponse response)
-            {
+        public ValidationResponse Merge(MailIdRequest request, MailingResponse response)
+          {
+            
             // Verify mailing references match
             if (request.Header.CustomerFileRef != response.Header.CustomerFileRef)
             {
-                throw new InvalidOperationException($"File references do not match. Request: {request.Header.CustomerFileRef}, Response: {response.Header.CustomerFileRef}");
+                return new ValidationResponse
+                {
+                    Status = ValidationStatus.Error,
+                    ErrorMessage = $"File references do not match. Request: {request.Header.CustomerFileRef}, Response: {response.Header.CustomerFileRef}"
+                };
             }
 
             var validatedAddresses = new List<ValidatedAddress>();
@@ -48,7 +54,7 @@ namespace Validator.Application.Mailings.Services
                         };
                 validatedAddresses.Add(validatedAddress);
             }
-                return validatedAddresses;
+                return new ValidationResponse { Status = ValidationStatus.Success, ValidatedAddressList = validatedAddresses };
             }
 
             private int GetSeverityRank(string severity)

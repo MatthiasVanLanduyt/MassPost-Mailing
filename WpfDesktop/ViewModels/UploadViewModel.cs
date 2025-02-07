@@ -132,9 +132,6 @@ namespace WpfDesktop.ViewModels
                     CommandManager.InvalidateRequerySuggested();
                 }
 
-
-
-
             }
             catch (Exception ex)
             {
@@ -146,8 +143,7 @@ namespace WpfDesktop.ViewModels
         private async Task ProcessFileAsync()
         {
             try
-            {
-                
+            {             
                 // Create a request
                 var requestHeader = new MailIdRequestHeader
                 {
@@ -186,6 +182,8 @@ namespace WpfDesktop.ViewModels
                 }
 
                 _state.MailingRequest = request;
+
+                _state.HasGeneratedMailingRequest = true;
 
                 _navigationService.NavigateTo(typeof(HomeViewModel).FullName);
 

@@ -167,7 +167,7 @@
                         <ui:InfoBar
                             Grid.Row="1"
                             Title="Supported Formats"
-                            Message="Please upload a CSV or XML file with address records"
+                            Message="Please upload a CSV file with address records"
                             Severity="Informational"
                             IsOpen="True"/>
                     </Grid>
