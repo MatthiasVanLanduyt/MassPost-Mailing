@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Validator.Application.Contacts;
 using Validator.Domain.Mailings.Models;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
+using Wpf.Ui.Extensions;
 using WpfDesktop.Contracts.Services;
 
 namespace WpfDesktop.ViewModels
@@ -17,6 +21,9 @@ namespace WpfDesktop.ViewModels
 
         private const string ContactListKey = "ContactList";
         private readonly IPersistAndRestoreService _persistAndRestoreService;
+        private readonly ISnackbarService _snackbarService;
+        private readonly ContactValidator _validator;
+
 
         private readonly ObservableCollection<Contact> contacts = new();
         public IReadOnlyCollection<Contact> Contacts => contacts;
@@ -36,13 +43,15 @@ namespace WpfDesktop.ViewModels
             "en"
         };
 
-        public ContactsViewModel(IPersistAndRestoreService persistAndRestoreService)
+        public ContactsViewModel(IPersistAndRestoreService persistAndRestoreService, ISnackbarService snackbarService)
         {
             _addContactCommand = new RelayCommand(AddContact);
             _deleteContactCommand = new RelayCommand<Contact>(DeleteContact);
             _saveCommand = new RelayCommand(SaveContacts);
 
             _persistAndRestoreService = persistAndRestoreService;
+            _snackbarService = snackbarService;
+            _validator = new ContactValidator();
 
             LoadContacts();
         }
@@ -66,14 +75,56 @@ namespace WpfDesktop.ViewModels
 
         private void SaveContacts()
         {
+           
+           
+            var invalidContacts = new List<(Contact Contact, IList<string> Errors)>();
+
+            // Validate all contacts
+            foreach (var contact in contacts)
+            {
+                var (isValid, errors) = _validator.Validate(contact);
+                if (!isValid)
+                {
+                    invalidContacts.Add((contact, errors));
+                }
+            }
+
+            if (invalidContacts.Any())
+            {
+                // Format error message
+                var errorMessage = new StringBuilder("Please fix the following issues:\n");
+                foreach (var (contact, errors) in invalidContacts)
+                {
+                    errorMessage.AppendLine($"{contact.FirstName} {contact.LastName}:");
+                    foreach (var error in errors)
+                    {
+                        errorMessage.AppendLine($"- {error}");
+                    }
+                }
+
+                _snackbarService.Show(
+                    "Validation Error",
+                    errorMessage.ToString(),
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 5));
+
+
+                return;
+            }
+                
             App.Current.Properties[ContactListKey] = contacts.ToList();
             _persistAndRestoreService.PersistData();
+
+            _snackbarService.Show(
+                   "Contacts saved",
+                   "Contacts saved successfully",
+                   ControlAppearance.Success,
+                   new TimeSpan(0, 0, 2));
         }
 
         private void AddContact()
         {
             contacts.Add(new Contact());
-            SaveContacts();
         }
 
         
@@ -83,8 +134,6 @@ namespace WpfDesktop.ViewModels
             {
                 contacts.Remove(contact);
             }
-
-            SaveContacts();
         }
 
         // If you need to handle edited contacts, you can refresh the collection

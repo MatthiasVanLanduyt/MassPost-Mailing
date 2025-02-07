@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Validator.Application.DependencyInjection;
+using Wpf.Ui;
 using WpfDesktop.Contracts.Services;
 using WpfDesktop.Contracts.Views;
 using WpfDesktop.Models;
@@ -69,10 +70,11 @@ namespace WpfDesktop
 
             // Services
             services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
-            services.AddSingleton<IPageService, PageService>();
+            services.AddSingleton<Contracts.Services.IPageService, PageService>();
             services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<Contracts.Services.INavigationService, Services.NavigationService>();
             services.AddSingleton<ApplicationState>();
+            services.AddSingleton<ISnackbarService, SnackbarService>();
 
             // Views and ViewModels
             services.AddTransient<IShellWindow, MainWindow>();

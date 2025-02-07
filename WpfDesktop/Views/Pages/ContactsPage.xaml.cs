@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Wpf.Ui;
 using WpfDesktop.ViewModels;
 
 namespace WpfDesktop.Views.Pages
@@ -21,10 +22,14 @@ namespace WpfDesktop.Views.Pages
     /// </summary>
     public partial class ContactsPage : Page
     {
+        public ISnackbarService SnackbarService { get; }
+
         public ContactsPage(ContactsViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
+          
+           
         }
     }
 }

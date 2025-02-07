@@ -18,22 +18,29 @@
         Width="1100"
         Height="650">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <ui:NavigationView 
+        <ui:SnackbarPresenter 
+            x:Name="SnackbarPresenter"
+            Width="Auto"
+            HorizontalAlignment="Center"
+            Margin="0,0,0,0"
+            VerticalAlignment="Top" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ui:NavigationView 
             PaneDisplayMode="LeftFluent" 
             Grid.Row="1" 
             Grid.Column="0"
             
             >
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Home" 
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Home" 
                                        Icon="{ui:SymbolIcon Home24}"
                                        Command="{Binding NavigateToHomeCommand}"
                                        />
@@ -41,42 +48,43 @@
 
 
 
-                <ui:NavigationViewItem Content="Upload" 
+                    <ui:NavigationViewItem Content="Upload" 
                                        Icon="{ui:SymbolIcon ArrowUpload24}"
                                        Command="{Binding NavigateToUploadCommand}"
                                        />
 
 
-                <ui:NavigationViewItem Content="Validation"
+                    <ui:NavigationViewItem Content="Validation"
                                        Icon="{ui:SymbolIcon CheckmarkCircle24}"
                                        Command="{Binding NavigateToValidationCommand}"
                                        />
 
-                <ui:NavigationViewItem Content="Contacts"  
+                    <ui:NavigationViewItem Content="Contacts"  
                        Icon="{ui:SymbolIcon ContactCard24}"
                        Command="{Binding NavigateToContactsCommand}"
                        />
 
-                <ui:NavigationViewItem Content="Settings"  
+                    <ui:NavigationViewItem Content="Settings"  
                                        Icon="{ui:SymbolIcon Settings24}"
                                        Command="{Binding NavigateToSettingsCommand}"
                                        />
 
 
-            </ui:NavigationView.MenuItems>
-            
-        </ui:NavigationView>
-        <Frame x:Name="shellFrame" 
+                </ui:NavigationView.MenuItems>
+
+            </ui:NavigationView>
+            <Frame x:Name="shellFrame" 
            Grid.Column="1"
                Grid.Row="1"
            NavigationUIVisibility="Hidden"/>
 
-        <ui:TitleBar
+            <ui:TitleBar
             Title="{Binding ApplicationTitle, Mode=OneWay}"
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
 
+        </Grid>
     </Grid>
 </ui:FluentWindow>

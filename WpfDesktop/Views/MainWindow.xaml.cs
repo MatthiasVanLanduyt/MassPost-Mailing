@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Wpf.Ui;
 using Wpf.Ui.Controls;
 using WpfDesktop.Contracts.Views;
 using WpfDesktop.ViewModels;
@@ -12,11 +13,12 @@ namespace WpfDesktop.Views
     public partial class MainWindow : FluentWindow, IShellWindow
     {
         public MainWindowViewModel ViewModel { get; }
-        public MainWindow(MainWindowViewModel viewModel)
+        public MainWindow(MainWindowViewModel viewModel, ISnackbarService snackbarService)
         {
             InitializeComponent();
             DataContext = viewModel;
             ViewModel = viewModel;
+            snackbarService.SetSnackbarPresenter(SnackbarPresenter);
         }
 
         public Frame GetNavigationFrame()
