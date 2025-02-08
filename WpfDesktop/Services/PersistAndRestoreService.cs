@@ -31,7 +31,18 @@ namespace WpfDesktop.Services
                 throw new ArgumentException("AppConfig properties are not properly initialized.");
             }
 
+            InitializeDefaultProperties();
+
             RestoreData();
+        }
+
+        private void InitializeDefaultProperties()
+        {
+            if (!App.Current.Properties.Contains("ContactList"))
+            {
+                // Use the contacts from configuration
+                App.Current.Properties["ContactList"] = _appConfig.DefaultContacts;
+            }
         }
 
         public void PersistData()
@@ -80,8 +91,7 @@ namespace WpfDesktop.Services
                         var deserializedValue = JsonSerializer.Deserialize(value.ToString(), targetType);
                         App.Current.Properties[key] = deserializedValue;
                     }
-                    
-                   
+                                       
                     else
                     {
                         App.Current.Properties[key] = value;
