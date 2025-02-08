@@ -82,9 +82,10 @@ namespace WpfDesktop.ViewModels
 
                     _state.HasValidatedAddresses = true;
 
-                    _state.ValidatedAddresses = _mergeService.Merge(_state.MailingRequest, _state.MailingResponse);
 
-                    ValidatedAddresses = _state.ValidatedAddresses.Where(a => a.Severity != "INFO").ToList();
+                    _state.ValidationResponse = _mergeService.Merge(_state.MailingRequest, _state.MailingResponse);
+
+                    ValidatedAddresses = _state.ValidationResponse.ValidatedAddressList?.Where(a => a.Severity != "INFO").ToList() ?? new List<ValidatedAddress>();
 
                     //CommandManager.InvalidateRequerySuggested();
                 }

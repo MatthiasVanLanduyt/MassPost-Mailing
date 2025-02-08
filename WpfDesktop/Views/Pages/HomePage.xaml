@@ -36,10 +36,10 @@
                     </Border>
 
                     <StackPanel Grid.Column="1" Margin="16,0">
-                        <ui:TextBlock Text="Upload Address List" 
+                        <ui:TextBlock Text="Generate Mail Request File" 
                                  FontWeight="SemiBold"
                                  FontSize="16"/>
-                        <ui:TextBlock Text="Upload a CSV file containing the address list for processing"
+                        <ui:TextBlock Text="Upload a CSV file containing the address list and generate the mail request"
                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                  TextWrapping="Wrap"/>
                         <ui:Badge Margin="0,8,0,0" 
@@ -77,10 +77,10 @@
                     </Border>
 
                     <StackPanel Grid.Column="1" Margin="16,0">
-                        <ui:TextBlock Text="Generate Mail IDs" 
+                        <ui:TextBlock Text="Download Mail Request and Address List" 
                                  FontWeight="SemiBold"
                                  FontSize="16"/>
-                        <ui:TextBlock Text="Generate Mail IDs for the addresses and download the updated files"
+                        <ui:TextBlock Text="Download the generated mail request and address list with mail ids"
                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                  TextWrapping="Wrap"/>
                         <ui:Badge Margin="0,8,0,0" 

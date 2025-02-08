@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Validator.Application.DependencyInjection;
+using Wpf.Ui;
 using WpfDesktop.Contracts.Services;
 using WpfDesktop.Contracts.Views;
 using WpfDesktop.Models;
@@ -40,15 +41,21 @@ namespace WpfDesktop
                     .ConfigureAppConfiguration(c =>
                     {
                         c.SetBasePath(appLocation);
+                        c.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                     })
                     .ConfigureServices(ConfigureServices)
                     .Build();
 
             await _host.StartAsync();
+
         }
 
         private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
         {
+
+            // Configuration
+            services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+
             // First register your infrastructure and application services
             services.AddApplicationServices();    // Add this if you have application services
             services.AddInfrastructureServices(); // This
@@ -62,10 +69,12 @@ namespace WpfDesktop
             //services.AddSingleton<IFileService, FileService>();
 
             // Services
-            //services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
+            services.AddSingleton<Contracts.Services.IPageService, PageService>();
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<Contracts.Services.INavigationService, Services.NavigationService>();
             services.AddSingleton<ApplicationState>();
+            services.AddSingleton<ISnackbarService, SnackbarService>();
 
             // Views and ViewModels
             services.AddTransient<IShellWindow, MainWindow>();
@@ -79,10 +88,11 @@ namespace WpfDesktop
             services.AddTransient<UploadViewModel>();
             services.AddTransient<ValidationPage>();
             services.AddTransient<ValidationViewModel>();
+            services.AddTransient<ContactsPage>();
+            services.AddTransient<ContactsViewModel>();
 
 
-            // Configuration
-            services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+           
         }
 
         private async void OnExit(object sender, ExitEventArgs e)

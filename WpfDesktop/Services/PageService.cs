@@ -23,6 +23,7 @@ namespace WpfDesktop.Services
             Configure<SettingsViewModel, SettingsPage>();
             Configure<UploadViewModel, UploadPage>();
             Configure<ValidationViewModel, ValidationPage>();
+            Configure<ContactsViewModel, ContactsPage>();
         }
 
         public Type GetPageType(string key)
