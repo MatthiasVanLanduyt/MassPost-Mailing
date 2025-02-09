@@ -195,7 +195,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>8gtCTE6ivIRD/4Wx/9BVGzocHNu2pvmDQM2VtaU8PwY=</dsig:DigestValue>
+      <dsig:DigestValue>KivES01SHM2uJ/08KyjNJs41Kev7jWu2YYwK8pRwxbA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Microsoft.CSharp.dll" size="993592">
@@ -744,7 +744,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>2ZAT9hMMEkiSyiGPrpQupfHLhPRNaEYcLV46Hz4988A=</dsig:DigestValue>
+      <dsig:DigestValue>I3zQ10jGLIc9H1L149P2mbUzNIEk7W42R3q66simH2o=</dsig:DigestValue>
     </hash>
   </file>
   <file name="System.AppContext.dll" size="15656">
@@ -2427,7 +2427,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>z+m17AI1vvfTVVLNL2l6W49L1fjlFjU7IPAZo0aB6g0=</dsig:DigestValue>
+      <dsig:DigestValue>YC5rsuyBNt8UdnMkGVOUlAoqIPOujc01Yn1hP++1cxY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Validator.Domain.dll" size="37376">
@@ -2436,7 +2436,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>di1DIYGAtkT905UU2yBxV5/Bfn1lv/7WtjjLGO6Xfvs=</dsig:DigestValue>
+      <dsig:DigestValue>NObs5ZeRaMeO6UXArNCG1WLtHH0Ixd957lLkpLnGdFU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="vcruntime140_cor3.dll" size="120184">
@@ -2490,7 +2490,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>rc0YkHVy+Jy1aprpKKzbmH2uqY+///FftrJB05ZhQJ4=</dsig:DigestValue>
+      <dsig:DigestValue>Xe/MrW9LtbIJWf0RHbNDy8SuSeEZxSKg9O/0DcCPKGU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="WpfDesktop.exe" size="565760">
@@ -2499,7 +2499,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>F7Jvz3UA1AbQW852rxIW3qSY55pn65omsIyet4STvGw=</dsig:DigestValue>
+      <dsig:DigestValue>mSJ65/e3LrsvBQO5g2Y1RMbEjg8YCj9OIva/0Ws5xR4=</dsig:DigestValue>
     </hash>
   </file>
   <file name="WpfDesktop.runtimeconfig.json" size="524">
