@@ -27,6 +27,9 @@ namespace WpfDesktop.ViewModels
         [ObservableProperty]
         private bool isFileSelected;
 
+        [ObservableProperty] 
+        private bool isProcessing;
+
         [ObservableProperty]
         private MailingResponse mailingResponse;
 
@@ -64,6 +67,7 @@ namespace WpfDesktop.ViewModels
                 {
                     SelectedFilePath = openFileDialog.FileName;
                     IsFileSelected = true;
+                    IsProcessing = true;
 
                     if (string.IsNullOrEmpty(SelectedFilePath))
                     {
@@ -72,9 +76,8 @@ namespace WpfDesktop.ViewModels
 
                     //TODO: Verify that the file is an XML file
 
-                   
-                    
-                    using var stream = new FileStream(SelectedFilePath, FileMode.Open, FileAccess.Read);
+
+                    await using var stream = new FileStream(SelectedFilePath, FileMode.Open, FileAccess.Read);
 
                     MailingResponse = _responseParser.ParseResponse(stream);
 
@@ -87,12 +90,26 @@ namespace WpfDesktop.ViewModels
 
                     ValidatedAddresses = _state.ValidationResponse.ValidatedAddressList?.Where(a => a.Severity != "INFO").ToList() ?? new List<ValidatedAddress>();
 
-                    //CommandManager.InvalidateRequerySuggested();
                 }
+            }
+
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show($"Access denied: {ex.Message}. Please ensure you have proper permissions.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"File access error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error reading file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Log the exception details
+                MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            finally
+            {
+                IsProcessing = false;
             }
         }
     }

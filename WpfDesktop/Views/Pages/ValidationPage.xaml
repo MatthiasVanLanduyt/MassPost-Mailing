@@ -52,12 +52,6 @@
                         IsReadOnly="True"/>
                 </DockPanel>
 
-                <ProgressBar
-                    Grid.Row="1"
-                    Value="{Binding ProcessingProgress}"
-                    Maximum="100"
-                    Margin="0,0,0,8"/>
-
                 <ui:InfoBar
                     Grid.Row="2"
                     IsOpen="{Binding IsProcessing}"
@@ -230,7 +224,7 @@
                                 Grid.Column="1"
                                 Content="View All"
                                 Icon="ArrowRight24"
-                                Command="{Binding ViewAllWarningsCommand}"/>
+                               />
                         </Grid>
 
                         <ListView

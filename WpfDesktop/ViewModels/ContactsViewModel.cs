@@ -19,9 +19,8 @@ namespace WpfDesktop.ViewModels
     public partial class ContactsViewModel : ObservableObject
     {
 
-        private const string ContactListKey = "ContactList";
-        private readonly IPersistAndRestoreService _persistAndRestoreService;
         private readonly ISnackbarService _snackbarService;
+        private readonly IContactService _contactService;
         private readonly ContactValidator _validator;
 
 
@@ -43,13 +42,13 @@ namespace WpfDesktop.ViewModels
             "en"
         };
 
-        public ContactsViewModel(IPersistAndRestoreService persistAndRestoreService, ISnackbarService snackbarService)
+        public ContactsViewModel(IContactService contactService, ISnackbarService snackbarService)
         {
             _addContactCommand = new RelayCommand(AddContact);
             _deleteContactCommand = new RelayCommand<Contact>(DeleteContact);
             _saveCommand = new RelayCommand(SaveContacts);
 
-            _persistAndRestoreService = persistAndRestoreService;
+            _contactService = contactService;
             _snackbarService = snackbarService;
             _validator = new ContactValidator();
 
@@ -60,23 +59,18 @@ namespace WpfDesktop.ViewModels
         {
             contacts.Clear();
 
-            if (App.Current.Properties.Contains(ContactListKey))
+            var savedContacts = _contactService.GetContacts();
+            
+            foreach (var contact in savedContacts)
             {
-                var savedContacts = App.Current.Properties[ContactListKey] as List<Contact>;
-                if (savedContacts != null)
-                {
-                    foreach (var contact in savedContacts)
-                    {
-                        contacts.Add(contact);
-                    }
-                }
+                contacts.Add(contact);
             }
+
         }
 
         private void SaveContacts()
         {
-           
-           
+            
             var invalidContacts = new List<(Contact Contact, IList<string> Errors)>();
 
             // Validate all contacts
@@ -111,9 +105,8 @@ namespace WpfDesktop.ViewModels
 
                 return;
             }
-                
-            App.Current.Properties[ContactListKey] = contacts.ToList();
-            _persistAndRestoreService.PersistData();
+
+            _contactService.SaveContacts(contacts.ToList());
 
             _snackbarService.Show(
                    "Contacts saved",

@@ -82,15 +82,20 @@ namespace WpfDesktop.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ApplicationState _state;
+        private readonly IContactService _contactService;
 
         public UploadViewModel(
             ApplicationState state,
             IDateTimeProvider dateTimeProvider,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IContactService contactService)
         {
             _state = state;
             _navigationService = navigationService;
             _dateTimeProvider = dateTimeProvider;
+            _contactService = contactService;
+
+
 
             _uploadCommand = new AsyncRelayCommand(UploadFileAsync);
             _processCommand = new AsyncRelayCommand(ProcessFileAsync, CanProcessFile);
@@ -161,6 +166,8 @@ namespace WpfDesktop.ViewModels
                 var sequenceNumber = int.Parse(SequenceNumber);
                 // Create a factory with your bpost customer barcode ID
                 var factory = new MailIdFactory(requestHeader.CustomerBarcodeId, sequenceNumber, _dateTimeProvider.DayOfTheYear); // Your 5-digit code from bpost
+                
+                var contacts = _contactService.GetContacts();
 
                 var request = new MailIdRequest
                 {
@@ -168,8 +175,10 @@ namespace WpfDesktop.ViewModels
                     Options = _state.MailIdOptions,
                     MailFormat = MailFormat,
                     MailFileInfo = MailingTypes.MailId,
-                    Contacts = DefaultContacts.GetDefaults().ToList(),
+                    Contacts = contacts
                 };
+
+                
 
                 string priority = Priority;
                 string language = AddressLanguage;
