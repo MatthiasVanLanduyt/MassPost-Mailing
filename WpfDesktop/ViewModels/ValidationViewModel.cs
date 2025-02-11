@@ -93,7 +93,7 @@ namespace WpfDesktop.ViewModels
                     ValidatedAddresses = _state.ValidationResponse.ValidatedAddressList?.Where(a => a.Severity != "INFO").ToList() ?? new List<ValidatedAddress>();
 
                     _snackbarService.Show(
-                        "Validation Successfull",
+                        "Validation Successful",
                         $"Successfully validated {ValidatedAddresses} address lines from file {SelectedFilePath}",
                         ControlAppearance.Success,
                         new TimeSpan(0, 0, 3));
