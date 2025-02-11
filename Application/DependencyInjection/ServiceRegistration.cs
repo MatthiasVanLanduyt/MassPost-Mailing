@@ -18,7 +18,7 @@ namespace Validator.Application.DependencyInjection
             services.AddSingleton<IPostalCodeService>(_ =>
                 new PostalCodeService(postalCodesPath));
 
-            services.AddTransient<IMailingResponseParser, XmlMailingResponseParser>();
+            
 
             // Register other application services
 
