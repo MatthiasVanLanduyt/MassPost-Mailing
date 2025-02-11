@@ -174,7 +174,7 @@ namespace WpfDesktop.ViewModels
                     MailingRef = MailingReference,
                     ExpectedDeliveryDate = DateOnly.FromDateTime((DateTime)ExpectedDelivery),
                     CustomerBarcodeId = 530, // Consider making this configurable
-                    CustomerFileRef = $"{_dateTimeProvider.DateStamp}MM",
+                    CustomerFileRef = $"{_dateTimeProvider.DateStamp}{SequenceNumber}",
                     DepositType = DepositType,
                     DepositIdentifier = DepositIdentifier,
                 };
