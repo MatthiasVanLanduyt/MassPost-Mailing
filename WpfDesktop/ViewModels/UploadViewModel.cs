@@ -9,9 +9,12 @@ using Validator.Application.Addresses;
 using Validator.Domain.Mailings.Models;
 using Validator.Domain.Mailings.Services;
 using Wpf.Ui;
+using Wpf.Ui.Controls;
 using WpfDesktop.Contracts.Services;
 using WpfDesktop.Services;
 using INavigationService = WpfDesktop.Contracts.Services.INavigationService;
+using Wpf.Ui.Extensions;
+using System.Net;
 
 namespace WpfDesktop.ViewModels
 {
@@ -91,7 +94,7 @@ namespace WpfDesktop.ViewModels
 
         private async Task UploadFileAsync()
         {
-            try
+           try
             {
                 var openFileDialog = new OpenFileDialog
                 {
@@ -107,7 +110,12 @@ namespace WpfDesktop.ViewModels
 
                     if (string.IsNullOrEmpty(SelectedFilePath))
                     {
-                        MessageBox.Show("Please select a file to upload", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        _snackbarService.Show(
+                            "No file selected",
+                            $"Please select a file to upload",
+                            ControlAppearance.Caution,
+                            new TimeSpan(0, 0, 3));
+                        
                     }
 
                     //TODO: Verify that the file is a CSV file
@@ -118,16 +126,24 @@ namespace WpfDesktop.ViewModels
 
                     _state.HasUploadedAddressList = true;
 
-                    //TODO: Show messagebox with number of address lines read
-                    MessageBox.Show($"Successfully read {_state.AddressCount} address lines from file {openFileDialog.FileName}");
-                    
+                    _snackbarService.Show(
+                        "Address file uploaded",
+                        $"Successfully read { _state.AddressCount} address lines from file {SelectedFilePath}",
+                        ControlAppearance.Success,
+                        new TimeSpan(0, 0, 3));
+
                     CommandManager.InvalidateRequerySuggested();
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error reading file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _snackbarService.Show(
+                    "Address file upload failed",
+                    $"Error reading file {_state.AddressCount} address lines from file {SelectedFilePath}",
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 3));
+                
             }
 
         }
@@ -187,12 +203,21 @@ namespace WpfDesktop.ViewModels
 
                 _navigationService.NavigateTo(typeof(HomeViewModel).FullName);
 
+                _snackbarService.Show(
+                    "Mailing request generated",
+                    $"Mailing request is available to download",
+                    ControlAppearance.Success,
+                    new TimeSpan(0, 0, 3));
+
             }
 
             catch (Exception ex)
             {
-                // Handle error appropriately
-                // Show error message to user
+                _snackbarService.Show(
+                    "Failed to generate mailing request",
+                    $"Error generating mailing request: \n{ex.Message}",
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 3));
             }
         }
 
