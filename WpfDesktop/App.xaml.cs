@@ -113,14 +113,27 @@ namespace WpfDesktop
         }
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            // TODO: Please log and handle the exception as appropriate to your scenario
             // For more info see https://docs.microsoft.com/dotnet/api/system.windows.application.dispatcherunhandledexception?view=netcore-3.0
 
 
             e.Handled = true;
+            LogException(e.Exception);
             MessageBox.Show(e.Exception.Message, $"An unhandled exception just occurred:\n\n{e.Exception.Message}\n{e.Exception.StackTrace}", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        private void LogException(Exception ex)
+        {
+            string logPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "MassPostMailing",
+                "error.log"
+            );
+
+            Directory.CreateDirectory(Path.GetDirectoryName(logPath));
+
+            string errorMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Error:\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}\n\n";
+            File.AppendAllText(logPath, errorMessage);
+        }
     }
 
 }

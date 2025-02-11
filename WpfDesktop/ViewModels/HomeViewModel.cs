@@ -21,7 +21,7 @@ namespace WpfDesktop.ViewModels
         [ObservableProperty]
         private ApplicationState _state;
 
-        private MailingSettings _settings;
+        private readonly MailingSettings _settings;
 
         public ICommand NavigateToUploadCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
         public ICommand NavigateToGenerateCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
