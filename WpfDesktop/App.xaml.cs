@@ -10,8 +10,10 @@ using Validator.Application.DependencyInjection;
 using Validator.Application.Mailings.Contracts;
 using Validator.Domain.MailingResponses.Services;
 using Wpf.Ui;
+using WpfDesktop.Contracts;
 using WpfDesktop.Contracts.Services;
 using WpfDesktop.Contracts.Views;
+using WpfDesktop.DependencyInjection;
 using WpfDesktop.Models;
 using WpfDesktop.Services;
 using WpfDesktop.ViewModels;
@@ -54,6 +56,9 @@ namespace WpfDesktop
 
         private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
         {
+            // Get the AppData path
+            var appDataPath = GetAppDataPath();
+            EnsureAppDataFolderExists(appDataPath);
 
             // Configuration
             services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
@@ -65,45 +70,34 @@ namespace WpfDesktop
             // App Host
             services.AddHostedService<ApplicationHostService>();
 
-            // Activation Handlers
+            services.AddWpfServices(appDataPath);
 
-            // Core Services
-            //services.AddSingleton<IFileService, FileService>();
-
-            // Services
-            services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<IFileService, FileService>();
-            services.AddTransient<IContactService, ContactService>();
-            services.AddSingleton<ISettingsService, SettingsService>();
-            services.AddSingleton<Contracts.Services.INavigationService, Services.NavigationService>();
-            services.AddSingleton<ApplicationState>();
-            services.AddSingleton<ISnackbarService, SnackbarService>();
-
-            services.AddSingleton<IMailingResponseParser>(sp =>
-            {
-                var json = File.ReadAllText("statuscodes.json");
-                return new XmlMailingResponseParser(json);
-            });
-
-
-            // Views and ViewModels
-            services.AddTransient<IShellWindow, MainWindow>();
-            services.AddTransient<MainWindowViewModel>();
+            services.RegisterViewModels();
             
-            services.AddTransient<HomePage>();
-            services.AddTransient<HomeViewModel>();
-            services.AddTransient<SettingsPage>();
-            services.AddTransient<SettingsViewModel>();
-            services.AddTransient<UploadPage>();
-            services.AddTransient<UploadViewModel>();
-            services.AddTransient<ValidationPage>();
-            services.AddTransient<ValidationViewModel>();
-            services.AddTransient<ContactsPage>();
-            services.AddTransient<ContactsViewModel>();
+        }
 
+        private string GetAppDataPath()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                AppConstants.AppName
+            );
+        }
 
-           
+        private void EnsureAppDataFolderExists(string path)
+        {
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                throw new InvalidOperationException($"Unable to create application data directory at {path}", ex);
+            }
         }
 
         private async void OnExit(object sender, ExitEventArgs e)

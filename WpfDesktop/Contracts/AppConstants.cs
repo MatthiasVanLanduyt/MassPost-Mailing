@@ -8,7 +8,8 @@ namespace WpfDesktop.Contracts
 {
     public static class AppConstants
     {
-        public const string ContactListKey = "ContactList";
-        public const string MailingSettingsKey = "MailingSettings";
+        public const string ContactsFileName = "contacts.json";
+        public const string MailingSettingsFileName = "mailingSettings.json";
+        public const string AppName = "MassPostMailing";
     }
 }
