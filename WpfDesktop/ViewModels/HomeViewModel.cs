@@ -21,6 +21,14 @@ namespace WpfDesktop.ViewModels
         [ObservableProperty]
         private ApplicationState _state;
 
+        public string UploadButtonAppearance => "Primary";
+
+        public string DownloadMailingRequestButtonAppearance => "Primary";
+
+        public string DownloadAddressListButtonAppearance => "Primary";
+
+        public string ValidationButtonAppearance => "Primary";
+
         private readonly MailingSettings _settings;
 
         public ICommand NavigateToUploadCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
@@ -46,6 +54,7 @@ namespace WpfDesktop.ViewModels
             _downloadMailAddressListCommand = new RelayCommand(DownloadMailAddressList);
         }
 
+        
         private void DownloadMailRequest()
         {
             var generator = _settings.OutputFormat == "XML" ?

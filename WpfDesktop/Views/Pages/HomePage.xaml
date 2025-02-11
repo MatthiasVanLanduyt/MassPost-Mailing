@@ -56,15 +56,11 @@
                         <ui:TextBlock Text="Upload a CSV file containing the address list and generate the mail request"
                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                  TextWrapping="Wrap"/>
-                        <ui:Badge Margin="0,8,0,0" 
-                                 Content="Pending" 
-                                 Appearance="Secondary"
-                                 />
-                    </StackPanel>
+                        </StackPanel>
 
                     <ui:Button Grid.Column="2" 
                               Icon="Upload24"
-                              Appearance="Secondary"
+                              Appearance="{Binding UploadButtonAppearance}" 
                               Command="{Binding NavigateToUploadCommand}" 
                               VerticalAlignment="Bottom">
                         Upload
@@ -91,17 +87,13 @@
                                  FontWeight="SemiBold"/>
                     </Border>
 
-                    <StackPanel Grid.Column="1" Margin="16,0">
+                    <StackPanel Grid.Column="1" Margin="16,0" VerticalAlignment="Center">
                         <ui:TextBlock Text="Download Mail Request and Address List" 
                                  FontWeight="SemiBold"
                                  FontSize="16"/>
                         <ui:TextBlock Text="Download the generated mail request and address list with mail ids"
                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                  TextWrapping="Wrap"/>
-                        <ui:Badge Margin="0,8,0,0" 
-                                 Content="Not Available" 
-                                 Appearance="Secondary"
-                                 />
                     </StackPanel>
 
 
@@ -111,13 +103,16 @@
                         <ui:Button
                             Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
                             IsEnabled="{Binding State.HasGeneratedMailingRequest}"
-                            Command="{Binding DownloadMailRequestCommand}">
+                            Command="{Binding DownloadMailRequestCommand}"
+                            Appearance="{Binding DownloadMailingRequestButtonAppearance}"
+                            Margin="0,0,0,8">
                             Download Mail Request
                         </ui:Button>
                         <ui:Button 
                                    IsEnabled="{Binding State.HasGeneratedMailingRequest}"
                                    Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
-                                   Command="{Binding DownloadMailAddressListCommand}">
+                                   Command="{Binding DownloadMailAddressListCommand}"
+                                   Appearance="{Binding DownloadAddressListButtonAppearance}">>
                             Download Address List
 
                         </ui:Button>
@@ -152,16 +147,13 @@
                         <ui:TextBlock Text="Upload the response file and view compliance scores"
                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                  TextWrapping="Wrap"/>
-                        <ui:Badge Margin="0,8,0,0" 
-                                 Content="Not Available" 
-                                 Appearance="Secondary" 
-                                 />
                     </StackPanel>
 
                     <ui:Button Grid.Column="2" 
                               Icon="{ui:SymbolIcon Symbol=CheckmarkCircle24}"
                               IsEnabled="True"
                               Command="{Binding NavigateToValidateCommand}"
+                              Appearance="{Binding ValidationButtonAppearance}"
                               VerticalAlignment="Bottom">
                         Validate
                     </ui:Button>
