@@ -11,14 +11,26 @@ namespace Validator.Domain.MailingResponses.Services
 
         public XmlMailingResponseParser()
         {
-           
+
             // Load status codes at startup
             //var path = Path.Combine(applicationPath, "Addresses", "BelgianPostalCodes.json");
-            var json = File.ReadAllText("Mailings/statuscodes.json");
-            var codes = JsonSerializer.Deserialize<List<StatusCode>>(json);
-            _statusCodes = codes.ToDictionary(x => x.Code);
+            _statusCodes = LoadStatusCodes();
         }
 
+        private Dictionary<string, StatusCode> LoadStatusCodes()
+        {
+            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var filePath = Path.Combine(appDirectory, "Mailings", "statuscodes.json");
+
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException($"Status codes file not found at {filePath}");
+            }
+
+            var json = File.ReadAllText(filePath);
+            var codes = JsonSerializer.Deserialize<List<StatusCode>>(json);
+            return codes.ToDictionary(x => x.Code);
+        }
         public MailingResponse ParseResponse(Stream stream)
         {
             var response = new MailingResponse();
