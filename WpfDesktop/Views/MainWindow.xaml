@@ -15,8 +15,8 @@
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True"
         mc:Ignorable="d"
-        Width="1100"
-        Height="650">
+        WindowState="Maximized" >
+
     <Grid>
         <ui:SnackbarPresenter 
             x:Name="SnackbarPresenter"

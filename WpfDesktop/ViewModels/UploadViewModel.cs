@@ -95,61 +95,74 @@ namespace WpfDesktop.ViewModels
         private async Task UploadFileAsync()
         {
            try
-            {
-                var openFileDialog = new OpenFileDialog
-                {
-                    Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
-                    FilterIndex = 1
-                };
+           {
+               var openFileDialog = new OpenFileDialog
+               {
+                   Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                   FilterIndex = 1
+               };
 
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    SelectedFilePath = openFileDialog.FileName;
-                    IsFileSelected = true;
-                    _processCommand.NotifyCanExecuteChanged();
+               if (openFileDialog.ShowDialog() == true)
+               {
+                   SelectedFilePath = openFileDialog.FileName;
+                   IsFileSelected = true;
+                   _processCommand.NotifyCanExecuteChanged();
 
-                    if (string.IsNullOrEmpty(SelectedFilePath))
-                    {
-                        _snackbarService.Show(
-                            "No file selected",
-                            $"Please select a file to upload",
-                            ControlAppearance.Caution,
-                            new TimeSpan(0, 0, 3));
+                   if (string.IsNullOrEmpty(SelectedFilePath))
+                   {
+                       _snackbarService.Show(
+                           "No file selected",
+                           $"Please select a file to upload",
+                           ControlAppearance.Caution,
+                           new TimeSpan(0, 0, 3));
                         
-                    }
+                   }
 
-                    //TODO: Verify that the file is a CSV file
+                   //TODO: Verify that the file is a CSV file
 
-                    using var stream = new FileStream(SelectedFilePath, FileMode.Open, FileAccess.Read);
+                   using var stream = new FileStream(SelectedFilePath, FileMode.Open, FileAccess.Read);
 
-                    _state.AddressList = CsvAddressParser.ReadCsvFile(stream).ToList();
+                   _state.AddressList = CsvAddressParser.ReadCsvFile(stream).ToList();
 
-                    _state.HasUploadedAddressList = true;
+                   _state.HasUploadedAddressList = true;
 
-                    _snackbarService.Show(
-                        "Address file uploaded",
-                        $"Successfully read { _state.AddressCount} address lines from file {SelectedFilePath}",
-                        ControlAppearance.Success,
-                        new TimeSpan(0, 0, 3));
+                   _snackbarService.Show(
+                       "Address file uploaded",
+                       $"Successfully read { _state.AddressCount} address lines from file {SelectedFilePath}",
+                       ControlAppearance.Success,
+                       new TimeSpan(0, 0, 3));
 
-                    CommandManager.InvalidateRequerySuggested();
-                }
+                   CommandManager.InvalidateRequerySuggested();
+               }
 
-            }
-            catch (Exception ex)
-            {
-                _snackbarService.Show(
-                    "Address file upload failed",
-                    $"Error reading file {_state.AddressCount} address lines from file {SelectedFilePath}",
-                    ControlAppearance.Danger,
-                    new TimeSpan(0, 0, 3));
+           }
+           catch (Exception ex)
+           {
+               _snackbarService.Show(
+                   "Address file upload failed",
+                   $"Error reading file {_state.AddressCount} address lines from file {SelectedFilePath}",
+                   ControlAppearance.Danger,
+                   new TimeSpan(0, 0, 3));
                 
-            }
+           }
 
         }
 
         private async Task ProcessFileAsync()
         {
+            var validation = ValidateInput();
+
+            if (!validation)
+            {
+                _snackbarService.Show(
+                    "Invalid input",
+                    "Please provide all required information",
+                    ControlAppearance.Caution,
+                    new TimeSpan(0, 0, 3));
+
+                return;
+            }
+
             try
             {
                 var settings = _settingsService.GetMailingSettings();
@@ -223,10 +236,7 @@ namespace WpfDesktop.ViewModels
 
         private bool CanProcessFile()
         {
-            var fileSelected = IsFileSelected;
-            var inputValid = ValidateInput();
-
-            return fileSelected && inputValid;
+            return IsFileSelected;
         }
 
         private bool ValidateInput()
