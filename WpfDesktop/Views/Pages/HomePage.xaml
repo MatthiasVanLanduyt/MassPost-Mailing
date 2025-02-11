@@ -6,23 +6,37 @@
       xmlns:local="clr-namespace:WpfDesktop.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="HomePage">
+        Title="HomePage">
 
-    <Grid Margin="20">
-        <StackPanel>
-            <ui:TextBlock Text="MassPost Mailing Process"
-                       FontSize="24"
-                       FontWeight="SemiBold"
-                       Margin="0,0,0,20"/>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <ui:TextBlock
+                Text="MassPost Mailing Process"
+                FontSize="28"
+                FontTypography="Title"/>
+            <ui:TextBlock
+                Text="Follow the steps below to generate and validate mailing requests"
+                FontSize="14"
+                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
+        </StackPanel>
+        
 
             <!-- Step 1 -->
-            <ui:Card Margin="0,0,0,16">
+            <ui:Card Margin="0,0,0,16" Grid.Row="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
 
                     <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
@@ -51,19 +65,20 @@
                     <ui:Button Grid.Column="2" 
                               Icon="Upload24"
                               Appearance="Secondary"
-                              Command="{Binding NavigateToUploadCommand}">
+                              Command="{Binding NavigateToUploadCommand}" 
+                              VerticalAlignment="Bottom">
                         Upload
                     </ui:Button>
                 </Grid>
             </ui:Card>
 
             <!-- Step 2 -->
-            <ui:Card Margin="0,0,0,16">
+            <ui:Card Margin="0,0,0,16" Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
 
                     <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
@@ -91,7 +106,7 @@
 
 
 
-                    <StackPanel Grid.Column="2" Margin="0,8,0,0">
+                <StackPanel Grid.Column="2" Margin="0,8,0,0" VerticalAlignment="Bottom">
                         
                         <ui:Button
                             Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
@@ -112,12 +127,12 @@
             </ui:Card>
 
             <!-- Step 3 -->
-            <ui:Card Margin="0,0,0,16">
+            <ui:Card Margin="0,0,0,16" Grid.Row="3">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
 
                     <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
@@ -146,11 +161,12 @@
                     <ui:Button Grid.Column="2" 
                               Icon="{ui:SymbolIcon Symbol=CheckmarkCircle24}"
                               IsEnabled="True"
-                              Command="{Binding NavigateToValidateCommand}">
+                              Command="{Binding NavigateToValidateCommand}"
+                              VerticalAlignment="Bottom">
                         Validate
                     </ui:Button>
                 </Grid>
             </ui:Card>
-        </StackPanel>
+        
     </Grid>
 </Page>

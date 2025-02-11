@@ -9,5 +9,6 @@ namespace WpfDesktop.Contracts
     public static class AppConstants
     {
         public const string ContactListKey = "ContactList";
+        public const string MailingSettingsKey = "MailingSettings";
     }
 }

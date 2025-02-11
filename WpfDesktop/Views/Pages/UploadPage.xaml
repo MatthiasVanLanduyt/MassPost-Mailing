@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:WpfDesktop.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="UploadPage">
 
     <ScrollViewer>
@@ -30,117 +29,8 @@
                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
             </StackPanel>
 
-            <!-- Required Information (Mail Request) -->
-            <ui:Card Grid.Row="1" Margin="0,0,0,16">
-                <StackPanel>
-                    <ui:TextBlock
-                        Text="Required Information"
-                        FontSize="16"
-                        FontWeight="Medium"
-                        Margin="0,0,0,16"/>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <!-- Row 1 -->
-                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
-                            <ui:TextBlock Text="Sender Id" Margin="0,0,0,4"/>
-                            <ui:TextBox
-                            Grid.Row="0" Grid.Column="0"
-                            PlaceholderText="Sender ID"
-                            Text="{Binding SenderID}"
-                            Icon="Person24"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
-                            <ui:TextBlock Text="Account Id" Margin="0,0,0,4"/>
-                            <ui:TextBox
-                            Grid.Row="0" Grid.Column="1"
-                            
-                            PlaceholderText="Account ID"
-                            Text="{Binding AccountID}"
-                            Icon="PersonCard24"/>
-                        </StackPanel>
-
-                        <!-- Row 2 -->
-                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,12">
-                            <ui:TextBlock Text="Sequence Number" Margin="0,0,0,4"/>
-                            <ui:TextBox
-                            Grid.Row="1" Grid.Column="0"
-                            PlaceholderText="Sequence Number"
-                            Text="{Binding SequenceNumber}"
-                            Icon="Number24"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
-                            <ui:TextBlock Text="Mailing Reference" Margin="0,0,0,4"/>
-                            <ui:TextBox
-                            Grid.Row="1" Grid.Column="1"
-                            PlaceholderText="Mailing Reference"
-                            Text="{Binding MailingReference}"
-                            Icon="Mail24"/>
-                        </StackPanel>
-
-                        <!-- Row 3 -->
-                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
-                            <ui:TextBlock Text="Mail Format" Margin="0,0,0,4"/>
-                            <ComboBox
-                                SelectedItem="{Binding MailFormat}"
-                                ItemsSource="{Binding MailFormatOptions}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="2" Grid.Column="1" Margin="8,0,0,12">
-                            <ui:TextBlock Text="Priority" Margin="0,0,0,4"/>
-                            <ComboBox
-                                SelectedItem="{Binding Priority}"
-                                ItemsSource="{Binding PriorityOptions}"/>
-                        </StackPanel>
-                        <!-- Row 4 -->
-                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,8,12">
-                            <ui:TextBlock Text="Address Language" Margin="0,0,0,4"/>
-                            <ComboBox
-                                SelectedItem="{Binding AddressLanguage}"
-                                ItemsSource="{Binding LanguageOptions}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="8,0,0,12">
-                            <ui:TextBlock Text="Expected Delivery Date" Margin="0,0,0,4"/>
-                            <DatePicker
-                                SelectedDate="{Binding ExpectedDelivery}"/>
-                        </StackPanel>
-                        <!-- Row 5 -->
-                        <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,0,8,12">
-                            <ui:TextBlock Text="Deposit Type" Margin="0,0,0,4"/>
-                            <ComboBox
-                                SelectedItem="{Binding DepositType}"
-                                ItemsSource="{Binding DepositTypeOptions}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="4" Grid.Column="1" Margin="8,0,0,12">
-                            <ui:TextBlock Text="Deposit Identifier" Margin="0,0,0,4"/>
-
-                            <ui:TextBox
-                            Grid.Row="4" Grid.Column="1"
-                            PlaceholderText="Deposit Identifier"
-                            Text="{Binding DepositIdentifier}"
-                            Icon="DocumentNumber24"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </ui:Card>
             <!-- File Upload Section -->
-            <StackPanel Grid.Row="3" >
+            <StackPanel Grid.Row="1" Margin="0,0,0,24" >
 
                 <ui:Card>
                     <Grid>
@@ -150,13 +40,30 @@
                         </Grid.RowDefinitions>
 
                         <DockPanel Grid.Row="0" LastChildFill="True" Margin="0,0,0,12">
-                            <ui:Button
-                                Margin="8,0,0,0"
-                                Appearance="Primary"
-                                DockPanel.Dock="Right"
-                                Content="Choose File"
-                                Icon="Upload24"
-                                Command="{Binding UploadCommand}"/>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <ui:Button
+                                    Margin="8,0,0,0"
+                                    Appearance="Primary"
+                                    DockPanel.Dock="Right"
+                                    Content="Choose File"
+                                    Icon="Upload24"
+                                    Command="{Binding UploadCommand}"/>
+
+                                <ui:Button
+                                    Content="Process"
+                                    Icon="ArrowUpload24"
+                                    Appearance="Primary"
+                                    Command="{Binding ProcessCommand}"
+                                    Margin="8,0,8,0"/>
+                                
+                                <ui:Button
+                                    Content="Cancel"
+                                    Appearance="Secondary"
+                                    Margin="0,0,8,0"
+                                    Command="{Binding CancelCommand}"/>
+                            </StackPanel>
+
+                            
                             <ui:TextBox
                                 Icon="Document24"
                                 PlaceholderText="Select address file"
@@ -173,29 +80,107 @@
                     </Grid>
                 </ui:Card>
 
-                <!-- Action Buttons -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <ui:Button
-                        Grid.Column="1"
-                        Content="Cancel"
-                        Appearance="Secondary"
-                        Margin="0,0,8,0"
-                        Command="{Binding CancelCommand}"/>
-
-                    <ui:Button
-                        Grid.Column="2"
-                        Content="Process"
-                        Icon="ArrowUpload24"
-                        Appearance="Primary"
-                        Command="{Binding ProcessCommand}"/>
-                </Grid>
+               
             </StackPanel>
+
+            <!-- Required Information (Mail Request) -->
+            <ui:Card Grid.Row="2" Margin="0,0,0,16">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <ui:TextBlock
+         Text="Required Information"
+         FontSize="16"
+         FontWeight="Medium"
+         Margin="0,0,0,16"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Row 1 -->
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Account Id" Margin="0,0,0,4"/>
+                                <ui:TextBox
+             PlaceholderText="Account ID"
+             Text="{Binding AccountID}"
+             Icon="PersonCard24"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
+                                <ui:TextBlock Text="Mailing Reference" Margin="0,0,0,4"/>
+                                <ui:TextBox
+                 Grid.Row="1" Grid.Column="1"
+                 PlaceholderText="Mailing Reference"
+                 Text="{Binding MailingReference}"
+                 Icon="Mail24"/>
+                            </StackPanel>
+
+                            <!-- Row 2 -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Mail Format" Margin="0,0,0,4"/>
+                                <ComboBox
+                 SelectedItem="{Binding MailFormat}"
+                 ItemsSource="{Binding MailFormatOptions}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
+                                <ui:TextBlock Text="Expected Delivery Date" Margin="0,0,0,4"/>
+                                <DatePicker
+                 SelectedDate="{Binding ExpectedDelivery}"/>
+                            </StackPanel>
+
+                            <!-- Row 3 -->
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Deposit Type" Margin="0,0,0,4"/>
+                                <ComboBox
+                 SelectedItem="{Binding DepositType}"
+                 ItemsSource="{Binding DepositTypeOptions}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="8,0,0,12">
+                                <ui:TextBlock Text="Deposit Identifier" Margin="0,0,0,4"/>
+
+                                <ui:TextBox
+                 PlaceholderText="Deposit Identifier"
+                 Text="{Binding DepositIdentifier}"
+                 Icon="DocumentNumber24"/>
+                            </StackPanel>
+
+                            <!-- Row 4 -->
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Sequence Number" Margin="0,0,0,4"/>
+                                <ui:TextBox
+             Grid.Row="1" Grid.Column="0"
+             PlaceholderText="Sequence Number"
+             Text="{Binding SequenceNumber}"
+             Icon="Number24"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        
+                    </StackPanel>
+                </Grid>
+            </ui:Card>
+            
         </Grid>
     </ScrollViewer>
 </Page>

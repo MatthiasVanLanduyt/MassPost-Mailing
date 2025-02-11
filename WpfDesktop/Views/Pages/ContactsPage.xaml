@@ -16,9 +16,8 @@
                          Source="{Binding AvailableLanguages}" />
     </Page.Resources>
 
-    <Grid>
-        <Grid Margin="24">
-            <Grid.RowDefinitions>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -26,189 +25,189 @@
             </Grid.RowDefinitions>
 
             <!-- Header -->
-            <TextBlock
-            Grid.Row="0"
-            FontSize="28"
-            FontWeight="DemiBold"
-            Text="Contacts" />
-            
-            
-            <!-- Search and Add Bar -->
-            <Grid Grid.Row="1" Margin="0,24,0,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Margin="0,0,0,24">
+                <ui:TextBlock
+                    Text="Contacts"
+                    FontSize="28"
+                    FontTypography="Title"/>
+                <ui:TextBlock
+                    Text="Manage who will receive notifications after MassPost upload"
+                    FontSize="14"
+                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
 
-               
-                
+            <ui:Card Grid.Row="1" Margin="0,8,0,8">
+
                 <StackPanel Orientation="Horizontal"
-                            Margin="24">
-                    <!-- Add Button -->
-                    <ui:Button
-                        Grid.Column="1"
-                        Appearance="Secondary"
-                        Command="{Binding AddContactCommand}"
-                        Icon="{ui:SymbolIcon Symbol=Add24}"
+                                HorizontalAlignment="Left">
+                        <!-- Add Button -->
+                        <ui:Button
+                            Margin="0,0,8,0"
+                            Appearance="Secondary"
+                            Command="{Binding AddContactCommand}"
+                            Icon="{ui:SymbolIcon Symbol=Add24}"
                         >
-                        Add
-                    </ui:Button>
+                            Add
+                        </ui:Button>
 
                         <!-- Add Button -->
-                    <ui:Button
-                        Grid.Column="1"
-                        Appearance="Primary"
-                        Command="{Binding SaveCommand}"
-                        Icon="{ui:SymbolIcon Symbol=Save24}" >
-                        Save
-                    </ui:Button>
-                </StackPanel>
-            </Grid>
+                        <ui:Button
+                            Appearance="Primary"
+                            Command="{Binding SaveCommand}"
+                            Icon="{ui:SymbolIcon Symbol=Save24}" >
+                            Save
+                        </ui:Button>
+                    </StackPanel>
+            </ui:Card>
+            <!-- Search and Add Bar -->
+            
 
             <!-- DataGrid -->
-            <DataGrid
-            Grid.Row="3"
-            Margin="0,8,0,0"
-            AutoGenerateColumns="False"
-            Background="Transparent"
-            BorderThickness="1"
-            CanUserAddRows="False"
-            CanUserDeleteRows="True"
-            GridLinesVisibility="Horizontal"
-            HeadersVisibility="Column"
-            IsReadOnly="False"
-            ItemsSource="{Binding Contacts}"
-            RowHeaderWidth="0"
-            SelectionMode="Single"
-            SelectionUnit="FullRow">
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorPrimaryBrush}" />
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{ui:ThemeResource AccentTextFillColorPrimaryBrush }" />
-                                <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorInverseBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="False">
-                                <Setter Property="Background" Value="{ui:ThemeResource ApplicationBackgroundBrush}" />
-                                <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorPrimaryBrush}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
-                    Header="First Name">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.EditingElementStyle>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.EditingElementStyle>
-                    </DataGridTextColumn>
+            <ui:Card Grid.Row="2" Margin="0,8,0,0">
+                <DataGrid
 
-                    <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
-                    Header="Last Name">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.EditingElementStyle>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.EditingElementStyle>
-                    </DataGridTextColumn>
+                    
+                    AutoGenerateColumns="False"
+                    Background="Transparent"
+                    BorderThickness="1"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="True"
+                    GridLinesVisibility="Horizontal"
+                    HeadersVisibility="Column"
+                    IsReadOnly="False"
+                    ItemsSource="{Binding Contacts}"
+                    RowHeaderWidth="0"
+                    SelectionMode="Single"
+SelectionUnit="FullRow">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorPrimaryBrush}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{ui:ThemeResource AccentTextFillColorPrimaryBrush }" />
+                                    <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorInverseBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter Property="Background" Value="{ui:ThemeResource ApplicationBackgroundBrush}" />
+                                    <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorPrimaryBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+        Width="*"
+        Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
+        Header="First Name">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
 
-                    <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                    Header="Email">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.EditingElementStyle>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.EditingElementStyle>
-                    </DataGridTextColumn>
+                        <DataGridTextColumn
+        Width="*"
+        Binding="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+        Header="Last Name">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
 
-                    <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
-                    Header="Phone">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.EditingElementStyle>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.EditingElementStyle>
-                    </DataGridTextColumn>
+                        <DataGridTextColumn
+        Width="*"
+        Binding="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+        Header="Email">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
 
-                    <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding Mobile, UpdateSourceTrigger=PropertyChanged}"
-                    Header="Mobile">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.EditingElementStyle>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Margin" Value="8,0" />
-                            </Style>
-                        </DataGridTextColumn.EditingElementStyle>
-                    </DataGridTextColumn>
+                        <DataGridTextColumn
+        Width="*"
+        Binding="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
+        Header="Phone">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
 
-                    <DataGridComboBoxColumn
-                    Width="*"
-                    Header="Language"
-                        SelectedValueBinding="{Binding LanguageCode}"
-                         ItemsSource="{Binding Source={StaticResource LanguagesSource}}"
-                        DisplayMemberPath="."
-                        SelectedValuePath="."
-                    />
+                        <DataGridTextColumn
+        Width="*"
+        Binding="{Binding Mobile, UpdateSourceTrigger=PropertyChanged}"
+        Header="Mobile">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="8,0" />
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
 
-                    <!-- Delete Button Column -->
-                    <DataGridTemplateColumn Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ui:Button
-                                Margin="8,0"
-                                Padding="8"
-                                
-                                Background="Transparent"
-                                Command="{Binding DataContext.DeleteContactCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                CommandParameter="{Binding}">
-                                    <ui:SymbolIcon Symbol="Delete24" Foreground="DarkRed"/>
-                                </ui:Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+                        <DataGridComboBoxColumn
+        Width="*"
+        Header="Language"
+            SelectedValueBinding="{Binding LanguageCode}"
+             ItemsSource="{Binding Source={StaticResource LanguagesSource}}"
+            DisplayMemberPath="."
+            SelectedValuePath="."
+        />
+
+                        <!-- Delete Button Column -->
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ui:Button
+                    Margin="8,0"
+                    Padding="8"
+                    
+                    Background="Transparent"
+                    Command="{Binding DataContext.DeleteContactCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                    CommandParameter="{Binding}">
+                                        <ui:SymbolIcon Symbol="Delete24" Foreground="DarkRed"/>
+                                    </ui:Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ui:Card>
+            
         </Grid>
-    </Grid>
 </Page>

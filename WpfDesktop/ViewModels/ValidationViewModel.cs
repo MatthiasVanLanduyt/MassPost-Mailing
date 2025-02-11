@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.IO;
 using System.Windows;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Win32;
-using Validator.Application.Addresses;
-using Validator.Domain.Addresses;
-using WpfDesktop.Services;
-using Validator.Domain.MailingResponses.Services;
-using Validator.Application.Mailings.Contracts;
 using CommunityToolkit.Mvvm.Input;
-using Validator.Domain.MailingResponses.Models;
+using Microsoft.Win32;
+using Validator.Application.Mailings.Contracts;
 using Validator.Application.Mailings.Services;
+using Validator.Domain.MailingResponses.Models;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
+using Wpf.Ui.Extensions;
+using WpfDesktop.Services;
 
 namespace WpfDesktop.ViewModels
 {
@@ -40,13 +35,15 @@ namespace WpfDesktop.ViewModels
 
         private readonly ApplicationState _state;
         private readonly IMailingResponseParser _responseParser;
+        private readonly ISnackbarService _snackbarService;
         private readonly MergeAddressValidationService _mergeService;
 
         private readonly IRelayCommand _uploadCommand;
-        public ValidationViewModel(ApplicationState state, IMailingResponseParser responseParser)
+        public ValidationViewModel(ApplicationState state, IMailingResponseParser responseParser, ISnackbarService snackbarService)
         {
             _state = state;
             _responseParser = responseParser;
+            _snackbarService = snackbarService;
             _mergeService = new MergeAddressValidationService();
 
 
@@ -71,7 +68,12 @@ namespace WpfDesktop.ViewModels
 
                     if (string.IsNullOrEmpty(SelectedFilePath))
                     {
-                        MessageBox.Show("Please select a file to upload", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        _snackbarService.Show(
+                            "No file selected",
+                            $"Please select a file to upload",
+                            ControlAppearance.Caution,
+                            new TimeSpan(0, 0, 3));
+                        
                     }
 
                     //TODO: Verify that the file is an XML file
@@ -90,21 +92,38 @@ namespace WpfDesktop.ViewModels
 
                     ValidatedAddresses = _state.ValidationResponse.ValidatedAddressList?.Where(a => a.Severity != "INFO").ToList() ?? new List<ValidatedAddress>();
 
+                    _snackbarService.Show(
+                        "Validation Successfull",
+                        $"Successfully validated {ValidatedAddresses} address lines from file {SelectedFilePath}",
+                        ControlAppearance.Success,
+                        new TimeSpan(0, 0, 3));
                 }
             }
 
             catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show($"Access denied: {ex.Message}. Please ensure you have proper permissions.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _snackbarService.Show(
+                    "Unauthorized",
+                    $"Access denied: {ex.Message}. Please ensure you have proper permissions.",
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 3));
             }
             catch (IOException ex)
             {
-                MessageBox.Show($"File access error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _snackbarService.Show(
+                    "File access error",
+                    $"File access error: {ex.Message}",
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 3));
+                
             }
             catch (Exception ex)
             {
-                // Log the exception details
-                MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _snackbarService.Show(
+                    "Failed to validated",
+                    $"An error occurred: {ex.Message}",
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 3));
             }
 
             finally

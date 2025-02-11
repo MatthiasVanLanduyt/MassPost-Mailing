@@ -7,76 +7,151 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="{Binding Title}">
+      Title="Settings">
 
-    <Grid>
+    <Grid Margin="24">
 
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ui:InfoBar Message="Settings Page" Severity="Informational" />
-        <!-- Optional Settings -->
-        <Expander Grid.Row="1" Margin="0,0,0,16">
-            <Expander.Header>
-                <ui:TextBlock
-             Text="File Generation Options"
-             FontSize="16"
-             FontWeight="Medium"/>
-            </Expander.Header>
-            <ui:Card Margin="0,8,0,0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
 
-                    <!-- Row 1 -->
-                    <ComboBox
-                 Grid.Column="0"
-                 Margin="0,0,8,12"
-                 
-                 SelectedItem="{Binding OutputFormat}"
-                 ItemsSource="{Binding OutputFormatOptions}"/>
-
-                    <ComboBox
-                 Grid.Column="1"
-                 Margin="8,0,8,12"
-                
-                 SelectedItem="{Binding Mode}"
-                 ItemsSource="{Binding ModeOptions}"/>
-
-                    <ComboBox
-                 Grid.Column="2"
-                 Margin="8,0,0,12"
-                 
-                 SelectedItem="{Binding SortingMode}"
-                 ItemsSource="{Binding SortingModeOptions}"/>
-
-                    <!-- Row 2 -->
-                    <ui:ToggleSwitch
-                 Grid.Row="1" Grid.Column="0"
-                 Margin="0,0,8,0"
-                 Content="Generate MailIds"
-                 IsChecked="{Binding GenerateMailIds}"/>
-
-                    <ui:ToggleSwitch
-                 Grid.Row="1" Grid.Column="1"
-                 Margin="8,0,0,0"
-                 Content="Generate PreSorting"
-                 IsChecked="{Binding GeneratePreSorting}"/>
-                </Grid>
-            </ui:Card>
-        </Expander>
-        <ui:Button Content="Save" Grid.Row="2" Grid.Column="0" Command="{Binding SaveCommand}" Appearance="Primary" HorizontalAlignment="Center"/>
-
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <ui:TextBlock
+                Text="Settings Page"
+                FontSize="28"
+                FontTypography="Title"/>
+            <ui:TextBlock
+                Text="Configure and save mail request settings"
+                FontSize="14"
+                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
+        </StackPanel>
         
-    </Grid>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <!-- File Settings Section -->
+                <ui:Card Margin="0,0,0,16">
+                    <StackPanel>
+                        <ui:TextBlock Text="File Settings" 
+                                 FontSize="16" 
+                                 FontWeight="Medium"
+                                 Margin="0,0,0,12"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Output Format" 
+                                 VerticalAlignment="Center"/>
+                            <ComboBox Grid.Column="1"
+                                 Margin="10,5"
+                                 ItemsSource="{Binding OutputFormatOptions}"
+                                 SelectedItem="{Binding MailingSettings.OutputFormat}"/>
+
+                            <TextBlock Text="Default Save Location" 
+                                 Grid.Row="1"
+                                 VerticalAlignment="Center"/>
+                            <Grid Grid.Row="1" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding MailingSettings.DefaultSaveLocation}"
+                                     Margin="10,5"/>
+                                <ui:Button Grid.Column="1"
+                                      Content="Browse"
+                                      Command="{Binding BrowseFolderCommand}"
+                                      Margin="5"/>
+                            </Grid>
+                        </Grid>
+                    </StackPanel>
+                </ui:Card>
+
+                <!-- MassPost Settings Section -->
+                <ui:Card Margin="0,0,0,16">
+                    <StackPanel>
+                        <ui:TextBlock Text="MassPost Settings" 
+                                 FontSize="16" 
+                                 FontWeight="Medium"
+                                 Margin="0,0,0,12"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Sender ID" Margin="0,0,0,4"/>
+                                <ui:TextBox Text="{Binding MailingSettings.SenderId}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
+                                <ui:TextBlock Text="Mode" Margin="0,0,0,4"/>
+                                <ComboBox ItemsSource="{Binding ModeOptions}"
+                                            SelectedItem="{Binding MailingSettings.Mode}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Priority"  Margin="0,0,0,4"/>
+                                <ComboBox  SelectedItem="{Binding MailingSettings.Priority}"
+                                           ItemsSource="{Binding PriorityOptions}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
+                                <ui:TextBlock Text="Language (addresses)" Margin="0,0,0,4"/>
+                                <ComboBox
+                                    SelectedItem="{Binding MailingSettings.AddressLanguage}"
+                                    ItemsSource="{Binding LanguageOptions}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Let BPost Generate Mail IDs" Margin="0,0,0,4"/>
+                                <ui:ToggleSwitch IsChecked="{Binding MailingSettings.GenerateMailIds}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,8,12">
+                                <ui:TextBlock Text="Let BPost Generate Presorting Codes" Margin="0,0,0,4"/>
+                                <ui:ToggleSwitch  IsChecked="{Binding MailingSettings.GeneratePreSorting}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="8,0,0,12">
+                                <ui:TextBlock Text="Sorting Mode"  Margin="0,0,0,4"/>
+                                <ComboBox ItemsSource="{Binding SortingModeOptions}"
+                                          SelectedItem="{Binding MailingSettings.SortingMode}"/>
+                            </StackPanel>
+
+                        </Grid>
+                    </StackPanel>
+                </ui:Card>
+
+                <!-- Action Buttons -->
+                <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        Margin="0,10">
+                    <ui:Button Content="Save"
+                          Command="{Binding SaveCommand}"
+                          Appearance="Primary"
+                          Margin="0,0,10,0"/>
+                    <ui:Button Content="Reset to Defaults"
+                          Command="{Binding ResetCommand}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        </Grid>
 </Page>

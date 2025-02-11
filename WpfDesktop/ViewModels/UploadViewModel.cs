@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,24 +6,22 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using Sharedkernel;
 using Validator.Application.Addresses;
-using Validator.Application.Defaults;
-using Validator.Application.Files;
-using Validator.Application.Mailings.Contracts;
-using Validator.Application.Mailings.Services;
-using Validator.Domain.Addresses;
 using Validator.Domain.Mailings.Models;
 using Validator.Domain.Mailings.Services;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
 using WpfDesktop.Contracts.Services;
 using WpfDesktop.Services;
+using INavigationService = WpfDesktop.Contracts.Services.INavigationService;
+using Wpf.Ui.Extensions;
+using System.Net;
 
 namespace WpfDesktop.ViewModels
 {
     public partial class UploadViewModel: ObservableObject
     {
         // Required Information Properties
-        [ObservableProperty]
-        private string senderID = "4493";
-
+        
         [ObservableProperty]
         private string accountID = "73771";
 
@@ -40,12 +33,6 @@ namespace WpfDesktop.ViewModels
 
         [ObservableProperty]
         private string mailFormat = "Small";
-
-        [ObservableProperty]
-        private string priority = "NP";
-
-        [ObservableProperty]
-        private string addressLanguage = "nl";
 
         [ObservableProperty]
         private DateTime expectedDelivery = DateTime.Now.AddDays(1);
@@ -65,8 +52,6 @@ namespace WpfDesktop.ViewModels
 
         // Collection Properties for ComboBoxes
         public List<string> MailFormatOptions { get; } = new() { MailFormats.SmallFormat,MailFormats.LargeFormat };
-        public List<string> PriorityOptions { get; } = new() { "NP", "P" };
-        public List<string> LanguageOptions { get; } = new() { "nl", "fr", "en" };
         public List<string> DepositTypeOptions { get; } = new() { "depositRef", "tempDepositRef", "N" };
         
         // Commands
@@ -83,17 +68,22 @@ namespace WpfDesktop.ViewModels
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ApplicationState _state;
         private readonly IContactService _contactService;
+        private readonly ISettingsService _settingsService;
+        private readonly ISnackbarService _snackbarService;
 
         public UploadViewModel(
             ApplicationState state,
             IDateTimeProvider dateTimeProvider,
             INavigationService navigationService,
-            IContactService contactService)
+            IContactService contactService,
+            ISettingsService settingsService,ISnackbarService snackbarService)
         {
             _state = state;
             _navigationService = navigationService;
             _dateTimeProvider = dateTimeProvider;
             _contactService = contactService;
+            _settingsService = settingsService;
+            _snackbarService = snackbarService;
 
 
 
@@ -104,84 +94,114 @@ namespace WpfDesktop.ViewModels
 
         private async Task UploadFileAsync()
         {
-            try
-            {
-                var openFileDialog = new OpenFileDialog
-                {
-                    Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
-                    FilterIndex = 1
-                };
+           try
+           {
+               var openFileDialog = new OpenFileDialog
+               {
+                   Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                   FilterIndex = 1
+               };
 
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    SelectedFilePath = openFileDialog.FileName;
-                    IsFileSelected = true;
-                    _processCommand.NotifyCanExecuteChanged();
+               if (openFileDialog.ShowDialog() == true)
+               {
+                   SelectedFilePath = openFileDialog.FileName;
+                   IsFileSelected = true;
+                   _processCommand.NotifyCanExecuteChanged();
 
-                    if (string.IsNullOrEmpty(SelectedFilePath))
-                    {
-                        MessageBox.Show("Please select a file to upload", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                   if (string.IsNullOrEmpty(SelectedFilePath))
+                   {
+                       _snackbarService.Show(
+                           "No file selected",
+                           $"Please select a file to upload",
+                           ControlAppearance.Caution,
+                           new TimeSpan(0, 0, 3));
+                        
+                   }
 
-                    //TODO: Verify that the file is a CSV file
+                   //TODO: Verify that the file is a CSV file
 
-                    using var stream = new FileStream(SelectedFilePath, FileMode.Open, FileAccess.Read);
+                   using var stream = new FileStream(SelectedFilePath, FileMode.Open, FileAccess.Read);
 
-                    _state.AddressList = CsvAddressParser.ReadCsvFile(stream).ToList();
+                   _state.AddressList = CsvAddressParser.ReadCsvFile(stream).ToList();
 
-                    _state.HasUploadedAddressList = true;
+                   _state.HasUploadedAddressList = true;
 
-                    //TODO: Show messagebox with number of address lines read
-                    MessageBox.Show($"Successfully read {_state.AddressCount} address lines from file {openFileDialog.FileName}");
-                    
-                    CommandManager.InvalidateRequerySuggested();
-                }
+                   _snackbarService.Show(
+                       "Address file uploaded",
+                       $"Successfully read { _state.AddressCount} address lines from file {SelectedFilePath}",
+                       ControlAppearance.Success,
+                       new TimeSpan(0, 0, 3));
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error reading file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                   CommandManager.InvalidateRequerySuggested();
+               }
+
+           }
+           catch (Exception ex)
+           {
+               _snackbarService.Show(
+                   "Address file upload failed",
+                   $"Error reading file {_state.AddressCount} address lines from file {SelectedFilePath}",
+                   ControlAppearance.Danger,
+                   new TimeSpan(0, 0, 3));
+                
+           }
 
         }
 
         private async Task ProcessFileAsync()
         {
+            var validation = ValidateInput();
+
+            if (!validation)
+            {
+                _snackbarService.Show(
+                    "Invalid input",
+                    "Please provide all required information",
+                    ControlAppearance.Caution,
+                    new TimeSpan(0, 0, 3));
+
+                return;
+            }
+
             try
-            {             
+            {
+                var settings = _settingsService.GetMailingSettings();
                 // Create a request
                 var requestHeader = new MailIdRequestHeader
                 {
-
-                    SenderId = int.Parse(SenderID),
+                    SenderId = int.Parse(settings.SenderId),
                     AccountId = int.Parse(AccountID),
                     MailingRef = MailingReference,
                     ExpectedDeliveryDate = DateOnly.FromDateTime((DateTime)ExpectedDelivery),
                     CustomerBarcodeId = 530, // Consider making this configurable
-                    CustomerFileRef = $"{_dateTimeProvider.DateStamp}MM",
+                    CustomerFileRef = $"{_dateTimeProvider.DateStamp}{SequenceNumber}",
                     DepositType = DepositType,
                     DepositIdentifier = DepositIdentifier,
                 };
 
-                var sequenceNumber = int.Parse(SequenceNumber);
                 // Create a factory with your bpost customer barcode ID
-                var factory = new MailIdFactory(requestHeader.CustomerBarcodeId, sequenceNumber, _dateTimeProvider.DayOfTheYear); // Your 5-digit code from bpost
+                var factory = new MailIdFactory(requestHeader.CustomerBarcodeId, int.Parse(SequenceNumber), _dateTimeProvider.DayOfTheYear); // Your 5-digit code from bpost
                 
                 var contacts = _contactService.GetContacts();
+
+                var options = new MailIdOptions
+                {
+                    Mode = settings.Mode,
+                    GenMid = settings.GenerateMailIds,
+                    GenPsc = settings.GeneratePreSorting
+                };
 
                 var request = new MailIdRequest
                 {
                     Header = requestHeader,
-                    Options = _state.MailIdOptions,
+                    Options = options,
                     MailFormat = MailFormat,
                     MailFileInfo = MailingTypes.MailId,
                     Contacts = contacts
                 };
 
-                
-
-                string priority = Priority;
-                string language = AddressLanguage;
+                string priority = settings.Priority;
+                string language = settings.AddressLanguage;
 
                 // Convert your addresses
                 foreach (var addressLine in _state.AddressList)
@@ -196,27 +216,32 @@ namespace WpfDesktop.ViewModels
 
                 _navigationService.NavigateTo(typeof(HomeViewModel).FullName);
 
+                _snackbarService.Show(
+                    "Mailing request generated",
+                    $"Mailing request is available to download",
+                    ControlAppearance.Success,
+                    new TimeSpan(0, 0, 3));
+
             }
 
             catch (Exception ex)
             {
-                // Handle error appropriately
-                // Show error message to user
+                _snackbarService.Show(
+                    "Failed to generate mailing request",
+                    $"Error generating mailing request: \n{ex.Message}",
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 3));
             }
         }
 
         private bool CanProcessFile()
         {
-            var fileSelected = IsFileSelected;
-            var inputValid = ValidateInput();
-
-            return fileSelected && inputValid;
+            return IsFileSelected;
         }
 
         private bool ValidateInput()
         {
-            return !string.IsNullOrEmpty(SenderID) &&
-                   !string.IsNullOrEmpty(AccountID) &&
+            return !string.IsNullOrEmpty(AccountID) &&
                    !string.IsNullOrEmpty(SequenceNumber) &&
                    !string.IsNullOrEmpty(DepositIdentifier);
         }
