@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Windows;
 using Microsoft.Extensions.Options;
 using Validator.Domain.Mailings.Models;
 using WpfDesktop.Contracts.Services;
@@ -17,7 +18,8 @@ namespace WpfDesktop.Services
 
         private readonly Dictionary<string, Type> _knownTypes = new()
         {
-            { "ContactList", typeof(List<Contact>) }
+            { "ContactList", typeof(List<Contact>)},
+            { "MailingSettings", typeof(MailingSettings) }
             // Add other known types here if needed
         };
 
@@ -38,39 +40,36 @@ namespace WpfDesktop.Services
 
         private void InitializeDefaultProperties()
         {
-            if (!App.Current.Properties.Contains("ContactList"))
+            if (!Application.Current.Properties.Contains("ContactList"))
             {
                 // Use the contacts from configuration
-                App.Current.Properties["ContactList"] = _appConfig.DefaultContacts;
+                Application.Current.Properties["ContactList"] = _appConfig.DefaultContacts;
             }
         }
 
         public void PersistData()
         {
-            if (App.Current.Properties != null)
+            var folderPath = Path.Combine(_localAppData, _appConfig.ConfigurationsFolder);
+            var fileName = _appConfig.AppPropertiesFileName;
+
+            // Convert any List<T> to proper objects before saving
+            var propertiesToSave = new Dictionary<object, object>();
+
+            foreach (DictionaryEntry entry in Application.Current.Properties)
             {
-                var folderPath = Path.Combine(_localAppData, _appConfig.ConfigurationsFolder);
-                var fileName = _appConfig.AppPropertiesFileName;
-
-                // Convert any List<T> to proper objects before saving
-                var propertiesToSave = new Dictionary<object, object>();
-
-                foreach (DictionaryEntry entry in App.Current.Properties)
+                var value = entry.Value;
+                if (value != null && value.GetType().IsGenericType &&
+                    value.GetType().GetGenericTypeDefinition() == typeof(List<>))
                 {
-                    var value = entry.Value;
-                    if (value != null && value.GetType().IsGenericType &&
-                        value.GetType().GetGenericTypeDefinition() == typeof(List<>))
-                    {
-                        // Serialize and deserialize to ensure proper object structure
-                        value = JsonSerializer.Deserialize(
-                            JsonSerializer.Serialize(value),
-                            value.GetType());
-                    }
-                    propertiesToSave[entry.Key] = value;
+                    // Serialize and deserialize to ensure proper object structure
+                    value = JsonSerializer.Deserialize(
+                        JsonSerializer.Serialize(value),
+                        value.GetType());
                 }
-
-                _fileService.Save(folderPath, fileName, propertiesToSave);
+                propertiesToSave[entry.Key] = value;
             }
+
+            _fileService.Save(folderPath, fileName, propertiesToSave);
         }
 
         public void RestoreData()
@@ -79,23 +78,20 @@ namespace WpfDesktop.Services
             var fileName = _appConfig.AppPropertiesFileName;
             var properties = _fileService.Read<IDictionary>(folderPath, fileName);
 
-            if (properties != null)
+            foreach (DictionaryEntry entry in properties)
             {
-                foreach (DictionaryEntry entry in properties)
-                {
-                    var key = entry.Key.ToString();
-                    var value = entry.Value;
+                var key = entry.Key.ToString();
+                var value = entry.Value;
 
-                    if (_knownTypes.TryGetValue(key, out Type targetType))
-                    {
-                        var deserializedValue = JsonSerializer.Deserialize(value.ToString(), targetType);
-                        App.Current.Properties[key] = deserializedValue;
-                    }
+                if (_knownTypes.TryGetValue(key, out Type targetType))
+                {
+                    var deserializedValue = JsonSerializer.Deserialize(value.ToString(), targetType);
+                    Application.Current.Properties[key] = deserializedValue;
+                }
                                        
-                    else
-                    {
-                        App.Current.Properties[key] = value;
-                    }
+                else
+                {
+                    Application.Current.Properties[key] = value;
                 }
             }
         }

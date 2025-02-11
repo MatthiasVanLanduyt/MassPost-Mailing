@@ -6,6 +6,7 @@ using Validator.Application.Files;
 using Validator.Application.Mailings.Contracts;
 using Validator.Application.Mailings.Services;
 using WpfDesktop.Contracts.Services;
+using WpfDesktop.Models;
 using WpfDesktop.Services;
 
 namespace WpfDesktop.ViewModels
@@ -15,9 +16,12 @@ namespace WpfDesktop.ViewModels
 
         private readonly INavigationService _navigationService;
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly ISettingsService _settingsService;
 
         [ObservableProperty]
         private ApplicationState _state;
+
+        private MailingSettings _settings;
 
         public ICommand NavigateToUploadCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
         public ICommand NavigateToGenerateCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
@@ -29,11 +33,14 @@ namespace WpfDesktop.ViewModels
         private readonly ICommand _downloadMailAddressListCommand;
         private readonly ICommand _downloadMailRequestCommand;
 
-        public HomeViewModel(INavigationService navigationService, ApplicationState state, IDateTimeProvider dateTimeProvider)
+        public HomeViewModel(INavigationService navigationService, ApplicationState state, IDateTimeProvider dateTimeProvider, ISettingsService settingsService)
         {
             _navigationService = navigationService;
             _state = state;
             _dateTimeProvider = dateTimeProvider;
+            _settingsService = settingsService;
+
+            _settings = _settingsService.GetMailingSettings();
 
             _downloadMailRequestCommand = new RelayCommand(DownloadMailRequest);
             _downloadMailAddressListCommand = new RelayCommand(DownloadMailAddressList);
@@ -41,12 +48,12 @@ namespace WpfDesktop.ViewModels
 
         private void DownloadMailRequest()
         {
-            var generator = _state.OutputFormat == "XML" ?
+            var generator = _settings.OutputFormat == "XML" ?
                    new XmlMailIdFileGenerator(_dateTimeProvider) :
                    new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
 
             var file = generator.GenerateFile(_state.MailingRequest);
-            var savedFile = FileOperations.SaveFile(file, @"C:\Users\vanlanm\Downloads");
+            var savedFile = FileOperations.SaveFile(file,_settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);
 
             _state.HasDownloadedMailingRequest = true;
@@ -58,7 +65,7 @@ namespace WpfDesktop.ViewModels
 
             var file = generator.GenerateFile(_state.MailingRequest.Items, "AddressList.csv");
 
-            var savedFile = FileOperations.SaveFile(file, @"C:\Users\vanlanm\Downloads");
+            var savedFile = FileOperations.SaveFile(file, _settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);
 
             _state.HasDownloadedMailingAddressList = true;

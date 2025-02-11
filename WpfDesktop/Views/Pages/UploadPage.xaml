@@ -54,15 +54,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- Row 1 -->
-                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
-                            <ui:TextBlock Text="Sender Id" Margin="0,0,0,4"/>
-                            <ui:TextBox
-                            Grid.Row="0" Grid.Column="0"
-                            PlaceholderText="Sender ID"
-                            Text="{Binding SenderID}"
-                            Icon="Person24"/>
-                        </StackPanel>
-
+                        
                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
                             <ui:TextBlock Text="Account Id" Margin="0,0,0,4"/>
                             <ui:TextBox
@@ -100,12 +92,6 @@
                                 ItemsSource="{Binding MailFormatOptions}"/>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="1" Margin="8,0,0,12">
-                            <ui:TextBlock Text="Priority" Margin="0,0,0,4"/>
-                            <ComboBox
-                                SelectedItem="{Binding Priority}"
-                                ItemsSource="{Binding PriorityOptions}"/>
-                        </StackPanel>
                         <!-- Row 4 -->
                         <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,8,12">
                             <ui:TextBlock Text="Address Language" Margin="0,0,0,4"/>

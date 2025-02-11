@@ -73,6 +73,7 @@ namespace WpfDesktop
             services.AddSingleton<Contracts.Services.IPageService, PageService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddTransient<IContactService, ContactService>();
+            services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<Contracts.Services.INavigationService, Services.NavigationService>();
             services.AddSingleton<ApplicationState>();
             services.AddSingleton<ISnackbarService, SnackbarService>();

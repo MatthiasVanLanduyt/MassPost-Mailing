@@ -20,14 +20,7 @@ namespace WpfDesktop.Services
         public bool HasValidatedAddresses { get; set; }
         public List<AddressLine> AddressList { get; set; } = [];
 
-        public MailIdOptions MailIdOptions { get; private set; }
-
         public int AddressCount => AddressList.Count;
-
-        public string OutputFormat { get; set; }
-
-        public string SortingMode { get; set; }
-        // Add any other state properties you need
 
         public MailIdRequest MailingRequest { get; set; }
 
@@ -35,24 +28,6 @@ namespace WpfDesktop.Services
 
         public ValidationResponse ValidationResponse { get; set; }
 
-        public ApplicationState()
-        {
-            MailIdOptions = InitializeMailIdOptions();
-            OutputFormat = MailListFileOutputs.XML;
-            SortingMode = "Customer Order (CU)";
-        }
-
-        private MailIdOptions InitializeMailIdOptions()
-        {
-            return new MailIdOptions 
-            { 
-                GenMid = false, 
-                GenPSC = true,
-                Mode = "T"
-            };
-
-
-        }
     }
 
 }
