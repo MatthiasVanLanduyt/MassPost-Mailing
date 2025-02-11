@@ -9,27 +9,23 @@ namespace Validator.Domain.MailingResponses.Services
     {
         private readonly Dictionary<string, StatusCode> _statusCodes;
 
-        public XmlMailingResponseParser()
+        public XmlMailingResponseParser(string statusCodesJson)
         {
-
-            // Load status codes at startup
-            //var path = Path.Combine(applicationPath, "Addresses", "BelgianPostalCodes.json");
-            _statusCodes = LoadStatusCodes();
+            _statusCodes = LoadStatusCodes(statusCodesJson);
         }
 
-        private Dictionary<string, StatusCode> LoadStatusCodes()
+        private Dictionary<string, StatusCode> LoadStatusCodes(string json)
         {
-            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var filePath = Path.Combine(appDirectory, "Mailings", "statuscodes.json");
-
-            if (!File.Exists(filePath))
+            try
             {
-                throw new FileNotFoundException($"Status codes file not found at {filePath}");
+                var codes = JsonSerializer.Deserialize<List<StatusCode>>(json);
+                return codes?.ToDictionary(x => x.Code) ?? new Dictionary<string, StatusCode>();
             }
-
-            var json = File.ReadAllText(filePath);
-            var codes = JsonSerializer.Deserialize<List<StatusCode>>(json);
-            return codes.ToDictionary(x => x.Code);
+            catch (Exception ex)
+            {
+                // Log error or handle as needed
+                return new Dictionary<string, StatusCode>();
+            }
         }
         public MailingResponse ParseResponse(Stream stream)
         {

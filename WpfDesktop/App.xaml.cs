@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Validator.Application.DependencyInjection;
+using Validator.Application.Mailings.Contracts;
+using Validator.Domain.MailingResponses.Services;
 using Wpf.Ui;
 using WpfDesktop.Contracts.Services;
 using WpfDesktop.Contracts.Views;
@@ -70,13 +72,19 @@ namespace WpfDesktop
 
             // Services
             services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
-            services.AddSingleton<Contracts.Services.IPageService, PageService>();
+            services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddTransient<IContactService, ContactService>();
             services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<Contracts.Services.INavigationService, Services.NavigationService>();
             services.AddSingleton<ApplicationState>();
             services.AddSingleton<ISnackbarService, SnackbarService>();
+
+            services.AddSingleton<IMailingResponseParser>(sp =>
+            {
+                var json = File.ReadAllText("statuscodes.json");
+                return new XmlMailingResponseParser(json);
+            });
 
 
             // Views and ViewModels
