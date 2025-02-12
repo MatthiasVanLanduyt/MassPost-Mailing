@@ -14,7 +14,7 @@ namespace Validator.Application.Mailings.Models
     {
         public MailIdItemMap()
         {
-            Map(m => m.MailIdNum).Index(0);
+            Map(m => m.EanBarCode).Index(0);
             Map(m => m.AddressDetails.Street).Index(1);
             Map(m => m.AddressDetails.PostalCode).Index(2);
             Map(m => m.AddressDetails.City).Index(3);

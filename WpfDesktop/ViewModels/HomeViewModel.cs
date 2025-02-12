@@ -61,7 +61,7 @@ namespace WpfDesktop.ViewModels
                    new XmlMailIdFileGenerator(_dateTimeProvider) :
                    new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
 
-            var file = generator.GenerateFile(_state.MailingRequest);
+            var file = generator.GenerateFile(State.MailingRequest);
             var savedFile = FileOperations.SaveFile(file,_settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);
 
@@ -72,7 +72,7 @@ namespace WpfDesktop.ViewModels
         {
             var generator = new CsvMailIdAddressFileGenerator();
 
-            var file = generator.GenerateFile(_state.MailingRequest.Items, "AddressList.csv");
+            var file = generator.GenerateFile(State.MailingRequest.Items, $"AddressList_{State.MailingRequest.Header.CustomerFileRef}.csv");
 
             var savedFile = FileOperations.SaveFile(file, _settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);

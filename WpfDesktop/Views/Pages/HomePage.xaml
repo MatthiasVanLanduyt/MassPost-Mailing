@@ -112,7 +112,7 @@
                                    IsEnabled="{Binding State.HasGeneratedMailingRequest}"
                                    Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
                                    Command="{Binding DownloadMailAddressListCommand}"
-                                   Appearance="{Binding DownloadAddressListButtonAppearance}">>
+                                   Appearance="{Binding DownloadAddressListButtonAppearance}">
                             Download Address List
 
                         </ui:Button>
