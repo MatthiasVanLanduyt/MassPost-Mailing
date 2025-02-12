@@ -19,6 +19,7 @@ namespace Validator.Application.Mailings.Models
             Map(m => m.AddressDetails.PostalCode).Index(2);
             Map(m => m.AddressDetails.City).Index(3);
             Map(m => m.AddressDetails.Contact).Index(4);
+            Map(m => m.AddressDetails.Company).Index(5);
 
         }
     }

@@ -29,16 +29,13 @@ namespace WpfDesktop.ViewModels
         private string sequenceNumber = "01";
 
         [ObservableProperty]
-        private string mailingReference;
-
-        [ObservableProperty]
-        private string mailFormat = "Small";
+        private string mailFormat = MailFormats.SmallFormat;
 
         [ObservableProperty]
         private DateTime expectedDelivery = DateTime.Now.AddDays(1);
 
         [ObservableProperty]
-        private string depositType = "tempDepositRef";
+        private string depositType = DepositIdentifierTypes.TemporaryDepositReference;
 
         [ObservableProperty]
         private string depositIdentifier;
@@ -51,8 +48,12 @@ namespace WpfDesktop.ViewModels
         private bool isFileSelected;
 
         // Collection Properties for ComboBoxes
-        public List<string> MailFormatOptions { get; } = new() { MailFormats.SmallFormat,MailFormats.LargeFormat };
-        public List<string> DepositTypeOptions { get; } = new() { "depositRef", "tempDepositRef", "N" };
+        public List<string> MailFormatOptions { get; } = [MailFormats.SmallFormat, MailFormats.LargeFormat];
+        public List<string> DepositTypeOptions { get; } =
+        [
+            DepositIdentifierTypes.TemporaryDepositReference, DepositIdentifierTypes.DepositReference,
+            DepositIdentifierTypes.NoDeposit
+        ];
         
         // Commands
 
@@ -171,7 +172,7 @@ namespace WpfDesktop.ViewModels
                 {
                     SenderId = int.Parse(settings.SenderId),
                     AccountId = int.Parse(AccountID),
-                    MailingRef = MailingReference,
+                    MailingRef = $"{_dateTimeProvider.DateStamp}{SequenceNumber}-01",
                     ExpectedDeliveryDate = DateOnly.FromDateTime((DateTime)ExpectedDelivery),
                     CustomerBarcodeId = 530, // Consider making this configurable
                     CustomerFileRef = $"{_dateTimeProvider.DateStamp}{SequenceNumber}",

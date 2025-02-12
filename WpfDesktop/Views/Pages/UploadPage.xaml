@@ -124,12 +124,9 @@
                             </StackPanel>
 
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
-                                <ui:TextBlock Text="Mailing Reference" Margin="0,0,0,4"/>
-                                <ui:TextBox
-                 Grid.Row="1" Grid.Column="1"
-                 PlaceholderText="Mailing Reference"
-                 Text="{Binding MailingReference}"
-                 Icon="Mail24"/>
+                                <ui:TextBlock Text="Expected Delivery Date" Margin="0,0,0,4"/>
+                                <DatePicker
+                                    SelectedDate="{Binding ExpectedDelivery}"/>
                             </StackPanel>
 
                             <!-- Row 2 -->
@@ -141,10 +138,15 @@
                             </StackPanel>
 
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
-                                <ui:TextBlock Text="Expected Delivery Date" Margin="0,0,0,4"/>
-                                <DatePicker
-                 SelectedDate="{Binding ExpectedDelivery}"/>
+                                <ui:TextBlock Text="Sequence Number" Margin="0,0,0,4"/>
+                                <ui:TextBox
+
+                                    PlaceholderText="Sequence Number"
+                                    Text="{Binding SequenceNumber}"
+                                    Icon="Number24"/>
                             </StackPanel>
+
+
 
                             <!-- Row 3 -->
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
@@ -163,15 +165,8 @@
                  Icon="DocumentNumber24"/>
                             </StackPanel>
 
-                            <!-- Row 4 -->
-                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,8,12">
-                                <ui:TextBlock Text="Sequence Number" Margin="0,0,0,4"/>
-                                <ui:TextBox
-             Grid.Row="1" Grid.Column="0"
-             PlaceholderText="Sequence Number"
-             Text="{Binding SequenceNumber}"
-             Icon="Number24"/>
-                            </StackPanel>
+                            
+                            
                         </Grid>
                     </StackPanel>
 
