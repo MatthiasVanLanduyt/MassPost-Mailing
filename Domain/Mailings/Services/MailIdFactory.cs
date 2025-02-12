@@ -61,7 +61,7 @@ namespace Validator.Domain.Mailings.Services
                 item.Components.Add(new AddressComponent
                 {
                     Code = 91,
-                    Value = addressLine.AddressDetails.Contact,
+                    Value = addressLine.AddressDetails.Company,
                 });
             }
 
