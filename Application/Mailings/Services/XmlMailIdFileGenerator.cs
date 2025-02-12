@@ -95,6 +95,8 @@ namespace Validator.Application.Mailings.Services
             writer.WriteAttributeString("genMID", request.Options.GenMid ? "Y" : "N");
             writer.WriteAttributeString("genPSC", request.Options.GenPsc ? "Y" : "N");
             writer.WriteAttributeString("expectedDeliveryDate", request.Header.ExpectedDeliveryDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("depositIdentifierType", request.Header.DepositType);
+            writer.WriteAttributeString("depositIdentifier", request.Header.DepositIdentifier);
 
             // FileInfo
             writer.WriteStartElement("FileInfo");
