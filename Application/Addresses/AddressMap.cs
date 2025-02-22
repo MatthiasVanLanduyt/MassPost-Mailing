@@ -16,7 +16,7 @@ namespace Validator.Application.Addresses
             Map(m => m.PostalCode).Index(1);
             Map(m => m.City).Index(2);
             Map(m => m.Contact).Index(3);
-            Map(m => m.Company).Index(4);
+            Map(m => m.Company).Index(4).Optional();
             
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Formats.Asn1;
 using System.Globalization;
 using CsvHelper;
+using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
 using Validator.Domain.Addresses;
 
@@ -15,9 +17,19 @@ namespace Validator.Application.Addresses
             {
                 var culture = new CultureInfo("nl-BE");
                 Console.WriteLine("Reading CSV file");
+
+                var config = new CsvConfiguration(culture)
+                {
+                    MissingFieldFound = null, // Ignore missing fields
+                    HasHeaderRecord = true,
+                    IgnoreBlankLines = true,
+                };
+
+                
                 using var reader = new StreamReader(fileStream);
-                using var csv = new CsvReader(reader, culture);
+                using var csv = new CsvReader(reader, config);
                 csv.Context.RegisterClassMap<AddressMap>();
+                csv.Context.TypeConverterOptionsCache.GetOptions<string>().NullValues.Add("");
 
                 csv.Read();
                 csv.ReadHeader();

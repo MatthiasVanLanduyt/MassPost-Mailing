@@ -141,9 +141,9 @@ namespace WpfDesktop.ViewModels
            {
                _snackbarService.Show(
                    "Address file upload failed",
-                   $"Error reading file {_state.AddressCount} address lines from file {SelectedFilePath}",
+                   $"Error reading file: {ex.Message}",
                    ControlAppearance.Danger,
-                   new TimeSpan(0, 0, 3));
+                   new TimeSpan(0, 0, 5));
                 
            }
 
