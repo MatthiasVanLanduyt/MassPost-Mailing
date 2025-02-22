@@ -14,16 +14,14 @@ namespace WpfDesktop.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly INavigationService _navigationService;
-        private readonly IPersistAndRestoreService _persistAndRestoreService;
-
-        private IShellWindow _shellWindow;
+        
+        private IShellWindow? _shellWindow;
         private bool _isInitialized;
 
         public ApplicationHostService(IServiceProvider serviceProvider, INavigationService navigationService)
         {
             _serviceProvider = serviceProvider;
             _navigationService = navigationService;
-            //_persistAndRestoreService = persistAndRestoreService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -68,10 +66,10 @@ namespace WpfDesktop.Services
             if (App.Current.Windows.OfType<IShellWindow>().Count() == 0)
             {
                 // Default activation that navigates to the apps default page
-                _shellWindow = _serviceProvider.GetService(typeof(IShellWindow)) as IShellWindow;
+                _shellWindow = _serviceProvider.GetService(typeof(IShellWindow)) as IShellWindow ?? throw new InvalidOperationException();
                 _navigationService.Initialize(_shellWindow.GetNavigationFrame());
                 _shellWindow.ShowWindow();
-                _navigationService.NavigateTo(typeof(HomeViewModel).FullName);
+                _navigationService.NavigateTo(typeof(HomeViewModel).FullName ?? throw new InvalidOperationException());
                 await Task.CompletedTask;
             }
         }

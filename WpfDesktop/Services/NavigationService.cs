@@ -16,7 +16,7 @@ namespace WpfDesktop.Services
     {
         private readonly IPageService _pageService;
         private Frame _frame;
-        private object _lastParameterUsed;
+        private object? _lastParameterUsed;
 
         public event EventHandler<string> Navigated;
 
@@ -55,7 +55,7 @@ namespace WpfDesktop.Services
             }
         }
 
-        public bool NavigateTo(string pageKey, object parameter = null, bool clearNavigation = false)
+        public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
         {
             var pageType = _pageService.GetPageType(pageKey);
 
