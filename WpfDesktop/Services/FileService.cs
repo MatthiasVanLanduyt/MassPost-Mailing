@@ -11,7 +11,7 @@ namespace WpfDesktop.Services
 {
     public class FileService : IFileService
     {
-        public T Read<T>(string folderPath, string fileName)
+        public T Read<T>(string folderPath, string? fileName)
         {
             var path = Path.Combine(folderPath, fileName);
             if (File.Exists(path))
@@ -23,7 +23,7 @@ namespace WpfDesktop.Services
             return default;
         }
 
-        public void Save<T>(string folderPath, string fileName, T content)
+        public void Save<T>(string folderPath, string? fileName, T content)
         {
             if (!Directory.Exists(folderPath))
             {

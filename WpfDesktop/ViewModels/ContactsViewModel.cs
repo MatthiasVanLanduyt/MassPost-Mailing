@@ -121,7 +121,7 @@ namespace WpfDesktop.ViewModels
         }
 
         
-        private void DeleteContact(Contact contact)
+        private void DeleteContact(Contact? contact)
         {
             if (contact != null)
             {

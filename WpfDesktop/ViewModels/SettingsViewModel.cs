@@ -15,13 +15,13 @@ namespace WpfDesktop.ViewModels
     {
 
         [ObservableProperty]
-        private MailingSettings mailingSettings;
+        private MailingSettings mailingSettings = new MailingSettings();
 
         public List<string> OutputFormatOptions { get; } = [MailListFileOutputs.XML, MailListFileOutputs.TXT];
         public List<string> ModeOptions { get; } = ["T", "P", "C"]; // Test, Production, Certification
         public List<string> SortingModeOptions { get; } = ["Customer Order (CU)", "Print Order (PO)"];
-        public List<string> PriorityOptions { get; } = new() { "NP", "P" };
-        public List<string> LanguageOptions { get; } = new() { "nl", "fr", "en" };
+        public List<string> PriorityOptions { get; } = ["NP", "P"];
+        public List<string> LanguageOptions { get; } = ["nl", "fr", "en"];
 
         private readonly ISettingsService _settingsService;
         private readonly ISnackbarService _snackbarService;
@@ -64,7 +64,7 @@ namespace WpfDesktop.ViewModels
         {
             try
             {
-                _settingsService.SaveMailingSettings(mailingSettings);
+                _settingsService.SaveMailingSettings(MailingSettings);
 
                 _snackbarService.Show(
                     "Settings saved",
