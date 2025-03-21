@@ -65,7 +65,7 @@ namespace WpfDesktop.ViewModels
             var savedFile = FileOperations.SaveFile(file,_settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);
 
-            _state.HasDownloadedMailingRequest = true;
+            State.HasDownloadedMailingRequest = true;
         }
 
         private void DownloadMailAddressList()
@@ -77,7 +77,7 @@ namespace WpfDesktop.ViewModels
             var savedFile = FileOperations.SaveFile(file, _settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);
 
-            _state.HasDownloadedMailingAddressList = true;
+            State.HasDownloadedMailingAddressList = true;
         }
 
 
@@ -86,10 +86,7 @@ namespace WpfDesktop.ViewModels
 
         private void NavigateTo(Type targetViewModel)
         {
-            if (targetViewModel != null)
-            {
-                _navigationService.NavigateTo(targetViewModel.FullName);
-            }
+            if (!string.IsNullOrEmpty(targetViewModel.FullName)) _navigationService.NavigateTo(targetViewModel.FullName);
         }
     }
 }

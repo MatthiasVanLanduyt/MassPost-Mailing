@@ -12,13 +12,13 @@ namespace WpfDesktop.ViewModels
 {
     public class MainWindowViewModel: ObservableObject
     {
-        public string ApplicationTitle { get => "MassPost Application"; }
+        public string ApplicationTitle => "MassPost Application";
 
         private INavigationService _navigationService;
         private ICommand _loadedCommand;
         private ICommand _unloadedCommand;
 
-        public ICommand LoadedCommand => _loadedCommand ?? (_loadedCommand = new RelayCommand(OnLoaded));
+        public ICommand LoadedCommand => _loadedCommand ??= new RelayCommand(OnLoaded);
 
         public ICommand NavigateToHomeCommand => new RelayCommand(() => NavigateTo(typeof(HomeViewModel)));
 
@@ -30,7 +30,7 @@ namespace WpfDesktop.ViewModels
 
         public ICommand NavigateToContactsCommand => new RelayCommand(() => NavigateTo(typeof(ContactsViewModel)));
 
-        public ICommand UnloadedCommand => _unloadedCommand ?? (_unloadedCommand = new RelayCommand(OnUnloaded));
+        public ICommand UnloadedCommand => _unloadedCommand ??= new RelayCommand(OnUnloaded);
         public MainWindowViewModel(INavigationService navigationService) 
         {
             _navigationService = navigationService;
@@ -54,7 +54,7 @@ namespace WpfDesktop.ViewModels
 
         private void NavigateTo(Type targetViewModel)
         {
-            if (targetViewModel != null)
+            if (!string.IsNullOrEmpty(targetViewModel.FullName))
             {
                 _navigationService.NavigateTo(targetViewModel.FullName);
             }
