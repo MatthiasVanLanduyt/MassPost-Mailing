@@ -96,8 +96,6 @@ namespace WpfDesktop.ViewModels
 
             var savedFile = FileOperations.SaveFile(file, _settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);
-
-            State.HasDownloadedMailingAddressList = true;
         }
 
 

@@ -4,12 +4,15 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using Validator.Application.Files;
 using Validator.Application.Mailings.Contracts;
 using Validator.Application.Mailings.Services;
 using Validator.Domain.MailingResponses.Models;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Extensions;
+using WpfDesktop.Contracts.Services;
+using WpfDesktop.Models;
 using WpfDesktop.Services;
 
 namespace WpfDesktop.ViewModels
@@ -35,14 +38,17 @@ namespace WpfDesktop.ViewModels
         private List<AddressResponse> addressResponses;
 
         public ICommand UploadCommand => _uploadCommand;
+        public ICommand DownloadCommand => _downloadCommand;
 
         private readonly ApplicationState _state;
+        private readonly MailingSettings _settings;
         private readonly IMailingResponseParser _responseParser;
         private readonly ISnackbarService _snackbarService;
         private readonly MergeAddressValidationService _mergeService;
 
         private readonly IRelayCommand _uploadCommand;
-        public ValidationViewModel(ApplicationState state, IMailingResponseParser responseParser, ISnackbarService snackbarService)
+        private readonly IRelayCommand _downloadCommand;
+        public ValidationViewModel(ApplicationState state, ISettingsService settingsService, IMailingResponseParser responseParser, ISnackbarService snackbarService)
         {
             _state = state;
             _responseParser = responseParser;
@@ -51,8 +57,11 @@ namespace WpfDesktop.ViewModels
             validatedAddresses = new List<ValidatedAddress>();
             addressResponses = new List<AddressResponse>();
 
+            _settings = settingsService.GetMailingSettings();
+
 
             _uploadCommand = new AsyncRelayCommand(UploadFileAsync);
+            _downloadCommand = new RelayCommand(DownloadFile);
         }
 
         private async Task UploadFileAsync()
@@ -101,23 +110,13 @@ namespace WpfDesktop.ViewModels
 
                     _state.MailingResponse = MailingResponse;
 
-                    _state.HasValidatedAddresses = true;
-
                     _state.HasUploadedResponseFile = true;
-
-                    if (_state.HasGeneratedMailingRequest == false)
-                    {
-                        _state.ValidationResponse = _mergeService.Merge(_state.MailingRequest, _state.MailingResponse);
-                        
-                        ValidatedAddresses = _state.ValidationResponse.ValidatedAddressList?.Where(a => a.Severity != "INFO").ToList() ?? new List<ValidatedAddress>();
-                    }
 
                     _snackbarService.Show(
                             "Upload Successful",
                             $"Successfully uploaded response file",
                             ControlAppearance.Success,
                             new TimeSpan(0, 0, 3));
-
                 }
             }
 
@@ -150,6 +149,38 @@ namespace WpfDesktop.ViewModels
             finally
             {
                 IsProcessing = false;
+            }
+        }
+        
+        private void DownloadFile()
+        {
+            try
+            {
+                if (AddressResponses.Count == 0)
+                {
+                    _snackbarService.Show(
+                        "No data to download",
+                        $"No data to download",
+                        ControlAppearance.Caution,
+                        new TimeSpan(0, 0, 3));
+                    return;
+                }
+                
+                var generator = new MailingResponseCsvExporter();
+
+                var file = generator.ExportToCsv(_state.MailingResponse!);
+
+                var savedFile = FileOperations.SaveFile(file, _settings.DefaultSaveLocation);
+                FileOperations.OpenFile(savedFile.FullName);
+     
+            }
+            catch (Exception ex)
+            {
+                _snackbarService.Show(
+                    "Failed to download",
+                    $"An error occurred: {ex.Message}",
+                    ControlAppearance.Danger,
+                    new TimeSpan(0, 0, 3));
             }
         }
     }

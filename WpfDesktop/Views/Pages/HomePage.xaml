@@ -164,7 +164,7 @@
                        Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
                        Command="{Binding DownloadMailResponseCommand}"
                        Appearance="{Binding DownloadMailingButtonAppearance}">
-                        Download Address List
+                        Download Mailing Response
 
                     </ui:Button>
                 </StackPanel>
