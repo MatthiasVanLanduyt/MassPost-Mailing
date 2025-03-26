@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Formats.Asn1;
 using System.Globalization;
+using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
@@ -10,9 +11,15 @@ namespace Validator.Application.Addresses
 {
     public static class CsvAddressParser
     {
+        static CsvAddressParser()
+        {
+            // Register encoding provider to support Windows codepages
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
         public static IEnumerable<AddressLine> ReadCsvFile(Stream fileStream)
         {
             List<AddressLine> addresses = [];
+
             try
             {
                 var culture = new CultureInfo("nl-BE");
@@ -25,8 +32,9 @@ namespace Validator.Application.Addresses
                     IgnoreBlankLines = true,
                 };
 
-                
-                using var reader = new StreamReader(fileStream);
+                Encoding windows1252Encoding = Encoding.GetEncoding(1252);
+
+                using var reader = new StreamReader(fileStream, windows1252Encoding);
                 using var csv = new CsvReader(reader, config);
                 csv.Context.RegisterClassMap<AddressMap>();
                 csv.Context.TypeConverterOptionsCache.GetOptions<string>().NullValues.Add("");

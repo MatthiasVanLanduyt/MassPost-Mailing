@@ -29,6 +29,8 @@ namespace WpfDesktop.ViewModels
 
         public string ValidationButtonAppearance => "Primary";
 
+        public string DownloadMailingResponseButtonAppearance => "Primary";
+
         private readonly MailingSettings _settings;
 
         public ICommand NavigateToUploadCommand => new RelayCommand(() => NavigateTo(typeof(UploadViewModel)));
@@ -38,8 +40,11 @@ namespace WpfDesktop.ViewModels
         public ICommand DownloadMailAddressListCommand => _downloadMailAddressListCommand;
         public ICommand DownloadMailRequestCommand => _downloadMailRequestCommand;
 
+        public ICommand DownloadMailResponseCommand => _downloadMailResponseCommand;
+
         private readonly ICommand _downloadMailAddressListCommand;
         private readonly ICommand _downloadMailRequestCommand;
+        private readonly ICommand _downloadMailResponseCommand;
 
         public HomeViewModel(INavigationService navigationService, ApplicationState state, IDateTimeProvider dateTimeProvider, ISettingsService settingsService)
         {
@@ -51,6 +56,7 @@ namespace WpfDesktop.ViewModels
             _settings = _settingsService.GetMailingSettings();
 
             _downloadMailRequestCommand = new RelayCommand(DownloadMailRequest);
+            _downloadMailResponseCommand = new RelayCommand(DownloadMailResponseList);
             _downloadMailAddressListCommand = new RelayCommand(DownloadMailAddressList);
         }
 
@@ -61,7 +67,7 @@ namespace WpfDesktop.ViewModels
                    new XmlMailIdFileGenerator(_dateTimeProvider) :
                    new TxtMailIdFileGenerator(_dateTimeProvider) as IMailIdFileGenerator;
 
-            var file = generator.GenerateFile(State.MailingRequest);
+            var file = generator.GenerateFile(State.MailingRequest!);
             var savedFile = FileOperations.SaveFile(file,_settings.DefaultSaveLocation);
             FileOperations.OpenFile(savedFile.FullName);
 
@@ -70,6 +76,8 @@ namespace WpfDesktop.ViewModels
 
         private void DownloadMailAddressList()
         {
+            if (State.MailingRequest == null) return;
+
             var generator = new CsvMailIdAddressFileGenerator();
 
             var file = generator.GenerateFile(State.MailingRequest.Items, $"AddressList_{State.MailingRequest.Header.CustomerFileRef}.csv");
@@ -80,6 +88,15 @@ namespace WpfDesktop.ViewModels
             State.HasDownloadedMailingAddressList = true;
         }
 
+        private void DownloadMailResponseList()
+        {
+            var generator = new MailingResponseCsvExporter();
+
+            var file = generator.ExportToCsv(State.MailingResponse!);
+
+            var savedFile = FileOperations.SaveFile(file, _settings.DefaultSaveLocation);
+            FileOperations.OpenFile(savedFile.FullName);
+        }
 
 
         public string Title => "Home Page";

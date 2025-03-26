@@ -34,6 +34,8 @@ namespace WpfDesktop.ViewModels
         public MainWindowViewModel(INavigationService navigationService) 
         {
             _navigationService = navigationService;
+            _loadedCommand = new RelayCommand(OnLoaded);
+            _unloadedCommand = new RelayCommand(OnUnloaded);
         }
 
         private void OnLoaded()

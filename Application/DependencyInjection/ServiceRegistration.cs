@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Validator.Application.Addresses;
 using Validator.Application.Mailings.Contracts;
+using Validator.Application.Mailings.Services;
 using Validator.Domain.Addresses;
 using Validator.Domain.MailingResponses.Services;
 
@@ -18,9 +19,10 @@ namespace Validator.Application.DependencyInjection
             services.AddSingleton<IPostalCodeService>(_ =>
                 new PostalCodeService(postalCodesPath));
 
-            
-
-            // Register other application services
+            // Register generators with the truncation service dependency
+            services.AddTransient<IMailIdFileGenerator, XmlMailIdFileGenerator>();
+            services.AddTransient<IMailIdFileGenerator, TxtMailIdFileGenerator>();
+            services.AddTransient<IMailingResponseCsvExporter, MailingResponseCsvExporter>();
 
             return services;
         }

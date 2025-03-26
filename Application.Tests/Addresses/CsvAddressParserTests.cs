@@ -7,14 +7,22 @@ namespace Application.Tests.Addresses
 {
     public class CsvAddressParserTests
     {
+        public CsvAddressParserTests() 
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
+
         [Fact]
         public void ParseAddress_WithValidAddress_ReturnsAddress()
         {
             var csvContent = "ADRES;PC;WP;CONTACT;BEDRIJF\n" +
                              "Kerkstraat 1;1000;Brussel;John Doe;Microsoft\n" +
                              "Stationslaan 25;2000;Antwerpen;Jane Smith;Google";
+                             
 
-            var stream = new MemoryStream(Encoding.UTF8.GetBytes(csvContent));
+            Encoding windows1252Encoding = Encoding.GetEncoding(1252);
+
+            var stream = new MemoryStream(windows1252Encoding.GetBytes(csvContent));
 
             // Act
             var addresses = CsvAddressParser.ReadCsvFile(stream).ToList();
@@ -37,10 +45,12 @@ namespace Application.Tests.Addresses
                 Company = "Google"
             };
 
+            
 
             // Assert
             Assert.Equal(address1, addresses[0].AddressDetails);
             Assert.Equal(address2, addresses[1].AddressDetails);
+            
         }
 
         [Fact]

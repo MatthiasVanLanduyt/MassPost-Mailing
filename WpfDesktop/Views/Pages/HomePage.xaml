@@ -149,14 +149,26 @@
                                  TextWrapping="Wrap"/>
                     </StackPanel>
 
+                <StackPanel Grid.Column="2" Margin="0,8,0,0" VerticalAlignment="Bottom">
                     <ui:Button Grid.Column="2" 
-                              Icon="{ui:SymbolIcon Symbol=CheckmarkCircle24}"
-                              IsEnabled="True"
-                              Command="{Binding NavigateToValidateCommand}"
-                              Appearance="{Binding ValidationButtonAppearance}"
-                              VerticalAlignment="Bottom">
+                          Icon="{ui:SymbolIcon Symbol=CheckmarkCircle24}"
+                          IsEnabled="True"
+                          Command="{Binding NavigateToValidateCommand}"
+                          Appearance="{Binding ValidationButtonAppearance}"
+                          Margin="0,0,0,8">   
                         Validate
                     </ui:Button>
+
+                    <ui:Button 
+                       IsEnabled="{Binding State.HasUploadedResponseFile}"
+                       Icon="{ui:SymbolIcon Symbol=ArrowDownload24}"
+                       Command="{Binding DownloadMailResponseCommand}"
+                       Appearance="{Binding DownloadMailingButtonAppearance}">
+                        Download Mailing Response
+
+                    </ui:Button>
+                </StackPanel>
+                
                 </Grid>
             </ui:Card>
         

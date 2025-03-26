@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Validator.Domain.MailingResponses.Models
 {
-    public class MessageContent
+    public record MessageContent
     {
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public required string Key { get; set; }
+        public required string Value { get; set; }
     }
 }

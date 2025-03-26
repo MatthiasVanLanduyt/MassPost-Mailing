@@ -73,137 +73,112 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <ui:Card Grid.Column="0" Margin="0,0,12,0">
+                    <!-- Compliance Rates -->
+                    <ui:Card Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,12,0">
                         <StackPanel>
                             <ui:TextBlock
-                                Text="Total Records"
-                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
-                            <ui:TextBlock
-                                Text="{Binding MailingResponse.TotalRecords}"
-                                FontSize="32"
-                                FontWeight="Medium"/>
-                        </StackPanel>
-                    </ui:Card>
+             Text="Compliance Rates"
+             FontSize="16"
+             FontWeight="Medium"
+             Margin="0,0,0,16"/>
 
-                    <ui:Card Grid.Column="1" Margin="4,0,8,0">
-                        <StackPanel>
-                            <ui:TextBlock
-                                Text="Valid Records"
-                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
-                            <ui:TextBlock
-                                Text="{Binding MailingResponse.ValidRecords}"
-                                FontSize="32"
-                                FontWeight="Medium"
-                                Foreground="#4CAF50"/>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ui:TextBlock
+                 Grid.Column="0"
+                 Text="Address Compliance"
+                 VerticalAlignment="Center"/>
+                                <ProgressBar
+                 Grid.Column="1"
+                 Value="{Binding MailingResponse.AddressComplianceRate}"
+                 Maximum="100"
+                 Margin="12,0"/>
+                                <ui:TextBlock
+                 Grid.Column="2"
+                 Text="{Binding MailingResponse.AddressComplianceRate, StringFormat={}{0}%}"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ui:TextBlock
+                 Grid.Column="0"
+                 Text="Building Compliance"
+                 VerticalAlignment="Center"/>
+                                <ProgressBar
+                 Grid.Column="1"
+                 Value="{Binding MailingResponse.BuildingComplianceRate}"
+                 Maximum="100"
+                 Margin="12,0"/>
+                                <ui:TextBlock
+                 Grid.Column="2"
+                 Text="{Binding MailingResponse.BuildingComplianceRate, StringFormat={}{0}%}"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ui:TextBlock
+                 Grid.Column="0"
+                 Text="Presorting Compliance"
+                 VerticalAlignment="Center"/>
+                                <ProgressBar
+                 Grid.Column="1"
+                 Value="{Binding MailingResponse.PresortingComplianceRate}"
+                 Maximum="100"
+                 Margin="12,0"/>
+                                <ui:TextBlock
+                 Grid.Column="2"
+                 Text="{Binding MailingResponse.PresortingComplianceRate, StringFormat={}{0}%}"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Right"/>
+                            </Grid>
                         </StackPanel>
                     </ui:Card>
 
                     <ui:Card Grid.Column="2" Margin="4,0,8,0">
                         <StackPanel>
                             <ui:TextBlock
-                                Text="With Warnings"
-                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
+             Text="Warnings"
+             Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
                             <ui:TextBlock
-                                Text="{Binding MailingResponse.RecordsWithWarnings}"
-                                FontSize="32"
-                                FontWeight="Medium"
-                                Foreground="#FFC107"/>
+             Text="{Binding MailingResponse.RecordsWithWarnings}"
+             FontSize="32"
+             FontWeight="Medium"
+             Foreground="#FFC107"/>
                         </StackPanel>
                     </ui:Card>
 
                     <ui:Card Grid.Column="3" Margin="12,0,0,0">
                         <StackPanel>
                             <ui:TextBlock
-                                Text="With Errors"
-                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
+             Text="Errors"
+             Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
                             <ui:TextBlock
-                                Text="{Binding MailingResponse.RecordsWithErrors}"
-                                FontSize="32"
-                                FontWeight="Medium"
-                                Foreground="#F44336"/>
+             Text="{Binding MailingResponse.RecordsWithErrors}"
+             FontSize="32"
+             FontWeight="Medium"
+             Foreground="#F44336"/>
                         </StackPanel>
                     </ui:Card>
                 </Grid>
-
-                <!-- Compliance Rates -->
-                <ui:Card Margin="0,0,0,24">
-                    <StackPanel>
-                        <ui:TextBlock
-                            Text="Compliance Rates"
-                            FontSize="16"
-                            FontWeight="Medium"
-                            Margin="0,0,0,16"/>
-
-                        <Grid Margin="0,0,0,12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
-
-                            <ui:TextBlock
-                                Grid.Column="0"
-                                Text="Address Compliance"
-                                VerticalAlignment="Center"/>
-                            <ProgressBar
-                                Grid.Column="1"
-                                Value="{Binding MailingResponse.AddressComplianceRate}"
-                                Maximum="100"
-                                Margin="12,0"/>
-                            <ui:TextBlock
-                                Grid.Column="2"
-                                Text="{Binding MailingResponse.AddressComplianceRate, StringFormat={}{0}%}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid Margin="0,0,0,12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
-
-                            <ui:TextBlock
-                                Grid.Column="0"
-                                Text="Building Compliance"
-                                VerticalAlignment="Center"/>
-                            <ProgressBar
-                                Grid.Column="1"
-                                Value="{Binding MailingResponse.BuildingComplianceRate}"
-                                Maximum="100"
-                                Margin="12,0"/>
-                            <ui:TextBlock
-                                Grid.Column="2"
-                                Text="{Binding MailingResponse.BuildingComplianceRate, StringFormat={}{0}%}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
-
-                            <ui:TextBlock
-                                Grid.Column="0"
-                                Text="Presorting Compliance"
-                                VerticalAlignment="Center"/>
-                            <ProgressBar
-                                Grid.Column="1"
-                                Value="{Binding MailingResponse.PresortingComplianceRate}"
-                                Maximum="100"
-                                Margin="12,0"/>
-                            <ui:TextBlock
-                                Grid.Column="2"
-                                Text="{Binding MailingResponse.PresortingComplianceRate, StringFormat={}{0}%}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"/>
-                        </Grid>
-                    </StackPanel>
-                </ui:Card>
 
                 <!-- Warning Details -->
                 <ui:Card>
@@ -216,53 +191,97 @@
 
                             <ui:TextBlock
                                 Grid.Column="0"
-                                Text="Addresses with Warnings"
+                                Text="Addresses with Warnings and Errors"
                                 FontSize="16"
                                 FontWeight="Medium"/>
 
                             <ui:Button
                                 Grid.Column="1"
-                                Content="View All"
+                                Content="Download file"
+                                Command ="{Binding DownloadCommand}"
                                 Icon="ArrowRight24"
                                />
                         </Grid>
 
-                        <ListView
-                            ItemsSource="{Binding ValidatedAddresses}"
-                            MaxHeight="200">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Address" Width="300">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding AddressDetails}"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Warning Type" Width="200">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding StatusCode}"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Severity" Width="100">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Severity}"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Description" Width="100">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Message}"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
+                        <ui:DataGrid 
+        ItemsSource="{Binding AddressResponses}"
+        AutoGenerateColumns="False"
+        Background="Transparent"
+        GridLinesVisibility="Horizontal"
+        BorderThickness="1"
+        IsReadOnly="True"
+        SelectionMode="Single"
+        SelectionUnit="FullRow">        
+
+                            <ui:DataGrid.Resources>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorPrimaryBrush}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="{ui:ThemeResource AccentTextFillColorPrimaryBrush}" />
+                                            <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorInverseBrush}" />
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding Severity}" Value="ERROR">
+                                            <Setter Property="Foreground" Value="Red" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:DataGrid.Resources>
+
+                            <ui:DataGrid.Columns>
+                                <DataGridTextColumn 
+            Header="Sequence" 
+            Binding="{Binding Sequence}" 
+            Width="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="Margin" Value="8,0" />
+                                            
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn 
+            Header="Severity" 
+            Binding="{Binding Severity}" 
+            Width="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="Margin" Value="8,0" />
+                                           
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn 
+            Header="Code" 
+            Binding="{Binding StatusCode}" 
+            Width="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="Margin" Value="8,0" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn 
+            Header="Description" 
+            Binding="{Binding Message}" 
+            Width="600">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="Margin" Value="8,0" />
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </ui:DataGrid.Columns>
+                        </ui:DataGrid>
+                        
                     </StackPanel>
                 </ui:Card>
             </StackPanel>

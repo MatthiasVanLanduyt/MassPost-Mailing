@@ -123,7 +123,12 @@ namespace WpfDesktop
                 "error.log"
             );
 
-            Directory.CreateDirectory(Path.GetDirectoryName(logPath));
+            string directoryName = Path.GetDirectoryName(logPath) ?? string.Empty;
+
+            if (!Directory.Exists(directoryName))
+            {
+                Directory.CreateDirectory(directoryName!);
+            }
 
             string errorMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Error:\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}\n\n";
             File.AppendAllText(logPath, errorMessage);

@@ -8,10 +8,10 @@ namespace Validator.Domain.MailingResponses.Models
 {
     public class MailingResponse
     {
-        public string MailingRef { get; set; }
+        public string MailingRef { get; set; } = string.Empty;
 
-        public MailingResponseHeader Header { get; set; }
-        public string Status { get; set; }
+        public MailingResponseHeader Header { get; set; } = new MailingResponseHeader();
+        public string Status { get; set; } = string.Empty;
         public decimal AddressComplianceRate { get; set; }
         public decimal BuildingComplianceRate { get; set; }
         public decimal PresortingComplianceRate { get; set; }

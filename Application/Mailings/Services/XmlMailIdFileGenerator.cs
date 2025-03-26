@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -14,11 +15,13 @@ namespace Validator.Application.Mailings.Services
 {
     public class XmlMailIdFileGenerator : IMailIdFileGenerator
     {
+        private readonly TruncateFieldsToMaxLengthService _truncateService;
         private readonly IDateTimeProvider _dateTimeProvider;
 
         public XmlMailIdFileGenerator(IDateTimeProvider dateTimeProvider)
         {
             _dateTimeProvider = dateTimeProvider;
+            _truncateService = new TruncateFieldsToMaxLengthService();
         }
 
         public MailIdFile GenerateFile(MailIdRequest request)
@@ -47,7 +50,7 @@ namespace Validator.Application.Mailings.Services
             );
         }
 
-        private static void WriteXmlContent(XmlWriter writer, MailIdRequest request)
+        private void WriteXmlContent(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartDocument();
             writer.WriteStartElement("MailingRequest");
@@ -61,7 +64,7 @@ namespace Validator.Application.Mailings.Services
 
         }
 
-        private static void WriteContext(XmlWriter writer, MailIdRequest request)
+        private void WriteContext(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartElement("Context");
                 writer.WriteAttributeString("requestName", "MailingRequest");
@@ -72,7 +75,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement();
         }
 
-        private static void WriteHeader(XmlWriter writer, MailIdRequest request)
+        private void WriteHeader(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartElement("Header");
             writer.WriteAttributeString("customerId", request.Header.SenderId.ToString());
@@ -87,7 +90,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement(); // Header
         }
 
-        private static void WriteMailingCreate(XmlWriter writer, MailIdRequest request)
+        private void WriteMailingCreate(XmlWriter writer, MailIdRequest request)
         {
             writer.WriteStartElement("MailingCreate");
             writer.WriteAttributeString("seq", "1");
@@ -116,7 +119,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement(); // MailingCreate
         }
                     
-        private static void WriteItems(XmlWriter writer, MailIdRequest request)
+        private void WriteItems(XmlWriter writer, MailIdRequest request)
         {
             // Items
             writer.WriteStartElement("Items");
@@ -137,7 +140,7 @@ namespace Validator.Application.Mailings.Services
 
                     writer.WriteStartElement("Comp");
                     writer.WriteAttributeString("code", comp.Code.ToString());
-                    writer.WriteAttributeString("value", comp.Value);
+                    writer.WriteAttributeString("value", _truncateService.TruncateAddressComponent(comp));
                     writer.WriteEndElement(); // Comp
 
                 }
@@ -152,7 +155,7 @@ namespace Validator.Application.Mailings.Services
             writer.WriteEndElement();
         }
 
-        private static void WriteContacts(XmlWriter writer, MailIdRequest request)
+        private void WriteContacts(XmlWriter writer, MailIdRequest request)
         {
             //Contacts
             int index = 1;
@@ -162,12 +165,12 @@ namespace Validator.Application.Mailings.Services
                 writer.WriteStartElement("Contact");
 
                 writer.WriteAttributeString("seq", index.ToString());
-                writer.WriteAttributeString("firstName", contact.FirstName);
-                writer.WriteAttributeString("lastName", contact.LastName);
-                writer.WriteAttributeString("email", contact.Email);
-                writer.WriteAttributeString("lang", contact.LanguageCode);
-                writer.WriteAttributeString("phone", contact.Phone);
-                writer.WriteAttributeString("mobile", contact.Mobile);
+                writer.WriteAttributeString("firstName", _truncateService.TruncateField(contact.FirstName, MaxFieldLengths.ContactFirstName));
+                writer.WriteAttributeString("lastName", _truncateService.TruncateField(contact.LastName, MaxFieldLengths.ContactLastName));
+                writer.WriteAttributeString("email", _truncateService.TruncateField(contact.Email, MaxFieldLengths.ContactEmail));
+                writer.WriteAttributeString("lang", _truncateService.TruncateField(contact.LanguageCode, MaxFieldLengths.ContactLanguage));
+                writer.WriteAttributeString("phone", _truncateService.TruncateField(contact.Phone, MaxFieldLengths.ContactPhone));
+                writer.WriteAttributeString("mobile", _truncateService.TruncateField(contact.Mobile, MaxFieldLengths.ContactMobile));
                 writer.WriteEndElement(); // Contact
                 index++;
             }
