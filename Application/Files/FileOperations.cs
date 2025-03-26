@@ -17,6 +17,13 @@ namespace Validator.Application.Files
             return new FileInfo(fullPath);
         }
 
+        public static FileInfo SaveFile(MailResponseFile file, string directory)
+        {
+            string fullPath = Path.Combine(directory, file.FileName);
+            File.WriteAllBytes(fullPath, file.Content);
+            return new FileInfo(fullPath);
+        }
+
         public static void OpenFile(string filePath)
         {
             if (!File.Exists(filePath))

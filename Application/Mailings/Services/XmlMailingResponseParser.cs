@@ -21,7 +21,7 @@ namespace Validator.Domain.MailingResponses.Services
                 var codes = JsonSerializer.Deserialize<List<StatusCode>>(json);
                 return codes?.ToDictionary(x => x.Code) ?? new Dictionary<string, StatusCode>();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log error or handle as needed
                 return new Dictionary<string, StatusCode>();
@@ -130,15 +130,17 @@ namespace Validator.Domain.MailingResponses.Services
                     {
                         responseMessage.MessageContents.Add(new MessageContent
                         {
-                            Key = content.Attribute("key")?.Value ?? "",
-                            Value = content.Attribute("value")?.Value ?? ""
+                            Key = content.Attribute("key")?.Value ?? string.Empty,
+                            Value = content.Attribute("value")?.Value ?? string.Empty
                         });
 
                         // Get presorting code if present
                         if (content.Attribute("key")?.Value == "psCode")
                         {
-                            addressResponse.PreSortingCode = content.Attribute("value")?.Value;
+                            addressResponse.PreSortingCode = content.Attribute("value")?.Value ?? string.Empty;
                         }
+
+                        
                     }
 
                     addressResponse.Messages.Add(responseMessage);

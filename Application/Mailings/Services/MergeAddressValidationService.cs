@@ -14,9 +14,18 @@ namespace Validator.Application.Mailings.Services
         public ValidationResponse Merge(MailIdRequest request, MailingResponse response)
           {
             
+            if (request is null)
+            {
+                return new ValidationResponse
+                {
+                    Status = ValidationStatus.Error,
+                    ErrorMessage = $"No mailrequest currently found so addresses cannot be compared. You can still download the file with the current response. "
+                };
+            }
             // Verify mailing references match
             if (request.Header.CustomerFileRef != response.Header.CustomerFileRef)
             {
+
                 return new ValidationResponse
                 {
                     Status = ValidationStatus.Error,

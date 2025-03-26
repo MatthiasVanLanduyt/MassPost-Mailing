@@ -53,7 +53,7 @@ namespace WpfDesktop.ViewModels
                 MailingSettings = _settingsService.GetMailingSettings();
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle loading error
                 MailingSettings = new MailingSettings();
@@ -72,7 +72,7 @@ namespace WpfDesktop.ViewModels
                     ControlAppearance.Success,
                     new TimeSpan(0, 0, 2));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle saving error
                 _snackbarService.Show(

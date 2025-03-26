@@ -17,7 +17,7 @@ namespace WpfDesktop.ViewModels
     public partial class ValidationViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string selectedFilePath;
+        private string? selectedFilePath;
 
         [ObservableProperty]
         private bool isFileSelected;
@@ -26,10 +26,13 @@ namespace WpfDesktop.ViewModels
         private bool isProcessing;
 
         [ObservableProperty]
-        private MailingResponse mailingResponse;
+        private MailingResponse? mailingResponse;
 
         [ObservableProperty]
         private List<ValidatedAddress> validatedAddresses;
+
+        [ObservableProperty]
+        private List<AddressResponse> addressResponses;
 
         public ICommand UploadCommand => _uploadCommand;
 
@@ -45,6 +48,8 @@ namespace WpfDesktop.ViewModels
             _responseParser = responseParser;
             _snackbarService = snackbarService;
             _mergeService = new MergeAddressValidationService();
+            validatedAddresses = new List<ValidatedAddress>();
+            addressResponses = new List<AddressResponse>();
 
 
             _uploadCommand = new AsyncRelayCommand(UploadFileAsync);
@@ -83,20 +88,36 @@ namespace WpfDesktop.ViewModels
 
                     MailingResponse = _responseParser.ParseResponse(stream);
 
+                    if (MailingResponse is null)
+                    {
+                        _snackbarService.Show(
+                            "Upload response failed",
+                            $"Failed to upload response file",
+                            ControlAppearance.Danger,
+                            new TimeSpan(0, 0, 3));
+                    }
+
+                    AddressResponses = MailingResponse!.AddressResponses;
+
                     _state.MailingResponse = MailingResponse;
 
                     _state.HasValidatedAddresses = true;
 
+                    _state.HasUploadedResponseFile = true;
 
-                    _state.ValidationResponse = _mergeService.Merge(_state.MailingRequest, _state.MailingResponse);
-
-                    ValidatedAddresses = _state.ValidationResponse.ValidatedAddressList?.Where(a => a.Severity != "INFO").ToList() ?? new List<ValidatedAddress>();
+                    if (_state.HasGeneratedMailingRequest == false)
+                    {
+                        _state.ValidationResponse = _mergeService.Merge(_state.MailingRequest, _state.MailingResponse);
+                        
+                        ValidatedAddresses = _state.ValidationResponse.ValidatedAddressList?.Where(a => a.Severity != "INFO").ToList() ?? new List<ValidatedAddress>();
+                    }
 
                     _snackbarService.Show(
-                        "Validation Successful",
-                        $"Successfully validated {ValidatedAddresses} address lines from file {SelectedFilePath}",
-                        ControlAppearance.Success,
-                        new TimeSpan(0, 0, 3));
+                            "Upload Successful",
+                            $"Successfully uploaded response file",
+                            ControlAppearance.Success,
+                            new TimeSpan(0, 0, 3));
+
                 }
             }
 

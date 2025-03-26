@@ -18,15 +18,17 @@ namespace WpfDesktop.Services
         public bool HasDownloadedMailingRequest { get; set; }
         public bool HasDownloadedMailingAddressList { get; set; }
         public bool HasValidatedAddresses { get; set; }
+
+        public bool HasUploadedResponseFile { get; set; }
         public List<AddressLine> AddressList { get; set; } = [];
 
         public int AddressCount => AddressList.Count;
 
-        public MailIdRequest MailingRequest { get; set; }
+        public MailIdRequest? MailingRequest { get; set; }
 
-        public MailingResponse MailingResponse { get; set; }
+        public MailingResponse? MailingResponse { get; set; }
 
-        public ValidationResponse ValidationResponse { get; set; }
+        public ValidationResponse? ValidationResponse { get; set; }
 
     }
 

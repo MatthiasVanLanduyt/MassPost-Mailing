@@ -20,8 +20,10 @@ namespace Validator.Application.Mailings.Services
             var culture = new CultureInfo("nl-BE");
             Console.WriteLine("Reading CSV file");
 
+            Encoding windows1252Encoding = Encoding.GetEncoding(1252);
+
             using var memoryStream = new MemoryStream();
-            using (var writer = new StreamWriter(memoryStream))
+            using (var writer = new StreamWriter(memoryStream, windows1252Encoding))
             using (var csv = new CsvWriter(writer, culture))
             {
                 csv.Context.RegisterClassMap<MailIdItemMap>();

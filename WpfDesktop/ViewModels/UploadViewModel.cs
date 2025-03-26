@@ -38,11 +38,11 @@ namespace WpfDesktop.ViewModels
         private string depositType = DepositIdentifierTypes.TemporaryDepositReference;
 
         [ObservableProperty]
-        private string depositIdentifier;
+        private string depositIdentifier = string.Empty;
 
         // File Upload Properties
         [ObservableProperty]
-        private string selectedFilePath;
+        private string? selectedFilePath;
 
         [ObservableProperty]
         private bool isFileSelected;
@@ -215,7 +215,7 @@ namespace WpfDesktop.ViewModels
 
                 _state.HasGeneratedMailingRequest = true;
 
-                _navigationService.NavigateTo(typeof(HomeViewModel).FullName);
+                _navigationService.NavigateTo(typeof(HomeViewModel).FullName ?? string.Empty);
 
                 _snackbarService.Show(
                     "Mailing request generated",
